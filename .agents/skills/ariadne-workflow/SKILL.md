@@ -37,6 +37,7 @@ If the request is plausibly Standard/Deep and needs a phase owner but this sessi
 HOST_CONTROL_REQUIRED:
 - provisional_route:
 - required_phase: research | implementation
+- phase_order_and_dependency:
 - reason:
 - minimum_documents_checked:
 - no_mutation_performed: true
@@ -123,6 +124,8 @@ Do not spawn agents or open external research merely to make the work appear rig
 The invoking main is the cross-phase decision owner and host-control proxy. It must not absorb research or implementation phase ownership.
 
 Before research leaf work, open a physical **Research Orchestrator session**. Before implementation planning, worker allocation, or phase verification, open a physical **Implementation Orchestrator session**. Bind this Skill explicitly to the session when the surface supports Skill injection.
+
+Open only the next dependency-ready phase. If research evidence can change implementation requirements, architecture, convention, or technology choice, run Research first. Do not open Implementation until `RESEARCH_COMPLETE` is received and its protocol, safety, and raw-evidence mismatches are checked. A request to parallelize dependent phases does not remove this barrier.
 
 Record before any leaf spawn or Standard/Deep mutation:
 
