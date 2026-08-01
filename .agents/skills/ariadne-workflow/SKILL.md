@@ -7,14 +7,53 @@ description: Use when executing or reviewing Ariadne Forge repository work that 
 
 Apply the smallest workflow that preserves evidence, ownership, and verification. Do not add ceremony to a settled Quick task. Do not let time pressure erase a Standard/Deep phase owner.
 
+## 0. Identify role and control surface
+
+Use the explicit session contract to identify exactly one role:
+
+- **main/control proxy**: receives the user outcome and can use host multi-agent controls
+- **Research Orchestrator** or **Implementation Orchestrator**: owns one physical phase session
+- **leaf**: performs one bounded contract and returns evidence
+
+Default to main only when handling the user request directly. Do not let a child session self-promote to main because its parent is not visible.
+
+The first gate is mandatory. Before repo-wide search, broad document loading, planning, mutation, or delegation, inspect the current role and whether the current Codex host surface natively exposes tracked controls equivalent to spawn, send/continue, wait, and close. Record:
+
+```text
+role_control_preflight:
+- assigned_role: main | research-orchestrator | implementation-orchestrator | leaf | ambiguous
+- host_controls: available | unavailable | partial | unobservable
+- provisional_route: Quick | Standard | Deep | unresolved
+- allowed_next_read:
+```
+
+Until this receipt exists, the only repository reads allowed are the nearest `AGENTS.md`, `docs/README.md`, and `docs/operating-model.md`. Do not recursively inventory the repository or read the full plan/research set during preflight.
+
+Shell-launching `codex exec`, another CLI session, Harness Maestro, or an ad hoc process does not count as native host control. Do not inspect or start those as a fallback unless the user explicitly authorizes that different execution surface.
+
+If the request is plausibly Standard/Deep and needs a phase owner but this session has no full host controls and is not explicitly assigned as a phase orchestrator or leaf, return immediately:
+
+```text
+HOST_CONTROL_REQUIRED:
+- provisional_route:
+- required_phase: research | implementation
+- reason:
+- minimum_documents_checked:
+- no_mutation_performed: true
+```
+
+Do not exhaustively research, design, or mutate while waiting for a physical phase owner.
+
 ## 1. Bind the repository before acting
 
-Read the nearest `AGENTS.md` and `docs/README.md`. For every mutation also read `docs/project.md` and `docs/operating-model.md`. Then load only what the repository map says applies:
+Main and phase orchestrators read the nearest `AGENTS.md` and `docs/README.md`. For every mutation phase also bind `docs/project.md` and `docs/operating-model.md`. Then load only what the repository map says applies:
 
 - `docs/conventions/README.md` and the active convention for implementation or design
 - `docs/architecture.md` and accepted decisions for boundaries or dependencies
 - `docs/model-selection.md` and `docs/agent-orchestration.md` for Standard/Deep delegation
 - the active execution plan when the task implements planned work
+
+A leaf reads the nearest applicable `AGENTS.md`, the exact documents named in its parent contract, and the target artifacts. It does not reload the whole global document set unless the contract is missing, stale, or conflicting. Report that gap instead of silently filling it.
 
 Before mutation, record this compact receipt in working notes or commentary:
 
