@@ -20,11 +20,19 @@ last_verified: 2026-08-02
 | [`architecture.md`](architecture.md) | 현재 선택한 시스템 구조와 확장 조건 | normative |
 | [`operating-model.md`](operating-model.md) | 라우팅, 연구, 비판, 구현, 검증, 문서 운영 | normative |
 | [`model-selection.md`](model-selection.md) | 역할별 모델 profile·reasoning 선택과 calibration | normative; concrete mapping은 time-stamped snapshot |
-| [`agent-orchestration.md`](agent-orchestration.md) | subagent topology·role contract·생명주기·custom agent 승격 | normative; behavior는 forward-test 전 unvalidated |
+| [`agent-orchestration.md`](agent-orchestration.md) | subagent topology·role contract·생명주기·custom agent 승격 | normative; core implementation path는 fixture-tested, broad behavior·actual pilot은 pending |
 | [`conventions/README.md`](conventions/README.md) | convention 형식·우선순위·등록부 | normative |
 | [`decisions/0001-codex-native-skill-first.md`](decisions/0001-codex-native-skill-first.md) | 현재 구조를 선택한 이유와 대안 | accepted decision |
 | [`plans/active/0002-codex-native-skill-first-plan.md`](plans/active/0002-codex-native-skill-first-plan.md) | 다음 구현 단계와 검증 기준 | active execution plan |
 | [`research/final-plan-validation-20260801.md`](research/final-plan-validation-20260801.md) | 최종 계획의 근거·충돌·한계 | advisory evidence |
+
+## 현재 실행 산출물
+
+| 산출물 | 역할 | 상태 |
+|---|---|---|
+| [`.agents/skills/ariadne-workflow/SKILL.md`](../.agents/skills/ariadne-workflow/SKILL.md) | Quick/Standard/Deep route, phase owner, host lifecycle와 evidence completion 진입 Skill | fixture-validated; actual application pilot pending |
+| [`../evals/ariadne-workflow/runs/baseline-001/report.md`](../evals/ariadne-workflow/runs/baseline-001/report.md) | no-Skill RED baseline | completed; advisory execution evidence |
+| [`../evals/ariadne-workflow/runs/with-skill-001/report.md`](../evals/ariadne-workflow/runs/with-skill-001/report.md) | paired·held-out forward test와 잔여 한계 | completed; fixture-scoped evidence |
 
 ## 개선 초안
 

@@ -7,7 +7,7 @@ scope: ariadne-foundation
 owner: project-owner
 last_verified: 2026-08-02
 evidence_status: source-backed-and-independently-reviewed
-behavior_status: unvalidated-draft
+behavior_status: fixture-validated-actual-pilot-pending
 supersedes: PLAN-0001
 ---
 
@@ -19,20 +19,20 @@ supersedes: PLAN-0001
 
 ## 현재 상태와 다음 행동
 
-현재 판정은 `KEEP_WITH_REORGANIZATION`이다. 핵심 방향과 acceptance는 유지하되, 단일 Skill의 책임 분리 가능성은 [`../drafts/0003-explicit-skill-composition-draft.md`](../drafts/0003-explicit-skill-composition-draft.md)에서 별도 검증한다. 이 draft는 현재 실행 순서나 package 수를 자동으로 바꾸지 않는다.
+현재 판정은 `FIXTURE_VALIDATED_ACTUAL_PILOT_PENDING`이다. 단일 `ariadne-workflow` Skill은 fixture와 held-out pressure prompt를 통과했지만 실제 application code pilot과 Research Orchestrator end-to-end run은 아직 없다. 단일 Skill의 책임 분리 가능성은 [`../drafts/0003-explicit-skill-composition-draft.md`](../drafts/0003-explicit-skill-composition-draft.md)에서 별도 검증하며, 이 draft는 현재 package 수를 자동으로 바꾸지 않는다.
 
 | 단계 | 상태 | 다음 gate 또는 산출물 |
 |---|---|---|
-| Phase 0 문서 기반 | completed-in-worktree | 현재 `AGENTS.md`와 `docs/`가 Git에 아직 untracked임을 보존; commit은 사용자 요청 전 수행하지 않음 |
-| Phase 1 RED baseline | **next** | 최소 B1·B2·B4·B6·B7 실행과 baseline report |
-| Phase 2 단일 entry Skill | pending | Phase 1이 Skill 필요성을 보일 때만 package 초안 생성 |
-| Phase 3 forward test | pending | no-Skill/with-Skill paired run과 held-out 결과 |
-| Phase 4 실제 pilot | pending | Standard implementation·research decision pilot |
+| Phase 0 문서 기반 | completed | 문서 기반을 첫 Git 기준점으로 기록 |
+| Phase 1 RED baseline | completed | B1·B2·B4·B6·B7과 실제 B10·B11 miss를 [`../../../evals/ariadne-workflow/runs/baseline-001/report.md`](../../../evals/ariadne-workflow/runs/baseline-001/report.md)에 기록 |
+| Phase 2 단일 entry Skill | completed | `.agents/skills/ariadne-workflow/SKILL.md` 구현·정적 검사 통과 |
+| Phase 3 forward test | fixture-validated | paired case와 held-out 결과를 [`../../../evals/ariadne-workflow/runs/with-skill-001/report.md`](../../../evals/ariadne-workflow/runs/with-skill-001/report.md)에 기록 |
+| Phase 4 실제 pilot | **next, event-driven** | 다음 실제 application 개발 요청에서 implementation pilot; 실제 외부 연구 결정이 생기면 research pilot |
 | Phase 5 Skill 분리 | draft candidate | 명시적 Skill injection probe와 단일/3-package 비교가 통과할 때만 채택 검토 |
 | Phase 6 design adapter | event-triggered | 첫 실제 UI pilot이 생길 때만 실행 |
 | Phase 7 code runtime | deferred | 반복 lifecycle 실패나 외부 trigger·queue 같은 실제 요구가 생길 때만 spike |
 
-지금 허용된 다음 행동은 Phase 1 fixture와 RED baseline 준비다. 아직 `ariadne-workflow`, phase Skill, custom agent, validator 또는 runtime을 구현하지 않는다.
+지금 다음 행동은 추가 synthetic fixture나 문서화 오케스트레이션이 아니다. 다음 실제 개발 요청을 Phase 4 pilot으로 수행한다. 그전에는 phase Skill, custom agent, validator, SDK/LangGraph runtime을 추가하지 않는다.
 
 이 문서는 다음 순서로 읽는다.
 
@@ -554,6 +554,18 @@ SDK spike를 열면 Codex-native와 같은 fixture에서 다음을 함께 기록
 | calibration에 run variance·grader drift 통제 부재 | accepted | paired repetition, 순서 교차, fresh context, fixed/blinded grader와 분산 보고 추가 |
 
 ## Document Impact Closure
+
+2026-08-02 Phase 1–3 구현·검증:
+
+| 문서·산출물 | disposition | 이유 |
+|---|---|---|
+| `.agents/skills/ariadne-workflow/SKILL.md` | create and refine | baseline에서 관측한 phase-owner bypass·host lifecycle 누락과 held-out의 shell fallback·dependent parallelism만 좁게 차단 |
+| `evals/ariadne-workflow/**` | create | RED fixture, 사전 rubric, baseline/with-Skill evidence 보존 |
+| `PLAN-0002` | update | Phase 0–3 실제 상태와 Phase 4 event-driven next action 반영 |
+| `docs/README.md` | update | 현재 Skill과 평가 report 위치·제한 등록 |
+| PLAN-0003·architecture·operating policy·ADR | unchanged | fixture 결과만으로 package 분리나 runtime 결정을 바꾸지 않음 |
+
+현재 status는 `fixture-validated-actual-pilot-pending`이다. 문서화 자체를 다시 다중 agent로 증명하려던 두 session은 protocol packet 없이 지연되어 종료했고 mutation은 없었다. 추가 retry 대신 첫 실제 개발 요청에서 usefulness와 latency를 평가한다.
 
 2026-08-02 checklist·runtime 검증 보완:
 
