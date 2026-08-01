@@ -1,0 +1,136 @@
+{
+  "schema_version": "agent_evaluation_v1",
+  "evaluation_id": "agent-eval-ariadne-followup-20260801-002",
+  "run_id": "run-ariadne-followup-20260801-132123",
+  "recorded_at": "2026-08-01T13:21:23+09:00",
+  "task_kind": "deep",
+  "task_summary": "Ariadne Forge의 비판·라우팅·연구 재개·semantic label·LangGraph 우려를 재검토하고, MengTo/Skills를 디자인 전용 pinned proposal adapter로 평가하여 구현 전 계획과 검증된 후속 research packet을 갱신했다.",
+  "reviewed_agents": [
+    "main",
+    "ssing_router_evidence_scout",
+    "ssing_langgraph_researcher",
+    "ssing_semantic_design_researcher",
+    "ssing_risk_reviewer_attempt_1",
+    "ssing_risk_reviewer",
+    "ssing_completion_judge"
+  ],
+  "coverage_sufficient": true,
+  "agent_gaps": [],
+  "agent_activity": [
+    {
+      "agent_id": "main",
+      "calls": 1,
+      "result_summary": "사용자 후속 요구와 디자인 한정 MengTo 범위를 통합하고 공식 문서·pinned upstream·local digest를 확인했으며 계획, 후속 packet, review resolution을 작성하고 canonical validator로 검증했다.",
+      "outcome": "unique_useful",
+      "overlap": "partial",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/plans/active/0001-ariadne-forge-foundation-plan.md"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/research/adaptive-routing-flexibility-and-design-skills-packet.json"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_router_evidence_scout",
+      "calls": 1,
+      "result_summary": "Codex의 Quick/Standard/Deep 보장은 확인되지 않는다고 분리하고 OpenAI Evals, Structured Outputs, Graders와 selective prediction 연구에서 soft routing, abstention, human-labeled false-negative 평가 근거를 제공했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "source",
+          "locator": "https://developers.openai.com/api/docs/guides/evals"
+        },
+        {
+          "kind": "source",
+          "locator": "https://papers.neurips.cc/paper_files/paper/2017/hash/4a8423d5e91fda00bb7e46540e2b0cf1-Abstract.html"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_langgraph_researcher",
+      "calls": 1,
+      "result_summary": "LangGraph의 conditional edge, Command, Send, Functional API와 replay 한계를 조사해 bounded-dynamic capability를 확인하고, Ariadne MVP에서는 기능 부재가 아니라 조기 durability·state 복잡성 때문에 보류하도록 근거를 정정했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "source",
+          "locator": "https://docs.langchain.com/oss/python/langgraph/graph-api"
+        },
+        {
+          "kind": "source",
+          "locator": "https://docs.langchain.com/oss/python/langgraph/functional-api"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_semantic_design_researcher",
+      "calls": 1,
+      "result_summary": "SKOS와 hybrid retrieval 연구에서 exact label mismatch 계약을 도출하고, 접근성·design token 자료와 pinned MengTo repository 118개 Skill을 검사해 선택적 design adapter와 Convention Research의 권한 경계를 제안했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "source",
+          "locator": "https://www.w3.org/TR/skos-reference/"
+        },
+        {
+          "kind": "source",
+          "locator": "https://github.com/MengTo/Skills/commit/46abf7860d716c33de8217b6ff9f75debf28afaf"
+        },
+        {
+          "kind": "source",
+          "locator": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_risk_reviewer_attempt_1",
+      "calls": 1,
+      "result_summary": "긴 문서와 외부 근거를 broad하게 재검토했으나 장시간 진행 후에도 판정 산출물이 없어 종료했다.",
+      "outcome": "no_material_result",
+      "overlap": "none",
+      "evidence_refs": []
+    },
+    {
+      "agent_id": "ssing_risk_reviewer",
+      "calls": 1,
+      "result_summary": "범위를 최신 plan과 후속 packet의 C1~C7 내부 정합성으로 축소해 독립 검토하고 모두 PASS, material finding과 overclaim 없음으로 판정했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/research/followup-review-resolution.md"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_completion_judge",
+      "calls": 1,
+      "result_summary": "최신 plan, 후속 packet, independent review와 validator 기록을 C1~C8에 직접 대조해 모두 PASS, material gap·overclaim 없음, DONE으로 판정했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/plans/active/0001-ariadne-forge-foundation-plan.md"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/research/adaptive-routing-flexibility-and-design-skills-packet.json"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/research/followup-review-resolution.md"
+        }
+      ]
+    }
+  ],
+  "pilot_results": []
+}

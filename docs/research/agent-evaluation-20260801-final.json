@@ -1,0 +1,101 @@
+{
+  "schema_version": "agent_evaluation_v1",
+  "evaluation_id": "agent-eval-ariadne-final-plan-20260801-003",
+  "run_id": "run-ariadne-final-plan-validation-20260801-234922",
+  "recorded_at": "2026-08-01T23:49:22+09:00",
+  "task_kind": "deep",
+  "task_summary": "Ariadne Forge의 경량 Codex-native 최종 계획을 공식 기능·문서 방법론·디자인 QA 근거와 대조하고, 프로젝트 및 convention 문서 계약을 구체화한 뒤 독립 완료 판정을 통과시켰다.",
+  "reviewed_agents": [
+    "main",
+    "ssing_codex_capability_researcher",
+    "ssing_documentation_researcher",
+    "ssing_risk_reviewer",
+    "ssing_completion_judge"
+  ],
+  "coverage_sufficient": true,
+  "agent_gaps": [],
+  "agent_activity": [
+    {
+      "agent_id": "main",
+      "calls": 1,
+      "result_summary": "사용자 요구와 연구 결과를 종합해 권위 문서, 단일 Skill-first 계획, RED/forward test, STOP/MODIFY/KEEP 기록을 작성하고 정적 검증과 수정 재검토를 수행했다.",
+      "outcome": "unique_useful",
+      "overlap": "not_applicable",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/plans/active/0002-codex-native-skill-first-plan.md"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/research/final-plan-validation-20260801.md"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_codex_capability_researcher",
+      "calls": 1,
+      "result_summary": "repo Skill, AGENTS 계층, subagent와 custom agent 모델 설정의 공식 지원 및 비보장 경계를 분리했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "source",
+          "locator": "https://developers.openai.com/codex/codex-manual.md"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_documentation_researcher",
+      "calls": 1,
+      "result_summary": "docs-as-code, ADR, arc42, C4, Diataxis를 비교해 얇은 지도, 유형별 권위, 최소 metadata와 lifecycle 구조를 제안했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/README.md"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/conventions/README.md"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_risk_reviewer",
+      "calls": 1,
+      "result_summary": "다중 Skill 선구축, 늦은 보안, 전역 single writer, JSON canonical truth와 과도한 reducer를 지적해 현재 계획의 중단·수정 결정으로 이어졌다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/research/final-plan-validation-20260801.md:172"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_completion_judge",
+      "calls": 2,
+      "result_summary": "첫 판정에서 문서 authority enum과 validation-report 계약의 두 결함을 찾아 CONTINUE를 냈고, 수정 후 새 판정에서 material finding 없음과 DONE을 확인했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/README.md"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/conventions/README.md"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/research/final-plan-validation-20260801.md:190"
+        }
+      ]
+    }
+  ],
+  "pilot_results": []
+}

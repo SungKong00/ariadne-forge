@@ -1,0 +1,651 @@
+{
+  "schema_version": "research_packet_v4",
+  "run_id": "run-ariadne-foundation-20260801-001",
+  "packet_id": "packet-ariadne-foundation-research-001",
+  "producer": {
+    "type": "main",
+    "role": "embedded-reference-research-orchestrator"
+  },
+  "status": "completed",
+  "invocation_mode": "embedded",
+  "workflow_owner": "orchestrated-work-session",
+  "decision_scope": "research_only",
+  "return": "research_packet_v4",
+  "topic": "근거 우선 개발 하네스와 결정론적·확률적 혼합 워크플로 아키텍처",
+  "decision_needed": "Ariadne Forge 구현 전에 권한 경계, 리서치·비판·구현·검증 흐름, 문서·컨벤션 생명주기, Codex 지원 범위, 런타임 대안을 비교할 근거를 제공한다.",
+  "target_context": "비어 있는 Ariadne Forge 저장소에서 복잡해지고 동작·유지보수에 실패한 harness-maestro를 계승하지 않고 가볍게 다시 시작하며 Codex CLI 0.144.1을 첫 실행 호스트로 검토하는 로컬 개발 환경",
+  "date_checked": "2026-08-01",
+  "research_depth": "deep",
+  "artifacts_checked": [
+    {
+      "id": "artifact-user-brief",
+      "kind": "user-input",
+      "locator": "2026-08-01 현재 대화의 Ariadne Forge 요구사항과 harness-maestro를 거의 폐기하고 가볍게 다시 시작한다는 후속 결정"
+    },
+    {
+      "id": "artifact-current-repo",
+      "kind": "command-output",
+      "locator": "ariadne-forge에서 실행한 git status --short --branch 및 rg --files 결과: main 브랜치, 커밋과 실질 파일 없음"
+    },
+    {
+      "id": "artifact-local-codex",
+      "kind": "command-output",
+      "locator": "codex-cli 0.144.1의 features list, exec --help, review/plugin/app-server 도움말"
+    },
+    {
+      "id": "artifact-maestro-project",
+      "kind": "command-output",
+      "locator": "read-only sed/rg inspection of /Users/nohsungbeen/dev/project/harness-maestro/docs/project.md"
+    },
+    {
+      "id": "artifact-maestro-foundations",
+      "kind": "command-output",
+      "locator": "read-only sed/rg inspection of /Users/nohsungbeen/dev/project/harness-maestro/docs/research/design-foundations.md"
+    },
+    {
+      "id": "artifact-maestro-workflow",
+      "kind": "command-output",
+      "locator": "read-only sed/rg inspection of /Users/nohsungbeen/dev/project/harness-maestro/skills/maestro/references/workflow-policy.md"
+    },
+    {
+      "id": "artifact-maestro-tests",
+      "kind": "command-output",
+      "locator": "harness-maestro tests에서 rg --count-matches --stats 'def test_' 결과: 47개 테스트 파일, 784개 test function match"
+    }
+  ],
+  "queries_used": [
+    "site:openai.com Codex harness engineering AGENTS.md docs architecture tests",
+    "site:learn.chatgpt.com/docs/agent-configuration Codex subagents AGENTS.md custom agents",
+    "site:openai.github.io/openai-agents-python multi-agent orchestration guardrails tracing",
+    "site:docs.langchain.com/oss/python/langgraph persistence interrupts workflows retry",
+    "site:learn.microsoft.com/en-us/agent-framework workflows checkpoints state evaluation",
+    "site:docs.openhands.dev/sdk event log security confirmation stuck detector",
+    "site:github.com/OpenHands/software-agent-sdk critic git_patch iterative refinement",
+    "site:proceedings.mlr.press multi-agent debate self-consistency",
+    "site:proceedings.iclr.cc LLM self-correction self-verification limitations",
+    "site:aclanthology.org conformity LLM judge evaluation",
+    "software architecture documentation ADR MADR arc42 C4 Diataxis docs as code official",
+    "Agent Skills specification progressive disclosure SKILL.md"
+  ],
+  "sources": [
+    {
+      "id": "source-user-brief",
+      "title": "현재 사용자 요구사항",
+      "url": "https://github.com/SungKong00/ariadne-forge",
+      "tier": 0,
+      "version_sensitive": true,
+      "version_or_date": "2026-08-01",
+      "inspected_evidence": "사용자는 근거 없는 LLM 결정과 확증 편향 연쇄를 최우선으로 막고, 규모별 라우팅, 연구·비판, 구현·검증, 의무 문서·컨벤션 흐름, 재사용 가능한 전문성을 요구했다. 또한 harness-maestro는 너무 복잡하고 제대로 동작하지 않으며 유지보수하기 어려워 거의 폐기하고 Ariadne를 가볍게 다시 시작한다고 결정했다.",
+      "limitations": "URL은 프로젝트 locator일 뿐 현재 대화 내용은 포함하지 않는다. 권위는 별도 user-input artifact에 있는 현재 사용자 지시에서 온다. 배포 형태, 내구성 SLA, 비용 우선순위는 아직 사용자가 결정하지 않았다."
+    },
+    {
+      "id": "source-local-codex",
+      "title": "로컬 Codex CLI 및 활성 capability 관찰",
+      "url": "https://developers.openai.com/codex/cli/reference/",
+      "tier": 0,
+      "version_sensitive": true,
+      "version_or_date": "codex-cli 0.144.1, checked 2026-08-01",
+      "inspected_evidence": "multi_agent, hooks, plugins, apps, goals, unified_exec가 활성 capability로 관찰되었고 exec의 output schema, JSONL, resume 및 App Server 진입점이 확인되었다.",
+      "limitations": "URL은 공식 CLI 참고용이고 정확한 버전 관찰은 별도 command-output artifact에 있다. 도움말과 feature 관찰은 Ariadne의 정책 게이트, 독립성, durable execution을 보장하지 않는다."
+    },
+    {
+      "id": "source-local-maestro",
+      "title": "인접 harness-maestro 실패 사례와 복잡성 자산",
+      "url": "https://github.com/SungKong00/harness-maestro",
+      "tier": 0,
+      "version_sensitive": true,
+      "version_or_date": "local dirty worktree inspected 2026-08-01",
+      "inspected_evidence": "Fast/Standard/Deep 라우팅, Lens/Executor 분리, evidence packet, 단일 writer, 독립 reviewer, 문서 registry와 impact closure, active plan 및 convention lifecycle 등 많은 개념과 47개 테스트 파일의 784개 test function match를 관찰했다. 사용자는 이 프로젝트가 과도하게 복잡해졌고 제대로 동작하지 않으며 유지보수하기 어려워 거의 폐기한다고 밝혔다.",
+      "limitations": "dirty worktree의 실제 실패 원인을 체계적으로 재현하지 않았고 테스트 수는 기능, 품질, 유지보수성, 재사용 가치를 증명하지 않는다. 이 소스는 기본 계승 근거가 아니라 복잡성 반례다."
+    },
+    {
+      "id": "source-openai-harness",
+      "title": "Harness engineering: leveraging Codex in an agent-first world",
+      "url": "https://openai.com/index/harness-engineering/",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "짧은 AGENTS.md를 지도처럼 사용하고 docs를 시스템 오브 레코드로 두며, active/completed plan과 문서 신선도 검사, 기계적 아키텍처 불변식을 운영한 사례를 확인했다.",
+      "limitations": "특정 팀의 운영 보고이며 장기적 일관성을 보편적으로 증명하는 통제 실험이 아니다."
+    },
+    {
+      "id": "source-codex-loop",
+      "title": "Unrolling the Codex agent loop",
+      "url": "https://openai.com/index/unrolling-the-codex-agent-loop/",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "AGENTS.md 계층, project docs 로딩, tool loop와 sandbox 경계를 검사했다. Codex shell sandbox와 MCP 도구의 별도 guardrail 경계도 확인했다.",
+      "limitations": "제품 내부와 API는 변경될 수 있으며 프로젝트 정책을 대신 제공하지 않는다."
+    },
+    {
+      "id": "source-codex-subagents",
+      "title": "Codex subagents and custom agent configuration",
+      "url": "https://learn.chatgpt.com/docs/agent-configuration/subagents",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "기본·사용자 정의 하위 에이전트, 병렬 작업, 역할별 instructions/model/reasoning/sandbox/MCP/skills 구성을 확인했다.",
+      "limitations": "프로젝트별 작업 DAG, critic adjudication, 원자적 완료, 자동 worktree 할당을 보장하지 않는다."
+    },
+    {
+      "id": "source-codex-hooks",
+      "title": "Codex hooks",
+      "url": "https://learn.chatgpt.com/docs/hooks",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "hooks는 lifecycle 관찰과 방어에 사용할 수 있지만 hosted tool을 포함한 모든 효과 경로를 관찰·강제하는 완전한 보안 경계가 아님을 확인했다.",
+      "limitations": "제품 버전과 활성 기능에 민감하다. hook 이벤트를 받았다는 사실은 부작용 사전 승인이나 원자적 receipt를 뜻하지 않는다."
+    },
+    {
+      "id": "source-openai-agents-orchestration",
+      "title": "OpenAI Agents SDK multi-agent orchestration",
+      "url": "https://openai.github.io/openai-agents-python/multi_agent/",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "manager-as-tools와 handoff, 모델 중심과 코드 중심 orchestration, structured output chaining, evaluator loop, 독립 작업 병렬화를 확인했다.",
+      "limitations": "예제 토폴로지가 verifier 독립성이나 durable workflow, 정확성을 자동 보장하지 않는다."
+    },
+    {
+      "id": "source-openai-guardrails",
+      "title": "OpenAI Agents SDK guardrails and human intervention",
+      "url": "https://openai.github.io/openai-agents-python/guardrails/",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "input/output/tool guardrail의 실행 경계가 다르고 tool guardrail이 handoff, hosted tool 등 모든 경로를 포괄하지 않음을 확인했다.",
+      "limitations": "Ariadne가 SDK를 직접 채택한다는 결정은 아니며 중앙 broker 필요성은 이 제한에서 도출한 설계 추론이다."
+    },
+    {
+      "id": "source-langgraph-durability",
+      "title": "LangGraph persistence, interrupts, and fault tolerance",
+      "url": "https://docs.langchain.com/oss/python/langgraph/persistence",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "superstep checkpoint, thread 기반 resume, pending writes, interrupt와 replay를 검사했다. 중단 후 node가 처음부터 재실행될 수 있어 interrupt 전 부작용은 idempotent해야 한다.",
+      "limitations": "외부 부작용의 exactly-once를 제공하지 않으며 프레임워크의 존재가 정책 정확성을 보장하지 않는다."
+    },
+    {
+      "id": "source-msaf-workflows",
+      "title": "Microsoft Agent Framework workflows",
+      "url": "https://learn.microsoft.com/en-us/agent-framework/workflows/workflows",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "typed executor/edge graph, build-time 연결·binding 검증, bulk-synchronous parallel 실행과 checkpoint 경계를 확인했다. 공식 journey는 보장해야 하는 프로세스에 모델 선택 제어 흐름이 위험할 수 있다고 설명한다.",
+      "limitations": "빠르게 변화하고 언어·통합별 기능 차이가 있으며 결정론적 스케줄이 모델 결과의 결정론을 뜻하지 않는다."
+    },
+    {
+      "id": "source-openhands-events-security",
+      "title": "OpenHands SDK event architecture and security guidance",
+      "url": "https://docs.openhands.dev/sdk/arch/events",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "append-only typed events, serializable conversation state, action confirmation, deterministic/LLM risk analyzers, maximum-severity aggregation과 stuck detection 패턴을 확인했다.",
+      "limitations": "일반 graph engine 사양이 아니며 direct tool 실행 같은 우회 가능성이 문서에 남아 있어 독립된 중앙 정책 경계가 필요하다."
+    },
+    {
+      "id": "source-skills-spec",
+      "title": "Agent Skills specification",
+      "url": "https://agentskills.io/specification",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "SKILL.md와 scripts/references/assets 구조, metadata에서 instructions와 resources로 이어지는 progressive disclosure와 validation 규칙을 확인했다.",
+      "limitations": "Skill 품질, 승격 기준, 역할 독립성을 자동 보장하지 않는다."
+    },
+    {
+      "id": "source-diataxis",
+      "title": "Diátaxis documentation framework",
+      "url": "https://diataxis.fr/start-here/",
+      "tier": 1,
+      "version_sensitive": false,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "tutorial, how-to, reference, explanation을 사용자 목적과 작업 방식에 따라 분리하는 원칙을 확인했다.",
+      "limitations": "내부 개발 거버넌스 문서의 authority, freshness, approval workflow는 별도로 설계해야 한다."
+    },
+    {
+      "id": "source-adr-madr",
+      "title": "MADR and architecture decision records",
+      "url": "https://adr.github.io/madr/",
+      "tier": 1,
+      "version_sensitive": false,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "결정 맥락, 고려 대안, 선택과 결과를 작고 구조화된 기록으로 남기며 이전 결정을 보존하는 패턴을 확인했다.",
+      "limitations": "문서만으로 결정 품질이나 준수를 보장하지 않으며 Ariadne의 evidence gate가 추가로 필요하다."
+    },
+    {
+      "id": "source-self-correction",
+      "title": "Large Language Models Cannot Self-Correct Reasoning Yet",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2024/hash/8b4add8b0aa8749d80a34ca5d941c355-Abstract-Conference.html",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "ICLR 2024, checked 2026-08-01",
+      "inspected_evidence": "외부 피드백 없는 intrinsic correction이 시험된 모델·추론 과제에서 정확도를 낮추고 정답을 오답으로 바꿀 수 있었으며 oracle correctness label은 유해한 수정을 줄였다.",
+      "limitations": "2023년대 모델과 추론 벤치마크 결과이며 스타일 편집이나 도구 기반 검증 전체를 반증하지 않는다."
+    },
+    {
+      "id": "source-mad-study",
+      "title": "Should We Be Going MAD? A Look at Multi-Agent Debate Strategies for LLMs",
+      "url": "https://proceedings.mlr.press/v235/smit24a.html",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "ICML 2024, checked 2026-08-01",
+      "inspected_evidence": "7개 debate system과 강한 prompting/self-consistency baseline 비교에서 어떤 protocol도 일관되게 우세하지 않았고 hyperparameter에 따라 순위가 크게 바뀌었다.",
+      "limitations": "주로 multiple-choice QA와 당시 모델에 대한 결과이며 저장소 규모 개발 작업 직접 실험은 아니다."
+    },
+    {
+      "id": "source-conformity",
+      "title": "Conformity in Large Language Models",
+      "url": "https://aclanthology.org/2025.acl-long.195/",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "ACL 2025, checked 2026-08-01",
+      "inspected_evidence": "시험된 모델들이 만장일치의 잘못된 peer 답을 보고 처음의 정답을 포기할 수 있었고 집단 크기와 확신 있는 어조가 동조를 키웠다.",
+      "limitations": "통제된 QA 실험이며 동적 소프트웨어 작업으로 효과 크기를 그대로 일반화할 수 없다."
+    },
+    {
+      "id": "source-self-verification",
+      "title": "On the Self-Verification Limitations of Large Language Models",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/f3c5e56274140e0420baa3916c529210-Abstract-Conference.html",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "ICLR 2025, checked 2026-08-01",
+      "inspected_evidence": "형식 추론·계획에서 자기 verifier의 높은 오류와 성능 붕괴 사례, sound verifier를 사용했을 때의 큰 개선을 확인했다.",
+      "limitations": "특정 모델과 합성 형식 도메인이며 모든 코드 verifier를 대표하지 않는다."
+    },
+    {
+      "id": "source-judgebench",
+      "title": "JudgeBench: A Benchmark for Evaluating LLM-based Judges",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/9e720fce64f91114c49cfd640d821da3-Abstract-Conference.html",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "ICLR 2025, checked 2026-08-01",
+      "inspected_evidence": "어려운 객관식 response pair에서 여러 LLM judge가 낮은 정확도를 보였고 judge 성능이 기반 문제 해결 능력과 밀접하게 연결되었다.",
+      "limitations": "의도적으로 어려운 350개 pair와 제한된 객관 과제이며 일상적인 리뷰 전체의 정확도를 의미하지 않는다."
+    },
+    {
+      "id": "source-swebench-audit",
+      "title": "Why SWE-bench Verified No Longer Measures Frontier Coding Capabilities",
+      "url": "https://openai.com/index/why-we-no-longer-evaluate-swe-bench-verified/",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "OpenAI 2026-02, checked 2026-08-01",
+      "inspected_evidence": "다중 검토를 거친 benchmark에서도 실패 선택 표본의 상당수가 테스트·명세 결함을 포함해, 통과 테스트가 oracle의 완전한 정확성을 뜻하지 않음을 확인했다.",
+      "limitations": "138개 실패 선택 표본의 59.4%를 전체 500개 과제로 일반화할 수 없다."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-control-authority",
+      "kind": "policy",
+      "statement": "보장해야 하는 상태 전이, 승인, 재시도, 완료는 LLM이 아니라 Ariadne 소유의 정책 코드가 수행해야 한다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-user-brief",
+        "source-openai-agents-orchestration",
+        "source-msaf-workflows"
+      ],
+      "source_tiers": [0, 1, 1],
+      "supporting_evidence": "사용자의 최우선 정책과 코드 중심 orchestration, typed workflow의 공식 지원을 결합하면 모델 출력을 proposal로 제한하고 deterministic predicate가 전이를 소유하는 구조가 가장 직접적으로 요구를 만족한다.",
+      "conflicting_evidence": [],
+      "applicability": "순서·안전·권한·완료를 보장해야 하는 모든 Standard/Deep 경로에 적용한다.",
+      "project_fit": "근거 없는 모델 판단이 곧 실행 권한이 되는 연쇄 실패를 구조적으로 차단한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "현재 사용자 정책과 두 공식 orchestration 문서가 직접 지지하지만 구체 predicate 설계는 구현 검증이 필요하다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-schema-limit",
+      "kind": "risk",
+      "statement": "구조화 출력과 JSON Schema는 형식 오류를 줄일 뿐, 주장의 사실성·근거 적용성·실제 파일 읽기나 명령 실행을 증명하지 않는다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-local-codex",
+        "source-msaf-workflows",
+        "source-judgebench"
+      ],
+      "source_tiers": [0, 1, 1],
+      "supporting_evidence": "Codex의 output schema와 workflow build validation은 구조를 제한하지만, LLM judge의 객관 오류와 별개로 의미·사실 검증 단계가 필요하다.",
+      "conflicting_evidence": [],
+      "applicability": "모든 packet, claim, verdict 파싱에 적용한다.",
+      "project_fit": "evidence ID만 형식적으로 채워 통과하는 우회를 막기 위해 claim과 locator 사이에 supports/contradicts/insufficient 관계, 버전·범위, adjudication provenance, raw receipt를 추가해야 한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "구조 검증과 의미 검증의 논리적 경계가 명확하고 공식·일차 자료가 위험을 지지한다."
+      },
+      "adopt_as": "warning"
+    },
+    {
+      "id": "claim-codex-boundary",
+      "kind": "fact",
+      "statement": "현재 Codex는 subagent, custom role, AGENTS.md, Skills, structured output, resume, App Server 같은 실행 primitive를 제공하지만 Ariadne의 전체 정책 graph와 evidence gate를 제공하지 않는다.",
+      "authority": "authoritative",
+      "status": "verified",
+      "source_refs": [
+        "source-local-codex",
+        "source-codex-loop",
+        "source-codex-subagents"
+      ],
+      "source_tiers": [0, 1, 1],
+      "supporting_evidence": "로컬 CLI help/features와 공식 Codex 문서에서 primitive를 확인했으며 자동 분류·근거 adjudication·원자적 완료를 명시하는 기능은 확인되지 않았다.",
+      "conflicting_evidence": [],
+      "applicability": "Codex 0.144.1을 첫 실행 호스트로 사용할 때 적용한다.",
+      "project_fit": "Codex를 버리지 않고 adapter로 활용하되 핵심 정책을 프로젝트가 소유해야 함을 뜻한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "버전이 고정된 로컬 관찰과 공식 문서를 함께 검사했다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-consensus-limit",
+      "kind": "risk",
+      "statement": "여러 에이전트의 합의나 debate는 독립된 사실 증거가 아니며 final correctness gate로 사용하면 안 된다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-mad-study",
+        "source-conformity"
+      ],
+      "source_tiers": [1, 1],
+      "supporting_evidence": "다중 에이전트 debate가 강한 baseline을 일관되게 이기지 못했고, 잘못된 만장일치 peer 의견이 처음의 정답을 바꾸는 동조 현상이 관찰되었다.",
+      "conflicting_evidence": [
+        "일부 초기 debate 연구에서는 특정 과제에서 단일 응답이나 reflection보다 향상되었으므로 debate 자체를 전면 금지할 근거는 아니다."
+      ],
+      "applicability": "연구 종합, 계획 비판, completion judge ensemble에 적용한다.",
+      "project_fit": "다수결 대신 출처·도구·fresh context·권한 분리로 독립성을 구성하게 한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "긍정·부정 연구를 함께 검토했으며 최종 gate로 쓰지 말라는 보수적 결론은 안정적이다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-critic-conditional",
+      "kind": "practice",
+      "statement": "비판·자기반성은 항상 실행할수록 좋아지는 단계가 아니라, 외부 근거·반례·실행 가능한 검증을 제시할 때만 수정 권한을 가져야 한다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-self-correction",
+        "source-self-verification"
+      ],
+      "source_tiers": [1, 1],
+      "supporting_evidence": "intrinsic self-correction이 정답을 오답으로 바꾼 사례와 self-verifier 오류가 있었고 sound verifier 또는 oracle feedback이 개선을 만들었다.",
+      "conflicting_evidence": [
+        "Self-Refine, Reflexion, CRITIC 계열은 일부 과제에서 개선을 보고했지만 외부 feedback, task 특성, verifier 품질에 크게 의존했다."
+      ],
+      "applicability": "연구 보고서 비판, 계획 비판, 구현 재작업에 적용한다.",
+      "project_fit": "비판에 대한 수사적 반박이 통과 조건이 되는 확증 루프를 피한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "상반된 실증 결과를 조건부 통제로 종합했다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-checkpoint-limit",
+      "kind": "fact",
+      "statement": "체크포인트와 resume는 복구 가능성을 제공하지만 외부 파일·프로세스·API 부작용의 exactly-once 실행을 자동 보장하지 않는다.",
+      "authority": "authoritative",
+      "status": "verified",
+      "source_refs": [
+        "source-langgraph-durability",
+        "source-msaf-workflows"
+      ],
+      "source_tiers": [1, 1],
+      "supporting_evidence": "LangGraph는 interrupt 재개 시 node 재실행과 idempotency 필요를 설명하고, Microsoft checkpoint도 workflow state 복구 범위와 외부 효과를 분리한다.",
+      "conflicting_evidence": [],
+      "applicability": "모든 durable runtime 후보와 Action Broker 설계에 적용한다.",
+      "project_fit": "idempotency key, effect receipt, 필요 시 transactional outbox가 프로젝트 계약에 포함되어야 한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "공식 런타임 문서가 재실행 경계를 직접 설명한다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-action-broker",
+      "kind": "risk",
+      "statement": "역할별 프롬프트와 개별 guardrail만으로는 모든 실행 경로를 통제할 수 없으므로 프로젝트 소유의 중앙 Action Broker 또는 결정론적 applicator가 필요하며 강제할 수 없는 효과 경로는 비활성화해야 한다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-openai-guardrails",
+        "source-openhands-events-security",
+        "source-codex-loop",
+        "source-codex-hooks"
+      ],
+      "source_tiers": [1, 1, 1, 1],
+      "supporting_evidence": "OpenAI guardrail은 handoff/hosted tool 등 범위 차이를 명시하고, OpenHands의 direct execution 경로와 Codex shell/MCP의 별도 경계가 중앙 중개의 필요성을 보여 준다.",
+      "conflicting_evidence": [],
+      "applicability": "파일 쓰기, Git, command, network/API 등 실제 부작용에 적용한다.",
+      "project_fit": "프롬프트 준수 여부와 무관하게 actor, scope, approval, stable effect ID와 receipt를 검사할 단일 경계를 만든다. host에서 강제하지 못하면 agent는 patch proposal만 제출한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "여러 공식 구현의 구체적 coverage gap에서 도출한 보수적 통제다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-evidence-ledger",
+      "kind": "practice",
+      "statement": "append-only 증거·부작용 ledger를 LLM 컨텍스트 projection과 분리하면 감사·재생·독립 검증에 유리하다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-openhands-events-security",
+        "source-langgraph-durability"
+      ],
+      "source_tiers": [1, 1],
+      "supporting_evidence": "OpenHands typed event log와 LangGraph checkpoint 패턴이 원본 상태와 모델용 투영을 분리할 실용적 기반을 제공한다.",
+      "conflicting_evidence": [],
+      "applicability": "run event, tool receipt, evidence, state transition 기록에 적용한다.",
+      "project_fit": "전체 transcript나 숨은 reasoning을 권위 근거로 쓰지 않고 검사 가능한 artifact만 보존한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "서로 다른 두 공식 런타임 구조가 같은 방향을 지지한다."
+      },
+      "adopt_as": "optional-pattern"
+    },
+    {
+      "id": "claim-doc-map",
+      "kind": "practice",
+      "statement": "짧은 AGENTS.md를 진입 지도, 구조화된 docs 디렉터리를 권위 원천으로 두고 중요한 규칙은 CI·린터로 검사하는 방식이 긴 단일 지침보다 적합하다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-openai-harness",
+        "source-diataxis",
+        "source-adr-madr"
+      ],
+      "source_tiers": [1, 1, 1],
+      "supporting_evidence": "OpenAI 운영 사례는 거대한 AGENTS.md의 실패와 docs+mechanical enforcement를 보고하고, Diátaxis와 MADR은 문서 목적 및 결정 기록 분리를 제공한다.",
+      "conflicting_evidence": [],
+      "applicability": "Ariadne의 프로젝트·아키텍처·거버넌스·컨벤션·계획·연구 문서에 적용한다.",
+      "project_fit": "필수 읽기를 경로와 authority로 선택하고 문서 신선도를 기계적으로 검사할 수 있다.",
+      "confidence": {
+        "level": "high",
+        "reason": "공식 운영 사례와 독립 문서 프레임워크가 상호 보완한다."
+      },
+      "adopt_as": "checklist"
+    },
+    {
+      "id": "claim-tests-limited",
+      "kind": "risk",
+      "statement": "테스트는 강한 실행 증거지만 명세·oracle·coverage가 잘못되면 전체 정확성을 증명하지 못한다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-self-verification",
+        "source-swebench-audit"
+      ],
+      "source_tiers": [1, 1],
+      "supporting_evidence": "sound verifier는 성능을 크게 개선했지만 SWE-bench 실패 감사에서는 다중 검토된 테스트·명세에도 material defect가 남았다.",
+      "conflicting_evidence": [],
+      "applicability": "완료 판정, convention 평가, runtime 선택 실험에 적용한다.",
+      "project_fit": "테스트 결과와 함께 requirement trace, oracle 적합성, 미검증 범위를 남기게 한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "실행 verifier의 이점과 oracle 결함을 함께 보여 주는 일차 자료가 있다."
+      },
+      "adopt_as": "warning"
+    },
+    {
+      "id": "claim-thin-kernel-first",
+      "kind": "opinion",
+      "statement": "첫 vertical slice는 순수 타입 reducer와 메모리 event list로 시작하고, SQLite와 durable graph framework는 crash-resume 요구와 실패 주입 실험 후 선택하는 편이 프로젝트 적합성이 높다.",
+      "authority": "advisory",
+      "status": "inferred",
+      "source_refs": [
+        "source-user-brief",
+        "source-local-maestro",
+        "source-langgraph-durability",
+        "source-msaf-workflows"
+      ],
+      "source_tiers": [0, 0, 1, 1],
+      "supporting_evidence": "핵심 위험은 framework feature 부족보다 authority contract 부재이며 현재 target은 비어 있는 저장소다. 사용자는 기존 다기능 하네스의 복잡성·비동작·유지보수 실패를 이유로 가벼운 재시작을 선택했다. 외부 runtime도 idempotency와 acceptance policy는 대신하지 않는다. 운영 형태와 crash-resume 필요성이 미정이므로 persistence 선채택 근거가 없다.",
+      "conflicting_evidence": [
+        "다일 중단·재개, 분산 worker, 엄격한 crash recovery가 MVP 요구라면 처음부터 SQLite, LangGraph, durable outer workflow를 비교하는 편이 더 작을 수 있다."
+      ],
+      "applicability": "저장소가 비어 있고 아직 실제 crash-resume 요구가 확정되지 않은 최초 vertical slice에 적용한다.",
+      "project_fit": "핵심 권한 계약을 persistence나 framework 타입에 종속시키지 않고 가장 작은 vertical slice를 검증한다.",
+      "confidence": {
+        "level": "medium",
+        "reason": "공식 자료가 persistence trade-off를 지지하고 사용자 lean 정책과 맞지만 실제 운영 요구가 미정이므로 조건부 프로젝트 판단이다."
+      },
+      "adopt_as": "optional-pattern"
+    },
+    {
+      "id": "claim-clean-restart",
+      "kind": "policy",
+      "statement": "Ariadne는 harness-maestro를 계승·fork·migration source로 사용하지 않고 가벼운 clean restart로 시작해야 한다.",
+      "authority": "authoritative",
+      "status": "verified",
+      "source_refs": [
+        "source-user-brief",
+        "source-local-maestro"
+      ],
+      "source_tiers": [0, 0],
+      "supporting_evidence": "사용자가 기존 프로젝트의 복잡성, 비동작, 유지보수 난이도를 직접 관찰하고 거의 폐기한다고 결정했다. 로컬 검사에서도 개념과 변경 범위가 크며 안정 기준선은 확인되지 않았다.",
+      "conflicting_evidence": [],
+      "applicability": "Phase 0과 이후 모든 아키텍처·의존성 결정에 적용한다. Maestro는 읽기 전용 실패 반례로만 사용할 수 있다.",
+      "project_fit": "기존 복잡성을 기본값으로 재도입하지 않고 현재 vertical slice가 요구하는 최소 기능만 만든다.",
+      "confidence": {
+        "level": "high",
+        "reason": "현재 프로젝트 방향에 대한 명시적인 사용자 결정이므로 권위 있는 Tier 0 정책이다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-doc-binding",
+      "kind": "practice",
+      "statement": "계획 전 문서 선택 manifest와 구현 후 document impact closure를 상태 전이의 필수 조건으로 두는 방식은 문서 사용을 임의적 프롬프트 행동에서 검사 가능한 계약으로 바꾼다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-user-brief",
+        "source-openai-harness"
+      ],
+      "source_tiers": [0, 1],
+      "supporting_evidence": "사용자가 의무적 읽기·갱신을 요구했고 OpenAI 운영 사례가 docs system-of-record, active plan, freshness/impact의 기계적 검사를 지지한다.",
+      "conflicting_evidence": [
+        "문서가 오래됐거나 resolver 정확도가 낮으면 stale authority를 강화할 수 있으므로 digest, freshness, conflict, not-applicable 근거가 필요하다."
+      ],
+      "applicability": "Quick 구현을 포함한 모든 write 작업에 경로별 최소 수준으로 적용한다.",
+      "project_fit": "문서를 읽고 싶을 때만 읽는 현재 문제를 직접 해결한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "사용자 정책과 공식 운영 사례가 직접 지지하나 resolver recall은 별도 평가가 필요하다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-skill-agent-separation",
+      "kind": "practice",
+      "statement": "반복되는 Java 지식은 Skill/Expertise Pack으로, 독립된 모델·도구·권한·샌드박스가 필요한 역할은 custom agent로 분리하는 편이 역할 독립성을 보존한다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-skills-spec",
+        "source-codex-subagents",
+        "source-user-brief"
+      ],
+      "source_tiers": [1, 1, 0],
+      "supporting_evidence": "Agent Skills는 재사용 지식·리소스 패키지이며 Codex custom agent는 실행 profile을 분리한다. 사용자는 전문 에이전트가 전체 역할을 독점하지 않기를 요구했다.",
+      "conflicting_evidence": [],
+      "applicability": "Java를 포함한 언어·프레임워크 전문성 자산화에 적용한다.",
+      "project_fit": "반복 프롬프트를 줄이면서 계획·구현·검증 역할을 계속 분리한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "공식 자산 모델과 사용자 정책이 명확히 정렬된다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-report-dual-format",
+      "kind": "opinion",
+      "statement": "연구 산출물은 엄격한 기계 JSON과 상세 Markdown을 함께 유지하고, 요약에서 claim·evidence·locator로 점진 공개하는 방식이 현재 최선의 평가 후보이다.",
+      "authority": "advisory",
+      "status": "inferred",
+      "source_refs": [
+        "source-skills-spec",
+        "source-openai-harness",
+        "source-user-brief"
+      ],
+      "source_tiers": [1, 1, 0],
+      "supporting_evidence": "Skill spec의 progressive disclosure, docs-as-system-of-record 운영, 상세 근거를 보존하려는 사용자 요구가 두 층 형식과 맞는다.",
+      "conflicting_evidence": [
+        "LLM 이해에 보편적으로 최적인 보고서 형식을 입증한 직접 비교 연구는 이번 범위에서 확인하지 못했다."
+      ],
+      "applicability": "Ariadne 연구 packet과 계획·검증 handoff에 실험적으로 적용한다.",
+      "project_fit": "재사용 가능한 schema와 구현 시 필요한 상세 locator를 동시에 제공한다.",
+      "confidence": {
+        "level": "medium",
+        "reason": "구조적 근거는 있으나 형식별 실제 LLM task 성능 평가가 필요하다."
+      },
+      "adopt_as": "optional-pattern"
+    }
+  ],
+  "open_questions": [
+    "Ariadne는 로컬 단일 사용자 도구인가, 팀·서버형 장기 실행 도구인가?",
+    "MVP에 프로세스 재시작, 다일 human wait, 분산 worker 중 어느 수준의 내구성이 필요한가?",
+    "Maestro에서 관찰된 복잡성·비동작·유지보수 실패를 재현 가능한 anti-requirement로 어디까지 문서화할 것인가?",
+    "비용, 시간, 토큰, 품질 중 route와 모델 선택의 우선순위는 무엇인가?",
+    "문서 resolver의 recall과 stale-authority 위험을 어떤 labeled dataset으로 보정할 것인가?",
+    "연구 packet 형식이 실제 후속 구현 품질에 미치는 영향을 어떻게 비교할 것인가?",
+    "공유 학습 데이터와 도구를 쓰는 서로 다른 모델 사이에 실질적으로 어느 정도 독립성이 남는가?"
+  ],
+  "recommended_checklist_items": [
+    "LLM proposal과 권한 있는 상태 전이를 타입과 API로 분리한다.",
+    "각 결정에 claim, evidence locator, applicability, limitation, authority를 연결한다.",
+    "연구자는 다른 결론을 보기 전에 독립적인 첫 packet을 고정한다.",
+    "다수결과 consensus를 correctness gate로 사용하지 않는다.",
+    "비판은 새로운 근거, 반례, 실행 가능한 검증을 제시할 때만 수정 trigger가 된다.",
+    "계획 전 DocumentBindingManifest, 완료 전 DocumentImpactClosure를 요구한다.",
+    "모든 부작용을 강제 가능한 Action Broker 또는 결정론적 applicator로 중개하고 attempt와 분리된 stable effect ID와 receipt를 남긴다.",
+    "완료 judge는 writer의 자기 보고가 아니라 contract, artifact, raw command result를 본다.",
+    "runtime은 crash/replay, approval mutation, bypass, correlated consensus 실패 주입으로 비교한다.",
+    "상시 Skill/Agent는 반복 gap과 held-out 평가 후에만 승격한다.",
+    "Maestro 코드·패키지는 기본적으로 재사용하지 않고 현재 fixture와 complexity budget을 통과한 작은 아이디어만 독립 재작성한다."
+  ],
+  "rejected_claims": [
+    "에이전트 수나 토론 횟수가 늘수록 신뢰도가 자동으로 높아진다.",
+    "모든 단계에서 의무 자기반성을 수행하면 항상 결과가 좋아진다.",
+    "비판에 말로 반박할 수 있으면 쟁점이 해결된 것이다.",
+    "테스트가 통과하면 명세 전체의 정확성이 증명된다.",
+    "JSON Schema 검증을 통과한 evidence packet은 내용도 사실이다.",
+    "특정 agent framework를 채택하면 확증 편향 문제가 자동으로 해결된다.",
+    "Java 전문성을 한 custom agent에 몰아주면 계획·구현·검증 독립성도 유지된다.",
+    "기존 프로젝트에 문서와 테스트가 많다는 사실만으로 그 구조를 계승할 가치가 증명된다."
+  ]
+}

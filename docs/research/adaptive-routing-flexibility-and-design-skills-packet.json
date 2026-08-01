@@ -1,0 +1,533 @@
+{
+  "schema_version": "research_packet_v4",
+  "run_id": "run-ariadne-followup-20260801-002",
+  "packet_id": "packet-ariadne-routing-flexibility-design-002",
+  "producer": {
+    "type": "main",
+    "role": "embedded-reference-research-orchestrator"
+  },
+  "status": "completed",
+  "invocation_mode": "embedded",
+  "workflow_owner": "orchestrated-work-session",
+  "decision_scope": "research_only",
+  "return": "research_packet_v4",
+  "topic": "비판·라우팅·연구 재개·의미 검색·LangGraph 유연성과 디자인 전용 MengTo Skill 활용",
+  "decision_needed": "사용자 후속 우려를 근거 수준에 맞게 정정하고 Ariadne 구현 전 계획의 라우팅, 연구 조건, 문서 검색, graph runtime, 컨벤션 연구 및 디자인 Skill 위임 방식을 갱신한다.",
+  "target_context": "Ariadne Forge를 harness-maestro보다 가볍게 시작하며 Codex Skills의 유연성을 보존하고 디자인에서만 MengTo/Skills를 선택적으로 활용하려는 현재 프로젝트",
+  "date_checked": "2026-08-01",
+  "research_depth": "deep",
+  "artifacts_checked": [
+    {
+      "id": "artifact-user-followup",
+      "kind": "user-input",
+      "locator": "2026-08-01 현재 대화의 비판·분류기·research trigger·JSON label·LangGraph·컨벤션 연구 요구 및 MengTo/Skills를 디자인에만 추가하라는 지시"
+    },
+    {
+      "id": "artifact-mengto-revision",
+      "kind": "command-output",
+      "locator": "git ls-remote https://github.com/MengTo/Skills.git refs/heads/main 결과 46abf7860d716c33de8217b6ff9f75debf28afaf"
+    },
+    {
+      "id": "artifact-mengto-local-digest",
+      "kind": "command-output",
+      "locator": "remote revision의 agent-skills/ui/design-first-ui-prompting/SKILL.md와 /Users/nohsungbeen/.codex/skills/design-first-ui-prompting/SKILL.md SHA-256 비교: 둘 다 5e3d4db0eb0ea983f2bedb90f28f358901c292388a7889e2f66ac133ceff743c, equal True"
+    },
+    {
+      "id": "artifact-updated-plan",
+      "kind": "file",
+      "locator": "docs/plans/active/0001-ariadne-forge-foundation-plan.md"
+    }
+  ],
+  "queries_used": [
+    "site:developers.openai.com evals classification structured outputs graders",
+    "site:papers.neurips.cc selective classification reject option risk coverage",
+    "site:proceedings.iclr.cc conformal risk control false negative",
+    "site:w3.org/TR/skos-reference prefLabel altLabel hiddenLabel language misspelling",
+    "site:docs.opensearch.org hybrid keyword semantic search official",
+    "site:docs.langchain.com/oss/python/langgraph conditional edges Command Send dynamic routing",
+    "site:docs.langchain.com/oss/python/langgraph workflows agents orchestrator worker",
+    "github.com/MengTo/Skills README LICENSE design-first-ui-prompting at pinned revision",
+    "agentskills.io specification SKILL.md frontmatter progressive disclosure"
+  ],
+  "sources": [
+    {
+      "id": "source-user-followup",
+      "title": "현재 사용자 후속 요구와 디자인 한정 범위",
+      "url": "https://github.com/SungKong00/ariadne-forge",
+      "tier": 0,
+      "version_sensitive": true,
+      "version_or_date": "2026-08-01",
+      "inspected_evidence": "비판에는 근거 있는 반박 시도를 요구하되 억지 반박은 금지하고, 분류기 근거를 재확인하며, 연구 조건의 누락 방지, 의미가 같은 다른 라벨 검색, LangGraph 경직성, 컨벤션 연구를 검토하라고 했다. MengTo/Skills 추가는 디자인에만 적용하고 비디자인 작업은 바꾸지 말라고 범위를 고정했다.",
+      "limitations": "URL은 프로젝트 locator이며 실제 권위는 별도 user-input artifact의 현재 대화 지시에서 온다."
+    },
+    {
+      "id": "source-local-mengto-binding",
+      "title": "현재 로컬 MengTo design Skill binding 관찰",
+      "url": "https://github.com/MengTo/Skills",
+      "tier": 0,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "git ls-remote로 main revision 46abf7860d716c33de8217b6ff9f75debf28afaf를 확인하고 해당 revision의 design-first-ui-prompting/SKILL.md와 현재 /Users/nohsungbeen/.codex/skills/design-first-ui-prompting/SKILL.md를 byte 비교했다. 양쪽 SHA-256은 5e3d4db0eb0ea983f2bedb90f28f358901c292388a7889e2f66ac133ceff743c이고 equal True였다.",
+      "limitations": "한 Skill 파일의 현재 일치만 확인했다. 118개 전체 설치·동등성, 향후 자동 업데이트, bundled script·asset 안전성을 증명하지 않는다."
+    },
+    {
+      "id": "source-openai-evals",
+      "title": "OpenAI Working with evals",
+      "url": "https://developers.openai.com/api/docs/guides/evals",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "분류 작업을 포함한 모델 출력은 기대 기준과 test input을 정의하고 결과를 분석·반복하는 eval 대상으로 다뤄야 함을 확인했다.",
+      "limitations": "특정 Ariadne Quick/Standard/Deep 분류기의 정확도나 Codex 내장 자동 라우팅을 보장하지 않는다. 문서에 표시된 Evals API deprecation 일정에도 민감하다."
+    },
+    {
+      "id": "source-openai-structured-output",
+      "title": "OpenAI Structured model outputs",
+      "url": "https://developers.openai.com/api/docs/guides/structured-outputs",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "Structured Outputs는 지원되는 JSON Schema 준수를 보장하지만 공식 문서도 생성 내용에 mistakes가 남을 수 있고 eval을 사용하라고 명시한다.",
+      "limitations": "올바른 enum 모양은 의미상 올바른 분류, 실제 근거 사용, 완전한 후보 회수를 뜻하지 않는다."
+    },
+    {
+      "id": "source-openai-graders",
+      "title": "OpenAI Graders",
+      "url": "https://developers.openai.com/api/docs/guides/graders",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "model grader를 trusted human example과 ground-truth grade로 보정하고 grader hacking을 expert human evaluation과 비교해 탐지하라고 설명한다.",
+      "limitations": "human label 자체의 일관성·대표성은 별도 관리해야 하며 grader가 Ariadne 라우팅의 정답 권위를 자동으로 제공하지 않는다."
+    },
+    {
+      "id": "source-selective-classification",
+      "title": "Selective Classification for Deep Neural Networks",
+      "url": "https://papers.neurips.cc/paper_files/paper/2017/hash/4a8423d5e91fda00bb7e46540e2b0cf1-Abstract.html",
+      "tier": 1,
+      "version_sensitive": false,
+      "version_or_date": "NeurIPS 2017, checked 2026-08-01",
+      "inspected_evidence": "reject option이 coverage를 줄이는 대신 원하는 risk 수준을 다루는 selective classification 패턴을 제시한다.",
+      "limitations": "이미지 분류 중심 연구로 Codex 작업 규모 라우터에 동일한 보장을 직접 이전할 수 없다. Ariadne의 abstain은 설계 차용이다."
+    },
+    {
+      "id": "source-conformal-risk",
+      "title": "Conformal Risk Control",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2024/hash/f3549ef9b5ff520a7e41ff3cc306ab2b-Abstract-Conference.html",
+      "tier": 1,
+      "version_sensitive": false,
+      "version_or_date": "ICLR 2024, checked 2026-08-01",
+      "inspected_evidence": "적절한 가정 아래 monotone loss의 기대값을 통제하고 false negative rate를 bound하는 conformal risk control을 제시한다.",
+      "limitations": "캘리브레이션 데이터와 분포·손실 가정이 필요하다. 초기 Ariadne router가 즉시 보장받는다는 뜻이 아니다."
+    },
+    {
+      "id": "source-w3c-skos",
+      "title": "W3C SKOS Reference",
+      "url": "https://www.w3.org/TR/skos-reference/",
+      "tier": 1,
+      "version_sensitive": false,
+      "version_or_date": "W3C Recommendation, checked 2026-08-01",
+      "inspected_evidence": "개념을 URI로 식별하고 언어별 preferred, alternative, hidden labels, notation, broader/narrower 관계와 note로 표현한다. hidden label은 오탈자를 text search에서 찾는 용도도 명시한다.",
+      "limitations": "RDF/SKOS를 그대로 구현해야 한다는 뜻은 아니며 Ariadne에는 작은 개념 descriptor로 축소해야 한다."
+    },
+    {
+      "id": "source-opensearch-hybrid",
+      "title": "OpenSearch Hybrid search",
+      "url": "https://docs.opensearch.org/latest/vector-search/ai-search/hybrid-search/index/",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "keyword와 semantic search 결과를 normalization 또는 rank fusion으로 결합하는 공식 구현 패턴을 확인했다.",
+      "limitations": "OpenSearch 채택 근거가 아니며 embedding·fusion이 Ariadne artifact recall을 자동 개선한다고 보장하지 않는다. 작은 corpus에는 과잉일 수 있다."
+    },
+    {
+      "id": "source-langgraph-api",
+      "title": "LangGraph Graph API overview",
+      "url": "https://docs.langchain.com/oss/python/langgraph/graph-api",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "conditional edge와 Command로 dynamic routing하고 Send로 실행 시점에 수가 정해지지 않은 worker를 만들며 loop, subgraph, interrupt/resume를 구성할 수 있다.",
+      "limitations": "동적 primitive는 좋은 policy, 작은 state schema, 정확한 router를 자동 제공하지 않는다. static edge와 dynamic routing 혼합 같은 자체 함정도 있다."
+    },
+    {
+      "id": "source-langgraph-patterns",
+      "title": "LangGraph Workflows and agents",
+      "url": "https://docs.langchain.com/oss/python/langgraph/workflows-agents",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "predetermined workflow와 자신의 과정·tool usage를 정하는 dynamic agent를 구분하고 routing, evaluator-optimizer, orchestrator-worker의 동적 worker 예를 제공한다.",
+      "limitations": "예제 패턴은 Ariadne의 evidence authority, 완료 gate, 낮은 유지보수 비용을 보장하지 않는다."
+    },
+    {
+      "id": "source-agent-skills-spec",
+      "title": "Agent Skills specification",
+      "url": "https://agentskills.io/specification",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "SKILL.md의 name/description frontmatter와 Markdown instructions, optional scripts/references/assets, progressive disclosure와 validation 계약을 확인했다.",
+      "limitations": "형식 호환은 Skill 내용의 사실성·안전성·프로젝트 적합성을 보장하지 않는다."
+    },
+    {
+      "id": "source-wcag-target-size",
+      "title": "WCAG 2.2 Understanding Target Size Minimum",
+      "url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "updated 2026-05-11, checked 2026-08-01",
+      "inspected_evidence": "pointer target의 24 by 24 CSS pixel 최소 크기 또는 spacing 예외, 더 큰 target의 사용자 이점과 입력·밀도 맥락을 확인했다.",
+      "limitations": "Understanding 문서는 informative 설명이며 버튼의 보편적 font, padding, radius, 브랜드 token을 정하지 않는다."
+    },
+    {
+      "id": "source-wai-button-pattern",
+      "title": "WAI-ARIA Authoring Practices Button Pattern",
+      "url": "https://www.w3.org/WAI/ARIA/apg/patterns/button/",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "button, toggle button의 접근성 의미, name, state와 keyboard interaction에 필요한 패턴을 확인했다.",
+      "limitations": "시각 스타일, padding, type scale을 규정하는 디자인 시스템은 아니다. native HTML 의미론과 실제 assistive technology 검증을 대체하지 않는다."
+    },
+    {
+      "id": "source-uswds-tokens",
+      "title": "U.S. Web Design System design tokens and button",
+      "url": "https://designsystem.digital.gov/design-tokens/",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "checked 2026-08-01",
+      "inspected_evidence": "프로젝트가 일관된 spacing, typography, color 등의 design token을 정의하고 component가 이를 사용하도록 구성하는 실제 공식 시스템 사례를 확인했다.",
+      "limitations": "미국 연방 웹 프로젝트의 시스템이며 해당 token 값이 Ariadne나 모든 플랫폼의 정답이라는 뜻은 아니다."
+    },
+    {
+      "id": "source-mengto-repo",
+      "title": "MengTo/Skills repository",
+      "url": "https://github.com/MengTo/Skills",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "main 46abf7860d716c33de8217b6ff9f75debf28afaf, checked 2026-08-01",
+      "inspected_evidence": "저장소는 Codex를 포함한 agent를 대상으로 plain Markdown과 folder-based portable Skill을 제공하며 현재 README snapshot은 118개 Skill과 좁은 Skill 우선 로딩을 설명한다.",
+      "limitations": "저장소 README의 자기 설명이며 각 Skill의 품질과 프로젝트 적합성은 개별 검사해야 한다. main은 변경될 수 있다."
+    },
+    {
+      "id": "source-mengto-design-skill",
+      "title": "MengTo design-first-ui-prompting at pinned revision",
+      "url": "https://github.com/MengTo/Skills/blob/46abf7860d716c33de8217b6ff9f75debf28afaf/agent-skills/ui/design-first-ui-prompting/SKILL.md",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "46abf7860d716c33de8217b6ff9f75debf28afaf, checked 2026-08-01",
+      "inspected_evidence": "goal, format, layout, type, color, exact copy, negative constraints를 명세하고 한 변수씩 variant를 만드는 절차와 local reference pack을 제시한다.",
+      "limitations": "접근성 규격, 사용자 연구, 프로젝트별 token 수치를 입증하는 출처 묶음은 아니다. REFERENCES.md도 broad discovery links 중심이다."
+    },
+    {
+      "id": "source-mengto-license",
+      "title": "MengTo/Skills MIT License",
+      "url": "https://github.com/MengTo/Skills/blob/46abf7860d716c33de8217b6ff9f75debf28afaf/LICENSE",
+      "tier": 1,
+      "version_sensitive": true,
+      "version_or_date": "46abf7860d716c33de8217b6ff9f75debf28afaf, checked 2026-08-01",
+      "inspected_evidence": "사용·복사·수정·배포를 허용하되 저작권 및 허가 고지를 복사본 또는 상당 부분에 포함해야 하는 MIT 조건을 확인했다.",
+      "limitations": "Skill이 참조하는 제3자 서비스·이미지·상표·폰트의 별도 권리까지 허가하지 않는다."
+    }
+  ],
+  "claims": [
+    {
+      "id": "claim-critic-balanced-response",
+      "kind": "policy",
+      "statement": "critic finding의 대상 작성자는 타당한 반박을 먼저 조사하되 더 강한 근거가 없으면 억지로 방어하지 않고 수용·부분 수용을 검토해야 하며 어느 쪽도 스스로 finding을 닫을 수 없다.",
+      "authority": "authoritative",
+      "status": "verified",
+      "source_refs": [
+        "source-user-followup"
+      ],
+      "source_tiers": [
+        0
+      ],
+      "supporting_evidence": "현재 사용자가 프로젝트의 비판·반박 정책으로 직접 지정했다.",
+      "conflicting_evidence": [],
+      "applicability": "계획, 연구, 구현 finding의 모든 rebuttal cycle에 적용한다.",
+      "project_fit": "무조건 수용 편향과 무조건 방어 편향을 동시에 낮추고 독립 resolver를 유지한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "현재 프로젝트에 대한 명시적 사용자 정책이다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-router-is-hypothesis",
+      "kind": "risk",
+      "statement": "기존 hybrid task classifier가 Codex에서 올바르게 동작한다는 제품 보장은 확인되지 않았으며, LLM proposal과 deterministic risk floor를 결합하는 방식은 평가가 필요한 Ariadne 설계 가설이다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-openai-evals",
+        "source-openai-structured-output",
+        "source-openai-graders"
+      ],
+      "source_tiers": [
+        1,
+        1,
+        1
+      ],
+      "supporting_evidence": "공식 자료는 분류를 eval 대상으로 제시하고 JSON Schema가 내용 mistakes를 없애지 않는다고 설명하며 human ground truth로 grader를 보정하라고 한다. Ariadne 규모 분류의 정확도 보장은 제공하지 않는다.",
+      "conflicting_evidence": [],
+      "applicability": "Quick/Standard/Deep route와 research open/skip 판단에 적용한다.",
+      "project_fit": "초기에는 fixed Standard를 쓰고 human-labeled set, false downgrade, coverage, 비용으로 검증하기 전 Quick 범위를 확대하지 않는다.",
+      "confidence": {
+        "level": "high",
+        "reason": "지원되는 구조화·평가 기능과 보장되지 않는 프로젝트 의미 정확성의 경계가 공식 자료에서 분명하다."
+      },
+      "adopt_as": "warning"
+    },
+    {
+      "id": "claim-abstain-and-reopen",
+      "kind": "practice",
+      "statement": "라우팅과 연구 실행은 닫힌 조건표보다 non-exclusive signal, abstain, 단계 중 재평가, 사용자·agent reopen, skip 표본 감사를 결합하는 후보가 안전하다.",
+      "authority": "advisory",
+      "status": "inferred",
+      "source_refs": [
+        "source-user-followup",
+        "source-selective-classification",
+        "source-conformal-risk"
+      ],
+      "source_tiers": [
+        0,
+        1,
+        1
+      ],
+      "supporting_evidence": "사용자는 고정 조건의 false negative를 우려했고 reject option 연구는 coverage와 risk의 trade-off를 다룬다. false negative 통제도 calibration과 명시적 loss가 필요하다.",
+      "conflicting_evidence": [
+        "자유로운 reopen은 불필요한 연구와 비용을 늘릴 수 있으므로 reason, budget, duplicate suppression과 audit metric이 필요하다."
+      ],
+      "applicability": "초기 assessment, document binding 후, 계획 비판 후, 구현 중 새 unknown 발견 시 적용한다.",
+      "project_fit": "필요한 연구를 지나치는 것을 줄이되 fan-out budget과 skip audit으로 과잉 조사를 측정할 수 있다.",
+      "confidence": {
+        "level": "medium",
+        "reason": "abstention의 일반 근거는 강하지만 Ariadne trigger policy 자체는 실제 labeled task 평가 전 설계 추론이다."
+      },
+      "adopt_as": "optional-pattern"
+    },
+    {
+      "id": "claim-labels-need-concepts",
+      "kind": "practice",
+      "statement": "JSON enum이나 단일 label의 exact match만으로 문서·Skill을 찾으면 동의어, 오탈자, 축약어, 다른 언어와 표현을 놓칠 수 있으므로 stable concept ID와 preferred/alternative/hidden labels, 설명, 예시, 관계, 원문 query를 함께 보존해야 한다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-w3c-skos",
+        "source-openai-structured-output"
+      ],
+      "source_tiers": [
+        1,
+        1
+      ],
+      "supporting_evidence": "SKOS는 concept identity를 label과 분리하고 언어별 alternate·hidden label과 오탈자 검색을 명시한다. Structured Outputs의 valid enum은 의미상 후보 회수를 보장하지 않는다.",
+      "conflicting_evidence": [],
+      "applicability": "문서, convention, evidence, Skill metadata와 task topic resolver에 적용한다.",
+      "project_fit": "작은 descriptor를 사용하고 unknown을 원문과 함께 보존하면 label 변경과 schema migration에도 의미를 추적할 수 있다.",
+      "confidence": {
+        "level": "high",
+        "reason": "개념 식별과 lexical label 분리, schema 의미 한계가 공식 자료에서 직접 확인된다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-hybrid-retrieval-is-candidate",
+      "kind": "opinion",
+      "statement": "resolver는 exact ID·alias와 lexical retrieval을 먼저 사용하고, recall gap이 측정될 때 semantic candidate retrieval과 rank fusion을 추가하되 embedding score를 권위 판정으로 사용하지 않는 편이 가볍다.",
+      "authority": "advisory",
+      "status": "inferred",
+      "source_refs": [
+        "source-w3c-skos",
+        "source-opensearch-hybrid",
+        "source-user-followup"
+      ],
+      "source_tiers": [
+        1,
+        1,
+        0
+      ],
+      "supporting_evidence": "alias·hidden label은 싸고 설명 가능하며 hybrid search는 keyword와 semantic 결과 결합이 가능한 패턴임을 보여 준다. 현재 corpus 크기와 실제 recall gap은 아직 없다.",
+      "conflicting_evidence": [
+        "작은 corpus에서 embeddings와 fusion은 운영 복잡도와 잘못된 semantic match만 늘릴 수 있다."
+      ],
+      "applicability": "Phase 4·5 resolver 평가에서 lexical baseline이 실패한 경우에만 적용한다.",
+      "project_fit": "Maestro식 선제 복잡성을 피하고 paraphrase·오탈자·한영·다의어 fixture로 추가 가치가 있을 때만 확장한다.",
+      "confidence": {
+        "level": "medium",
+        "reason": "구현 패턴은 공식 자료가 지지하지만 프로젝트 데이터에 대한 개선 효과는 측정 전이다."
+      },
+      "adopt_as": "optional-pattern"
+    },
+    {
+      "id": "claim-langgraph-dynamic",
+      "kind": "fact",
+      "statement": "LangGraph는 static path만 실행하는 프레임워크가 아니며 conditional edge, Command, Send, loop, subgraph, interrupt를 통해 실행 시점 routing과 동적 fan-out을 지원한다.",
+      "authority": "authoritative",
+      "status": "verified",
+      "source_refs": [
+        "source-langgraph-api",
+        "source-langgraph-patterns"
+      ],
+      "source_tiers": [
+        1,
+        1
+      ],
+      "supporting_evidence": "공식 API와 가이드가 dynamic control flow와 orchestrator가 생성한 미리 알 수 없는 worker 목록을 Send로 실행하는 코드를 제공한다.",
+      "conflicting_evidence": [],
+      "applicability": "LangGraph 기능 가능성 평가에 적용한다.",
+      "project_fit": "graph 채택 여부를 '동적 실행 불가능'이라는 잘못된 전제에서 결정하지 않게 한다.",
+      "confidence": {
+        "level": "high",
+        "reason": "공식 최신 API 문서에서 직접 확인했다."
+      },
+      "adopt_as": "warning"
+    },
+    {
+      "id": "claim-langgraph-defer",
+      "kind": "opinion",
+      "statement": "동적 기능이 있더라도 Ariadne MVP에서 LangGraph를 먼저 채택하면 node·state·edge·replay를 과도하게 선모델링할 위험이 있으므로, Skills와 ad hoc delegation의 자연어 유연성을 작은 reducer의 권한 gate와 결합하고 durable requirement가 확인된 뒤 비교하는 편이 프로젝트 적합성이 높다.",
+      "authority": "advisory",
+      "status": "inferred",
+      "source_refs": [
+        "source-user-followup",
+        "source-langgraph-api",
+        "source-langgraph-patterns"
+      ],
+      "source_tiers": [
+        0,
+        1,
+        1
+      ],
+      "supporting_evidence": "사용자는 Maestro의 복잡성과 경직성을 실패 원인으로 보고 Skills의 유연성을 보존하려 한다. 공식 문서는 LangGraph가 저수준 graph runtime이며 behavior는 node·state·edge로 설계된다고 한다.",
+      "conflicting_evidence": [
+        "중단·재개, long-running HITL, durable state가 초기 요구로 확정되면 LangGraph가 자체 구현보다 오히려 작은 선택일 수 있다."
+      ],
+      "applicability": "현재 빈 저장소의 최초 vertical slice에 적용한다.",
+      "project_fit": "framework를 유연성의 원천이나 적으로 오인하지 않고 정책·권한 경계를 먼저 검증한다.",
+      "confidence": {
+        "level": "medium",
+        "reason": "기능 사실과 사용자 실패 경험은 명확하지만 실제 Ariadne spike 비교 전 조건부 아키텍처 판단이다."
+      },
+      "adopt_as": "optional-pattern"
+    },
+    {
+      "id": "claim-convention-design-research",
+      "kind": "practice",
+      "statement": "버튼 typography·padding 같은 구현·디자인 컨벤션에는 보편적인 단일 수치가 없으므로 hard accessibility와 platform constraint, 프로젝트 token·브랜드·사용자·실제 copy, 비교 reference, prototype 검증을 분리한 Convention Research Session으로 후보를 만들고 decision record와 token으로 채택해야 한다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-user-followup",
+        "source-wcag-target-size",
+        "source-wai-button-pattern",
+        "source-uswds-tokens"
+      ],
+      "source_tiers": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "supporting_evidence": "공식 접근성 자료는 target·interaction 제약을 제공하지만 시각 token 전체를 정하지 않고, USWDS 값은 특정 시스템 문맥에 속한다. 따라서 공식 constraint와 project-specific evidence를 결합해야 한다.",
+      "conflicting_evidence": [
+        "작은 국소 변경마다 전체 research fan-out을 열면 비용이 과도하므로 기존 active token과 검증된 component가 있으면 이를 재사용하고, 새 결정·충돌·stale evidence가 있을 때만 세션을 연다."
+      ],
+      "applicability": "새 디자인 token·component convention을 정하거나 기존 규칙이 없고 stale/conflict 상태인 경우 적용한다.",
+      "project_fit": "사용자가 요구한 '실제 디자이너가 어떤 맥락과 레퍼런스로 판단하는지'를 근거·후보·검증 기록으로 바꾼다.",
+      "confidence": {
+        "level": "high",
+        "reason": "개별 hard constraint와 token 사례는 공식 자료가 직접 지지하고, 결합 절차는 사용자 정책에 맞춘 명시적 설계 종합이다."
+      },
+      "adopt_as": "rule"
+    },
+    {
+      "id": "claim-mengto-currently-usable",
+      "kind": "fact",
+      "statement": "MengTo/Skills의 design-first-ui-prompting은 표준적인 SKILL.md 구조이고 현재 로컬 Codex Skill 파일이 검사한 upstream revision과 byte-for-byte 동일하므로 별도 graph integration 없이 현재 환경에서 선택적으로 로드할 수 있다.",
+      "authority": "authoritative",
+      "status": "verified",
+      "source_refs": [
+        "source-local-mengto-binding",
+        "source-agent-skills-spec",
+        "source-mengto-repo",
+        "source-mengto-design-skill"
+      ],
+      "source_tiers": [
+        0,
+        1,
+        1,
+        1
+      ],
+      "supporting_evidence": "Agent Skills 형식과 upstream frontmatter가 맞고 별도 command artifact에서 local/upstream SHA-256 동등성을 확인했다.",
+      "conflicting_evidence": [],
+      "applicability": "현재 호스트에서 디자인 작업이 발생해 해당 trigger가 맞을 때 적용한다.",
+      "project_fit": "사용자가 제안한 디자인 위임을 새로운 orchestration runtime 없이 시험할 수 있다.",
+      "confidence": {
+        "level": "high",
+        "reason": "공식 형식과 pinned source, local digest를 직접 대조했다."
+      },
+      "adopt_as": "optional-pattern"
+    },
+    {
+      "id": "claim-mengto-design-adapter-boundary",
+      "kind": "practice",
+      "statement": "MengTo/Skills는 디자인 작업의 명세·레퍼런스 해석·구현 recipe 제안에만 사용하고, 프로젝트별 token·접근성·완료 판정은 Convention Research와 독립 검증이 소유해야 한다.",
+      "authority": "derived",
+      "status": "supported",
+      "source_refs": [
+        "source-user-followup",
+        "source-mengto-design-skill",
+        "source-mengto-license"
+      ],
+      "source_tiers": [
+        0,
+        1,
+        1
+      ],
+      "supporting_evidence": "사용자는 적용 범위를 디자인으로 제한했다. 검사한 Skill은 디자인 명세와 반복 절차를 제공하지만 접근성·프로젝트별 수치의 authority packet은 아니며, MIT는 사용·수정을 허용하되 고지 보존이 필요하다.",
+      "conflicting_evidence": [
+        "특정 시각 작업에서는 전문 Skill이 구현까지 이끄는 것이 효율적일 수 있으나 동일 Skill이 독립 검증까지 닫으면 역할 분리가 사라진다."
+      ],
+      "applicability": "UI, landing page, visual system, motion 등 디자인 의도가 핵심인 작업에만 적용한다.",
+      "project_fit": "MengTo의 강한 절차 자산을 활용하면서 사용자가 요구한 근거·비판·검증 flow를 우회하지 않는다.",
+      "confidence": {
+        "level": "high",
+        "reason": "사용자 범위, 실제 Skill 내용과 라이선스 경계를 함께 검사했다."
+      },
+      "adopt_as": "rule"
+    }
+  ],
+  "open_questions": [
+    "Ariadne의 최초 human-labeled route/research-trigger set을 어떤 실제 과제와 합성 경계 사례로 구성할 것인가?",
+    "고위험 under-routing 허용치와 abstention coverage·비용 사이의 owner 기준은 무엇인가?",
+    "문서·Skill corpus가 어느 크기와 recall gap에 도달할 때 semantic retrieval spike를 정당화할 것인가?",
+    "첫 UI pilot에서 design-first-ui-prompting 외 어떤 MengTo Skill 조합이 실제 trigger에 맞는가?",
+    "MengTo Skill을 global 설치본으로 pin할지 프로젝트 lock manifest 또는 vendoring으로 고정할지는 첫 UI 반복성 요구 후 결정해야 하는가?",
+    "버튼 pilot의 대상 플랫폼, 사용자군, 브랜드·type scale과 접근성 기준은 무엇인가?"
+  ],
+  "recommended_checklist_items": [
+    "라우터 문서에서 Codex 보장 표현을 제거하고 design hypothesis로 명시한다.",
+    "라우터 검증 전 fixed Standard를 기본으로 하고 Quick은 저위험 allowlist로 제한한다.",
+    "TaskAssessment와 ResearchDecision에 confidence, unknowns, abstain, reopen reason을 둔다.",
+    "연구 skip과 route downgrade를 표본 감사하고 false negative를 우선 측정한다.",
+    "concept ID, preferred/localized labels, aliases, hidden typo variants, 설명·예시·관계를 versioned schema로 관리한다.",
+    "exact/alias+lexical baseline의 recall gap을 측정하기 전 embedding runtime을 도입하지 않는다.",
+    "LangGraph는 Phase 8 failure-injection 비교 전 MVP 의존성으로 추가하지 않는다.",
+    "디자인 작업만 DesignSkillBinding을 만들고 upstream origin, revision, digest, license와 입력 project context를 기록한다.",
+    "MengTo Skill 출력의 수치와 외부 사실은 별도 ConventionResearchPacket 없이는 candidate로 유지한다.",
+    "디자인 제안자와 접근성·시각·구현 verifier를 분리한다.",
+    "MengTo repository 전체 자동 복사·업데이트 대신 가장 좁은 현재 설치 Skill부터 평가한다."
+  ],
+  "rejected_claims": [
+    "Codex가 hybrid Quick/Standard/Deep classifier를 제공하거나 정확성을 보장한다 — 공식 자료에서 프로젝트별 자동 분류 보장을 확인하지 못했고 Structured Outputs와 evals는 구현·평가 수단일 뿐 정확성 보장이 아니다.",
+    "research trigger 목록에 없는 경우 연구를 열 수 없다 — false-negative 우려와 프로젝트 목적에 어긋나므로 목록은 positive signal 예시로만 쓰고 abstain·reopen·audit escape hatch를 둔다.",
+    "유효한 JSON enum이면 의미가 같은 모든 문서와 Skill을 찾을 수 있다 — schema validity는 vocabulary mismatch를 해결하지 않으므로 concept identity, alias·language·typo와 retrieval 평가가 별도로 필요하다.",
+    "semantic retrieval을 추가하면 관련 artifact를 놓치지 않는다 — semantic search도 false positive·false negative가 있고 corpus·embedding·fusion 설정에 민감하므로 candidate recall 도구로만 평가한다.",
+    "LangGraph는 미리 써 둔 고정 edge만 실행할 수 있다 — 공식 API가 conditional edge, Command, Send와 동적 worker를 직접 지원한다.",
+    "LangGraph의 동적 기능이 있으므로 Ariadne MVP에 즉시 채택해야 한다 — 기능 지원과 현재 프로젝트 적합성은 다르며 Maestro 실패 경험과 미확정 durable requirement 때문에 Phase 8 실험 후보로 남긴다.",
+    "MengTo/Skills에 디자인 결정을 통째로 맡기면 별도 레퍼런스 연구와 검증이 필요 없다 — 검사한 Skill은 명세·반복 절차이지 접근성이나 프로젝트별 token의 권위 근거가 아니며 기존 연구·검증 flow를 유지해야 한다.",
+    "MengTo/Skills 118개 전체를 프로젝트에 복사하고 main을 자동 추적해야 한다 — 필요한 좁은 Skill이 이미 설치되어 있고 자동 추적은 재현성·prompt drift·검토 비용을 키우므로 실제 필요가 생길 때 pinned vendoring을 결정한다."
+  ]
+}

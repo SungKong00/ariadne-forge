@@ -1,0 +1,281 @@
+---
+id: POLICY-AGENT-0001
+kind: agent-orchestration-policy
+status: active
+authority: normative
+scope: repository
+owner: project-owner
+last_verified: 2026-08-02
+external_checked_at: 2026-08-02
+behavior_status: unvalidated-until-forward-tests
+---
+
+# Codex subagent orchestration과 생명주기
+
+## 1. 결론
+
+Ariadne는 사용자가 요구한 **물리적으로 분리된 Research Orchestrator와 Implementation Orchestrator session**을 유지한다. main이 이들의 분해·종합 책임을 흡수하지 않는다.
+
+현재 환경의 검증 결과는 다음과 같다.
+
+- subagent 안에는 다시 descendant를 spawn·wait·close하는 control이 노출되지 않았다.
+- main이 completed orchestrator thread에 packet을 보내 같은 session을 이어가는 것은 성공했다.
+
+따라서 초기 구현은 **의사결정은 계층형, tool control은 main이 대행하는 host-mediated hierarchy**다.
+
+```mermaid
+flowchart LR
+    M["Main Orchestrator"] --> R["Research Orchestrator session"]
+    R -->|"DELEGATION_REQUEST"| M
+    M --> RL["Research leaf agents"]
+    RL -->|"bounded packets"| M
+    M -->|"verbatim packet forwarding"| R
+    R -->|"RESEARCH_COMPLETE"| M
+    M --> I["Implementation Orchestrator session"]
+    I -->|"DELEGATION_REQUEST"| M
+    M --> IW["Planner / writer / verifier leaves"]
+    IW -->|"bounded packets"| M
+    M -->|"verbatim packet forwarding"| I
+    I -->|"IMPLEMENTATION_COMPLETE"| M
+```
+
+main은 spawn·send·wait·stop·close의 **control-plane proxy**다. Research/Implementation Orchestrator는 작업 분배, packet 품질, follow-up, critic, session 완료의 **decision owner**다. main은 안전·권한·scope 위반이 아닌 한 delegation manifest를 다시 설계하지 않는다.
+
+## 2. Codex가 현재 지원하는 것과 보장하지 않는 것
+
+### 공식 지원 범위
+
+| 기능 | 현재 확인 | Ariadne 사용 |
+|---|---|---|
+| multi-agent | 현재 Codex release에서 기본 활성화 | 별도 orchestration runtime 없이 사용 |
+| 호출 trigger | 직접 prompt, 적용되는 `AGENTS.md`, Skill 지침 | `ariadne-workflow`가 조건과 역할 계약 제안 |
+| host orchestration | spawn, follow-up routing, wait, 결과 수집, thread close | tool 이름을 workflow API처럼 하드코딩하지 않음 |
+| 진행 제어 | surface에 따라 thread inspect, steer, stop, completed close | main은 control executor·handle custodian, Session Orchestrator는 leaf decision owner |
+| project custom agent | `.codex/agents/*.toml` | 반복 검증된 역할만 승격 |
+| agent configuration | model, reasoning effort, sandbox, MCP, skills config | 역할별 최소 권한·Model Binding 적용 |
+| 동시성 설정 | `agents.max_concurrent_threads_per_session` | baseline 뒤 측정된 상한만 project config 후보로 둠 |
+| 권한 상속 | parent sandbox·permission과 live override를 child에 적용 | spawn 전 parent permission 확인, reviewer는 read-only 우선 |
+
+Role Contract의 `read-only`나 write ownership은 behavioral instruction이다. ad hoc agent가 writable parent permission을 상속하면 그 문장만으로 filesystem 권한이 줄어들지 않는다. `effective_permission`과 enforcement source를 기록하고, host/custom-agent sandbox가 없으면 diff 검증 전까지 “강제된 read-only”라고 표현하지 않는다.
+
+### 현재 환경 probe
+
+2026-08-02 read-only probe에서 orchestrator subagent의 descendant spawn은 `tools.spawn_agent is not a function`으로 실패했다. 같은 orchestrator agent를 main이 follow-up packet으로 이어가는 continuation은 성공했다. 이는 공개 Codex 전체의 영구 한계가 아니라 **현재 이 프로젝트가 실행되는 surface의 관측 결과**다.
+
+### 필수 전제로 두지 않는 것
+
+- prompt가 요구한 정확한 fan-out 수·순서가 매번 결정적으로 실행된다는 보장
+- 모든 Codex surface에서 nested subagent가 다시 agent를 spawn하는 동일한 동작; 현재 surface에서는 실제로 실패함
+- 자동 timeout, retry, stale-result 폐기와 cleanup이 Ariadne 정책대로 수행된다는 보장
+- process·app restart를 넘는 workflow checkpoint·resume
+- subagent의 summary나 agent 간 합의가 의미적으로 참이라는 보장
+
+향후 descendant control이 노출되면 Research/Implementation Orchestrator가 manifest를 직접 실행할 수 있다. 그때도 decision contract와 packet 경계는 유지한다. 반대로 main proxy를 거치지 않는 완전한 nested control이 제품 요구가 되면 [`architecture.md`](architecture.md)의 runtime 승격 조건으로 보낸다.
+
+## 3. 언제 spawn하는가
+
+Quick은 main 한 명이 기본이다. Standard/Deep에서 해당 연구 또는 구현 phase가 열리면 먼저 **물리적인 session orchestrator**를 spawn한다. 분리 가치가 없을 만큼 단순하면 session을 생략하는 대신 작업 자체를 Quick로 낮출 수 있는지 판단한다.
+
+- 외부·다중 source 연구가 열리면 Research Orchestrator를 우선한다.
+- 여러 단계 구현·검증이나 둘 이상의 worker 역할이 필요하면 Implementation Orchestrator를 우선한다.
+- 둘 다 필요하면 Research Orchestrator가 `RESEARCH_COMPLETE`를 반환하고 main이 protocol·safety·raw-evidence mismatch를 확인한 다음 전체 목표에 따라 Implementation session을 연다.
+- Session Orchestrator가 실패·미지원이면 새 물리적 Session Orchestrator에 stable packet을 넘기거나 `NEEDS_DECISION / BLOCKED / runtime escalation`로 보낸다. main이 leaf 분해·종합을 대신하는 fallback은 금지한다.
+
+Session Orchestrator는 다음 신호를 종합해 leaf wave를 요청한다. 고정 점수나 최소 개수는 없으며, 하나만 있어도 decision에 material하면 충분하다.
+
+- 서로 독립적인 risk axis나 source lane이 둘 이상이다.
+- 읽기·로그·자료량이 main context를 오염시킬 수 있다.
+- 서로 다른 전문성이나 fresh-context 비판이 실제 결정을 바꿀 수 있다.
+- deterministic verification을 다른 작업과 동시에 실행할 수 있다.
+- 최종 판정이 경쟁하는 claim 비교에 의존한다.
+
+다음이면 leaf를 요청하지 않거나 순차 위임한다.
+
+- 한 결과가 다음 역할의 설계를 바꾼다.
+- 하나의 일관된 mental model을 쪼개면 손실이 더 크다.
+- 같은 파일·같은 책임 영역을 동시에 수정해야 한다.
+- 엄밀해 보이게 만들 목적 외에 독립성이 없다.
+
+초기 leaf wave는 최대 3개를 기본값으로 한다. 더 많은 agent가 필요하면 Session Orchestrator가 각 역할의 독립성, 검증할 packet 수, host concurrency와 추가 사용량을 `DELEGATION_REQUEST`에 설명한다. 이것은 hard platform limit가 아니라 과도한 fan-out을 막는 Ariadne 기본값이다.
+
+현재 surface에서는 Session Orchestrator가 leaf contract를 만들고 main이 이를 그대로 실행한다. main은 다음 경우에만 요청을 거절·수정 요청한다.
+
+- 사용자·system·repository scope 또는 permission 위반
+- overlapping write ownership
+- host concurrency·tool availability 위반
+- secret·비가역 side effect·approval 누락
+
+거절 시 main이 대체 분해안을 만들지 않고 이유를 Session Orchestrator에 돌려보내 재계획하게 한다.
+
+## 4. Role Contract
+
+### Session Orchestrator Contract
+
+main이 Research/Implementation Orchestrator를 열 때 다음을 준다.
+
+```text
+session_id_and_mode: research | implementation
+user_outcome_and_completion_contract:
+document_binding_and_input_artifacts:
+decision_authority_and_forbidden_scope:
+delegation_budget: initial leaves / follow-up rounds
+required_final_packet: phase_verdict / recommended_next_action / accepted_outputs / evidence_locators / leaf_dispositions / unresolved_risks / close_requested
+model_binding:
+session_stale_if:
+checkpoint:
+control_proxy: main
+```
+
+Session Orchestrator는 다음 message type 중 하나로 main에 응답한다.
+
+- `DELEGATION_REQUEST`: 독립 leaf contract 목록과 의존성·병렬화 이유
+- `FOLLOW_UP_REQUEST`: 기존 packet의 material gap을 해결하는 좁은 추가 요청
+- `RESEARCH_COMPLETE` 또는 `IMPLEMENTATION_COMPLETE`: `phase_verdict=COMPLETE`, 다음 작업 권고, 근거·leaf disposition과 `close_requested=true`를 포함한 최종 packet
+- `INSUFFICIENT_EVIDENCE`: 현재 budget·source로 phase 결론을 닫을 수 없다는 판정과 재개 조건
+- `NEEDS_DECISION`: 근거만으로 닫을 수 없는 owner 선택
+- `SESSION_FAILED`: 실패 원인, 이미 얻은 증거와 재개 조건
+
+Codex host가 orchestrator의 한 turn을 `completed`로 표시한 것은 `HOST_TURN_DONE`일 뿐 `PHASE_COMPLETE`가 아니다. `DELEGATION_REQUEST` 뒤 turn이 끝나도 thread를 close하지 않고 leaf packet을 같은 session에 follow-up으로 보낸다. Phase 종료와 close는 위 final packet의 명시적 `close_requested`로만 판정한다.
+
+### Leaf Contract
+
+Session Orchestrator가 만든 각 leaf contract는 다음을 포함한다. main은 safety validation 뒤 의미를 바꾸지 않고 spawn prompt로 전달한다.
+
+```text
+leaf_id_and_objective:
+parent_session_id:
+dependencies:
+inputs_and_forbidden_scope:
+task_and_output_evidence:
+success_and_stop:
+side_effects_and_write_ownership:
+effective_permission: value / host-sandbox | custom-agent | instruction-only
+model_binding:
+stale_if:
+checkpoint:
+decision_owner: parent Session Orchestrator
+control_proxy: main
+```
+
+추가 규칙:
+
+- reviewer·researcher·critic은 read-only가 기본이다. parent가 writable이고 per-agent sandbox가 없으면 이는 instruction-only이며 main이 agent 전후 diff를 확인한다.
+- writer는 disjoint write ownership과 다른 writer의 존재를 명시한다.
+- intended answer, 이전 critic의 결론, 숨은 grading key를 독립 role에 주지 않는다.
+- `stale_if`에는 base revision, 전제 문서, 계획 변경 또는 겹치는 파일 변경처럼 결과를 다시 확인해야 하는 조건을 넣는다.
+
+## 5. Context Boundary와 packet 전달
+
+계층형 위임의 목적은 역할 연출이 아니라 context 오염을 줄이는 것이다.
+
+- main은 Session Orchestrator에 사용자 요구, completion contract, 관련 project/convention 문서와 이전 session의 **최종 packet**만 준다. 불필요한 전체 대화 history는 주지 않는다.
+- leaf는 main history나 Session Orchestrator의 intended conclusion을 받지 않는다. 자신의 source·파일·검증 범위만 받는다.
+- leaf는 raw 로그·긴 원문을 main 응답에 붙이지 않고 `claim/finding, evidence locator, limitation, verdict`의 bounded packet을 반환한다. 큰 artifact는 path·URL·command locator로 참조한다.
+- main은 leaf packet을 재요약·선별하지 않고 parent Session Orchestrator thread에 stable block으로 전달한다. transport 중 safety redaction이 필요하면 무엇을 제거했는지 표시한다.
+- Research/Implementation Orchestrator가 packet의 관련성·품질·충돌·추가 조사 필요를 판정한다.
+- main은 전체 목표의 다음 phase 판단에 leaf packet 묶음이 아니라 `RESEARCH_COMPLETE` 또는 `IMPLEMENTATION_COMPLETE`의 `phase_verdict`와 `recommended_next_action`을 사용한다. material claim 검증 시 locator를 직접 열고 mismatch가 있으면 자신의 결론으로 덮지 않고 같은 Session Orchestrator에 `EVIDENCE_MISMATCH`를 보낸다.
+
+현재 surface에서는 main이 tool result를 수신하므로 leaf packet이 main context를 완전히 통과하지 않는 것은 불가능하다. 따라서 bounded packet과 raw-artifact locator로 오염을 제한한다. 완전한 context 격리가 필수라면 별도 runtime 승격 후보가 된다.
+
+## 6. 실행 생명주기
+
+다음 상태 이름은 기록용이며 별도 state machine을 만들지 않는다.
+
+```text
+PLANNED -> RUNNING -> COMPLETED -> INTEGRATED -> CLOSED
+                    -> NEEDS_INPUT
+                    -> FAILED | TIMED_OUT | CANCELLED | STALE -> CLOSED
+```
+
+### Spawn 전
+
+main은 Session Orchestrator contract, parent permission, Model Binding과 checkpoint를 확인해 session을 먼저 연다. Session Orchestrator가 `DELEGATION_REQUEST`를 반환하면 main은 safety·scope·host feasibility만 검사한다. leaf의 dependency·독립성·output contract를 결정하는 책임은 Session Orchestrator에 있다. dependent 역할을 미래 결과를 추측해 미리 spawn하지 않는다.
+
+### Running
+
+- main은 다른 session을 섞어 열지 않고 사용자 요구·전체 plan·session lifecycle에 집중한다. 연구나 구현 내용을 대신 수행하지 않는다.
+- status 확인은 다음 행동이 agent 결과에 막힐 때나 checkpoint가 지났을 때만 한다.
+- leaf가 완료되면 main은 packet을 parent Session Orchestrator에 전달한다. packet의 채택·보완·기각은 Session Orchestrator가 판정한다.
+- scope가 유지되지만 빠진 입력이 있으면 decision owner가 만든 한 번의 좁은 steer를 main이 전달한다.
+- 요구나 계획이 바뀌어 objective가 달라졌으면 steer로 억지 전환하지 않고 기존 agent를 cancel/stale 처리한 뒤 새 contract를 만든다.
+- approval·permission 대기인지 먼저 확인한다. non-interactive agent에서 새 approval이 필요하면 실패할 수 있음을 정상적인 failure로 취급한다.
+
+### Wait와 barrier
+
+모든 agent를 spawn하자마자 반복 polling하지 않는다. Session Orchestrator가 요청한 barrier에서만 필요한 leaf를 기다린다. 일부 leaf가 먼저 끝나면 packet을 parent session에 전달할 수 있지만, Session Orchestrator가 모든 lane을 요구하면 누락된 lane을 숨기지 않는다.
+
+### Completion과 integration
+
+1. main은 leaf status가 아니라 bounded packet과 evidence reference를 parent session에 전달한다.
+2. Session Orchestrator는 locator·diff·command output을 확인하고 `stale_if`를 판정한다.
+3. Session Orchestrator는 leaf를 `adopted / partially_adopted / rejected / stale / follow_up`으로 disposition한다.
+4. main은 material claim·write scope·permission에 필요한 raw artifact를 독립 확인한다. packet과 불일치하면 `EVIDENCE_MISMATCH`를 parent Session Orchestrator에 보내 revised disposition을 요청하며 직접 채택·기각하지 않는다.
+5. Session Orchestrator가 leaf disposition에 `close_ready=true`를 명시했을 때만 main이 surface control로 leaf thread를 close하고 결과를 parent session에 알린다.
+6. Session Orchestrator가 `RESEARCH_COMPLETE` 또는 `IMPLEMENTATION_COMPLETE`와 `close_requested=true`를 반환하고 unresolved raw-evidence mismatch가 없을 때만 main이 session thread를 close한다. 구조·안전 검사는 phase 결론을 다시 쓰는 두 번째 semantic 판정이 아니다.
+
+host가 thread를 자동으로 닫는 정확한 시점을 가정하지 않는다. close가 노출된 surface에서는 integrated·failed·cancelled agent를 불필요하게 열어두지 않는다. 후속 질문이 실제로 예정된 agent만 잠시 유지한다.
+
+각 wave barrier가 끝나면 main은 control-plane terminal sweep을 한 번 수행한다. Session Orchestrator의 leaf disposition과 실제 thread status를 대조해 아직 필요한 `RUNNING / NEEDS_INPUT` agent, close가 확인되지 않은 terminal agent를 구분한다. surface가 close 확인을 노출하지 않으면 `not-observable`로 남긴다.
+
+### Stall, timeout, failure
+
+- timebox는 역할의 자료량·도구·모델에 맞게 contract에서 정하며 하나의 전역 초로 고정하지 않는다.
+- checkpoint 초과 시 approval 대기, tool failure, 잘못된 scope, 단순 지연을 먼저 구분한다.
+- objective가 유효하면 Session Orchestrator가 한 번의 steer 또는 근거 있는 timebox 연장을 요청할 수 있다.
+- 같은 contract·model·입력으로 blind respawn하지 않는다. Session Orchestrator가 실패 원인에 따라 context, tool, model, scope 또는 계획 중 하나를 바꾼 새 request를 만든다.
+- branch 전제가 깨지면 Session Orchestrator가 관련 packet을 `STALE`로 판정하고 main이 실행 중 thread를 stop/cancel한다.
+- 결과 없이 닫힌 lane이 material하면 Session Orchestrator는 완료 packet을 내지 않고 재계획·`INSUFFICIENT_EVIDENCE`·`NEEDS_DECISION` 중 하나를 반환한다.
+- Session Orchestrator 자체가 실패하면 main은 stable input·packet ledger로 replacement session을 열 수 있다. replacement도 실패하거나 continuity가 material하면 main이 내용을 대신 수행하지 않고 `BLOCKED / NEEDS_DECISION / runtime escalation`로 보낸다.
+
+## 7. 최소 Lifecycle Ledger
+
+Standard/Deep에서 agent가 둘 이상이면 static role/model 정보를 반복하지 않고 main plan이나 실행 기록에 다음 한 표만 둔다.
+
+| logical id / thread_ref | decision owner / dependency | checkpoint / last_observed / status | packet refs / disposition | close_confirmed |
+|---|---|---|---|---|
+| R1.L1 / surface handle | R1 / none | task-specific / time / running 등 | packet / adopted 등 | yes / no / not-observable |
+
+main은 control을 위해 handle과 status를 기록하고, Session Orchestrator는 final packet에 leaf disposition을 포함한다. 한 agent만 쓰는 작업은 별도 ledger 문서를 만들지 않는다.
+
+## 8. Custom agent 생명주기
+
+처음에는 ad hoc role contract를 쓴다. 같은 역할이 반복됐다는 이유만으로 custom agent를 만들지 않는다.
+
+```text
+ad-hoc candidate
+-> evaluated candidate
+-> active project custom agent
+-> review-needed
+-> updated | retired
+```
+
+승격 조건:
+
+- 서로 다른 실제 작업에서 같은 역할이 3회 이상 유용했다.
+- 일반 prompt 대비 role contract 누락·품질·사용량 개선 가설이 있다.
+- [`model-selection.md`](model-selection.md)의 model calibration을 통과했다.
+- sandbox·MCP·skills가 역할의 최소 권한으로 정해졌다.
+- held-out forward test에서 adjacent role로 drift하지 않았다.
+
+운영 규칙:
+
+- built-in agent 이름을 덮어쓰지 않도록 `ariadne_` prefix를 쓴다.
+- `.codex/agents/<role>.toml`에는 `name`, `description`, `developer_instructions`와 검증된 최소 config만 둔다.
+- concrete model, Codex config schema, dependency 또는 역할 경계가 바뀌면 `review-needed`로 본다.
+- 세 번 이상의 예외·scope drift·반복 timeout 또는 일반 prompt 대비 이점 상실이 생기면 update/retire를 검토한다.
+- 첫 custom agent가 생기기 전에는 빈 registry나 project concurrency config를 만들지 않는다.
+
+## 9. 초기 configuration 결정
+
+현재는 `.codex/config.toml`과 `.codex/agents`를 만들지 않는다.
+
+- 역할마다 model 요구가 다르므로 하나의 `default_subagent_model`로 모두 덮지 않는다.
+- `max_concurrent_threads_per_session`은 B10 lifecycle baseline에서 context·사용량·cleanup 결과를 측정한 뒤 정한다.
+- 첫 승격 후보는 반복 사용이 확정된 `ariadne_research_orchestrator`와 `ariadne_implementation_orchestrator`다. 그다음이 read-only evidence scout와 independent risk reviewer다.
+- write agent는 ownership·worktree·검증 방식이 실제 pilot에서 안정된 뒤에만 고정한다.
+
+## 10. 근거와 검증 상태
+
+2026-08-02 확인한 공식 [Codex Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents)는 multi-agent availability, prompt·project·Skill trigger, host orchestration, inspect·steer·stop·close, custom agent schema, model·effort·sandbox와 concurrency 설정을 설명한다. [Codex Models](https://learn.chatgpt.com/docs/models)는 subagent 사용량과 model/effort trade-off의 근거다.
+
+공식 문서가 Ariadne의 최대 3개 leaf, host-mediated hierarchy, lifecycle state 이름과 승격 기준을 정해주는 것은 아니다. 현재 nested-spawn 실패와 continuation 성공 probe는 이 surface에 대한 직접 실행 증거지만 다른 Codex surface의 보장은 아니다. 전체 behavior는 PLAN-0002의 B10/B11과 실제 pilot 전까지 `unvalidated`다.

@@ -1,0 +1,131 @@
+{
+  "schema_version": "agent_evaluation_v1",
+  "evaluation_id": "agent-eval-ariadne-foundation-20260801-001",
+  "run_id": "run-ariadne-foundation-plan-20260801-031458",
+  "recorded_at": "2026-08-01T03:14:58Z",
+  "task_kind": "deep",
+  "task_summary": "lean clean restart인 Ariadne Forge의 근거 우선 개발 하네스에 대해 Codex 가능성, orchestration framework, 신뢰성 연구를 병렬 조사하고 구현 전 상세 계획, 검증된 research packet, 독립 위험 검토와 완료 판정을 작성했다.",
+  "reviewed_agents": [
+    "main",
+    "ssing_evidence_scout",
+    "ssing_framework_researcher",
+    "ssing_reliability_researcher",
+    "ssing_risk_reviewer",
+    "ssing_completion_judge"
+  ],
+  "coverage_sufficient": true,
+  "agent_gaps": [],
+  "agent_activity": [
+    {
+      "agent_id": "main",
+      "calls": 1,
+      "result_summary": "사용자 요구와 clean-restart 결정을 권위 입력으로 통합하고, 로컬 저장소와 Maestro 실패 사례를 읽기 전용으로 검사했으며, 병렬 연구를 종합해 계획·packet·review resolution을 작성하고 검증했다.",
+      "outcome": "unique_useful",
+      "overlap": "not_applicable",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/plans/active/0001-ariadne-forge-foundation-plan.md"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/research/initial-research-packet.json"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_evidence_scout",
+      "calls": 1,
+      "result_summary": "Codex CLI 0.144.1과 공식 문서에서 subagent, custom role, AGENTS.md, Skills, structured output, resume, App Server, sandbox·hook 경계를 분류했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "source",
+          "locator": "https://learn.chatgpt.com/docs/agent-configuration/subagents"
+        },
+        {
+          "kind": "command",
+          "locator": "codex-cli 0.144.1 feature/help inspection"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_framework_researcher",
+      "calls": 1,
+      "result_summary": "LangGraph, OpenAI Agents SDK, Microsoft Agent Framework, OpenHands의 graph, checkpoint, guardrail, event, verifier 패턴과 부작용 한계를 비교해 framework보다 authority contract가 우선이라는 근거를 제공했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "source",
+          "locator": "https://docs.langchain.com/oss/python/langgraph/persistence"
+        },
+        {
+          "kind": "source",
+          "locator": "https://openai.github.io/openai-agents-python/multi_agent/"
+        },
+        {
+          "kind": "source",
+          "locator": "https://learn.microsoft.com/en-us/agent-framework/workflows/workflows"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_reliability_researcher",
+      "calls": 1,
+      "result_summary": "자기 교정, multi-agent debate, conformity, verifier, LLM judge, test oracle 연구의 긍정·부정 결과를 함께 조사해 reflection·consensus는 조건부이며 외부 검증이 우선이라는 통제를 도출했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "source",
+          "locator": "https://proceedings.iclr.cc/paper_files/paper/2024/hash/8b4add8b0aa8749d80a34ca5d941c355-Abstract-Conference.html"
+        },
+        {
+          "kind": "source",
+          "locator": "https://proceedings.mlr.press/v235/smit24a.html"
+        },
+        {
+          "kind": "source",
+          "locator": "https://aclanthology.org/2025.acl-long.195/"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_risk_reviewer",
+      "calls": 1,
+      "result_summary": "초안에서 persistence 선채택, semantic evidence 우회, stale document 자기승인, judge 권한 혼합, Codex effect bypass, attempt 기반 중복 효과, 요구 추적 누락을 찾았고 M1~M8 수정으로 이어졌다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/research/foundation-review-resolution.md"
+        }
+      ]
+    },
+    {
+      "agent_id": "ssing_completion_judge",
+      "calls": 1,
+      "result_summary": "최신 계획, research packet, review resolution을 완료 계약 C1~C8과 대조해 모두 PASS, material gap 없음, overclaim 없음, DONE으로 판정했다.",
+      "outcome": "unique_useful",
+      "overlap": "none",
+      "evidence_refs": [
+        {
+          "kind": "artifact",
+          "locator": "docs/plans/active/0001-ariadne-forge-foundation-plan.md"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/research/initial-research-packet.json"
+        },
+        {
+          "kind": "artifact",
+          "locator": "docs/research/foundation-review-resolution.md"
+        }
+      ]
+    }
+  ],
+  "pilot_results": []
+}
