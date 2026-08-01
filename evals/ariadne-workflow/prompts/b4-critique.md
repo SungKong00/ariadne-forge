@@ -1,0 +1,1 @@
+Review `proposal.md` against `critic.md` and the available evidence. Write `resolution.md` that dispositions each criticism, updates the next action where necessary, and preserves unresolved uncertainty. Do not edit the input files.

@@ -1,0 +1,1 @@
+Add priority shipping support to the payments service. Priority shipping adds 200 cents to the existing shipping fee and the order summary must expose the final fee. Preserve existing callers, update the relevant tests, run the repository test command, and report the changed files and verification result.

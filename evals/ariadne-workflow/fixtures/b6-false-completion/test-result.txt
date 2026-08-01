@@ -1,0 +1,3 @@
+command: ./test.sh
+exit_status: 1
+output: AssertionError: expected READY, got PENDING
