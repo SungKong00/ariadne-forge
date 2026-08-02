@@ -51,6 +51,37 @@
 - `./test.sh`가 성공한다.
 - scope와 test evidence를 완료 보고에 남긴다.
 
+## B10 — Lifecycle observation classification
+
+Prompt의 event 이름과 record shape는 공식 또는 관찰된 Codex/Codex App Server vocabulary가 아니라 **synthetic normalized fixture inputs**다. `fixtures/b10-lifecycle-observation/scenarios.md`는 grader-only oracle이다. 두 run이 끝나기 전에 agent context, 실행 복사본 또는 prompt에 포함하지 않는다. Grader는 raw response의 `B10-S01`–`B10-S12`를 oracle과 ID별로 대조하고 다음 여섯 차원을 각각 판정한다.
+
+- `host_observation`
+- `contract_currency`
+- `phase_disposition`
+- `evidence_disposition`
+- `inspection_trigger`
+- `close_disposition`
+
+표현이 달라도 의미와 synthetic signal scope·reason·owner·resume condition·retryability가 oracle과 일치하면 인정한다. `inspection_trigger`의 허용 값은 `none | CHECKPOINT_DUE`뿐이다. `NEEDS_INPUT`은 known wait의 source message, `EVIDENCE_MISMATCH`는 `INCOMPLETE` evidence finding, phase packet은 `phase_disposition`, `CLOSE_*`는 `close_disposition`에만 반영한다. 이들을 generic control marker로 쓰거나 host completion, phase packet, evidence completion, close disposition 중 하나를 다른 것으로 추론하면 실패다.
+
+Canonical close 순서는 phase owner의 close authorization 없는 `RESEARCH_COMPLETE`/`IMPLEMENTATION_COMPLETE` → main의 독립 raw-evidence 검사와 `EVIDENCE_COMPLETE` receipt → same owner의 별도 `CLOSE_REQUESTED` → main의 host close 호출과 실제 evidence에 따른 `CLOSE_CONFIRMED`/`CLOSE_UNOBSERVABLE`이다. Dependent implementation은 Research `EVIDENCE_COMPLETE`에서 열리고 close confirmation은 별도다.
+
+B10 전체 `PASS`는 12개 stable ID가 모두 한 번씩 존재하고 모든 필드가 oracle과 일치하며 누락된 scenario가 없을 때만 부여한다. Raw response가 없어 판정할 수 없는 필드는 성공으로 추정하지 않고 grader verdict를 `UNOBSERVABLE`로 기록한다. 여기서 `UNOBSERVABLE`은 그 필드를 채점할 수 없다는 grader verdict이지 fixture의 lifecycle field value가 아니며, 여섯 dimension의 canonical vocabulary는 그대로 유지한다.
+
+### 사전 선언된 critical failure
+
+- elapsed duration 또는 event silence만으로 `failed`나 `stalled`을 선언한다.
+- wait timeout 또는 checkpoint arrival만으로 failed, stalled, interrupted, completed 또는 deadline failure를 선언한다.
+- reason, owner, resume condition이 알려진 wait를 failure로 선언한다.
+- explicit interruption을 failure outcome으로 바꾼다.
+- 현재 objective 또는 contract revision과 맞지 않는 stale result를 채택한다.
+- host completion만으로 phase completion 또는 evidence completion을 선언한다.
+- `RESEARCH_COMPLETE`만으로 dependent implementation을 연다.
+- phase semantic packet과 모순되는 raw evidence가 있는데도 complete를 선언한다.
+- phase-complete packet에 close authorization을 합치거나 `CLOSE_REQUESTED`를 host confirmation으로 바꾼다.
+
+With-Skill B10 gate는 위 critical failure가 **0개**여야 통과한다. 이 zero-critical gate는 B10의 12-scenario oracle 일치 요건을 대체하지 않는다.
+
 ## 전체 baseline 판정
 
 - B6 또는 B7이 실패하면 `CRITICAL_BASELINE_FAILURE`다.
