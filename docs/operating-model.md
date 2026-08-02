@@ -203,6 +203,77 @@ verification_or_revisit_condition:
 
 locator 존재, checklist 완료율, source 개수는 의미적 타당성의 대리 지표가 아니다. “material decision 없음”도 scope·plan·diff를 근거로 설명한다. 정적 validator는 필드·링크·status 같은 구조만 검사하고 semantic truth를 판정했다고 표현하지 않는다.
 
+#### Implementation decision questions
+
+Implementation-design check는 모든 작업에 같은 답을 강제하는 목록이 아니라, 현재 outcome·policy·evidence에 비추어 결정을 설명하고 다음 행동을 정하게 하는 질문이다. Implementation Basis continuity가 적용되면 Planner는 첫 세 질문을 기존 Basis Map 안에서 prospective하게 답하고, Worker는 네 번째를 implementation과 delta return 시 actual evidence로, fresh Verifier는 다섯째를 fresh verification으로 답한다.
+
+- 무엇이 user outcome, active policy, 직접 evidence로 이미 고정되었는가?
+- Worker가 applicable convention, accepted scope, verification 조건 안에서 판단할 수 있는 것은 무엇인가?
+- 어떤 실제 선택 또는 결과가 그 경계를 material하게 넘어 delta, escalation 또는 reopen을 요구하는가?
+- Worker의 실제 구현은 accepted discretion 경계와 비교되었으며, 경계를 넘기 전에 Delta Receipt와 actual evidence가 남았는가?
+- fresh verification은 숨은 material choice, convention applicability 오류 또는 근거 없는 `no_basis_delta`를 발견했는가?
+
+질문별 답은 새 per-task checklist 문서에 고정하지 않고 기존 Basis Map, Delta Receipt, verifier evidence와 Implementation Orchestrator disposition에 남긴다. Quick은 이 의미를 edit와 직접 검증을 잇는 한두 줄로 비례 있게 압축할 수 있으며, dependent handoff·unresolved material premise·weak oracle·multi-wave continuity가 있을 때의 Standard/Deep만 관련 경계 질문을 적용한다. 이 workflow 질문은 domain choice나 risk가 assessed·evidenced 되었는지를 묻고, 실제로 어느 choice가 적용되는지는 applicable domain convention이 소유한다.
+
+질문은 serious한 단일 miss 또는 반복된 작은 miss라는 사건과 직접 evidence가 있을 때만 candidate가 된다. candidate는 기존 gate·Basis·convention과 중복되지 않는지 먼저 확인하고, trigger·evidence·applicable 조건 또는 구체적인 N/A 사유·action 또는 reopen 결과를 설명해야 한다. candidate는 허가된 기존 plan 또는 phase-scoped evidence artifact에서 trial하고 usefulness를 관찰한 뒤, independent review와 owner disposition을 거쳐서만 policy에 합친다. 중복이거나 action/reopen 결과가 없으면 merge하거나 제거하고, 대부분 ritual N/A가 되거나 더 적절한 convention·tool이 owner이면 제거하거나 그 owner로 돌린다. 발견 하나마다 one-item normative patch를 만들지 않고, 관찰된 candidate를 함께 검토해 merge·removal 기준을 만족할 때만 갱신한다.
+
+### Implementation Basis continuity
+
+Implementation Basis continuity는 구현 역할이나 wave가 바뀌어도 worker가 의존할 계획 근거와 실제 변경 사이의 차이를 잃지 않기 위한 가벼운 choreography다. 영구 rationale 기록이나 per-line provenance를 만드는 제도가 아니며, 현재 파일·Git diff·동작·명령 결과·active policy가 항상 ground truth다.
+
+Quick은 별도 map을 기본으로 만들지 않는다. local material premise를 edit와 직접 검증 사이에 보존해야 하면 한두 줄의 inline basis note로 충분하다. dependent role handoff, unresolved material premise, weak oracle 또는 multi-wave continuity가 생기면 Standard/Deep으로 재분류한다. Standard/Deep에서는 Implementation Orchestrator가 planner→worker dependency를 열거나 material premise를 역할·wave 사이에 유지해야 할 때 prospective map을 요구한다. 그런 경계가 없으면 phase owner가 direct plan과 기존 Basis Card로 충분한 이유를 기록해 생략할 수 있으며, route가 요구하는 독립 검증까지 생략할 수는 없다.
+
+Prospective **Implementation Basis Map**의 최소 필드는 다음과 같다. 이는 Markdown/plan evidence의 의미 계약이지 machine schema가 아니다.
+
+```yaml
+implementation_basis_map:
+  contract_revision:
+  base_revision:
+  implementation_scope:
+  entries:
+    - basis_id:
+      applies_to:
+      decision_or_premise:
+      basis_locators: []
+      implementation_effect:
+      verification_or_reopen_condition:
+```
+
+`basis_id`는 해당 phase 안에서 delta와 finding을 연결하는 local handle이다. `applies_to`는 stage, responsibility, component 또는 bounded path group을 가리킨다. Material decision은 위의 기존 **Material Decision Basis Card**를 locator로 참조하고 그 필드를 map에 복사하지 않는다.
+
+Worker가 반환하는 **Implementation Delta Receipt**의 최소 필드는 다음과 같다.
+
+```yaml
+implementation_delta_receipt:
+  baseline_contract_revision:
+  changes:
+    - basis_id:
+      delta: added | changed | invalidated
+      cause_and_locator:
+      implementation_and_verification_effect:
+      stale_or_reopen_condition:
+  no_basis_delta: true | false
+```
+
+Worker는 accepted baseline 대비 추가·변경·무효화만 보고하고 baseline을 receipt에 다시 쓰거나 조용히 수정하지 않는다. `no_basis_delta: true`는 명시적 continuity assertion일 뿐 구현이 baseline을 따랐다는 증거가 아니다. 숨은 전제, requirement 충돌, convention applicability 변경, 예상하지 못한 dependency·scope 확장 또는 모순되는 raw result는 코드가 통과하더라도 delta다. Changed files, diff와 raw command/result evidence는 별도 material locator로 남으며 receipt가 이를 대체하지 않는다.
+
+Active convention 적용은 component responsibility, API boundary, test family 또는 bounded path set처럼 의미 있는 구현 묶음마다 한 번 기록한다. Convention locator, applicability, implementation effect, conflict·exception과 verification/reopen condition을 해당 entry에 연결한다. source line, 반복 문법, 변수명 또는 formatter-owned edit마다 entry를 만들지 않는다. 적용할 active domain convention이 없으면 registry locator와 scoped fact를 한 번만 기록하며 convention을 새로 만들지 않는다. 새 convention이나 active convention 이탈은 기존 Material Decision 규칙을 따른다.
+
+#### Wave gate
+
+1. Planner artifact의 contract·base·scope currency와 unresolved item을 Implementation Orchestrator가 disposition하고 명시적으로 승인해야 첫 worker wave를 연다.
+2. Dependent worker wave는 prerequisite worker packet과 delta를 owner가 disposition한 뒤에만 연다. 서로 dependency가 없고 write ownership이 겹치지 않는 worker만 같은 wave에 둘 수 있다.
+3. Verifier wave는 verification scope의 material worker packet이 disposition되고 실제 diff와 raw evidence를 읽을 수 있을 때 연다.
+4. Implementation Orchestrator가 verifier finding을 disposition하고 필수 raw evidence, material-decision audit와 Document Impact를 닫기 전에는 phase completion을 승인하지 않는다. Main은 gate를 운반·관찰할 뿐 의미 판정을 대신하지 않는다.
+
+#### Persistence, stale, and reopen
+
+Planner baseline은 contract revision 안에서 immutable하며 accepted delta가 current comparison basis를 합성한다. 짧은 single-wave phase는 owning Implementation Orchestrator session과 stable locator로 충분하다. Multi-wave 또는 long-lived work는 기존 active execution plan이나 허가된 phase-scoped `EVIDENCE_ARTIFACT`에 baseline과 accepted delta locator를 보존한다. Material replan은 prior phase baseline을 조용히 고치는 대신 새 baseline revision을 낸다. 한 task만을 위한 영구 rationale 문서·agent, global registry, runtime·database·config, schema 또는 validator는 만들지 않는다.
+
+User outcome·acceptance·scope·contract revision, base/target/overlapping responsibility, dependency·plan, accepted research, active policy·applicable convention 또는 raw evidence의 revision·command 대응이 의미 있게 바뀌면 관련 baseline이나 delta는 stale이다. Artifact identity·digest·locator가 불일치하거나 접근 불가능해도 재사용하지 않는다. Staleness는 기존 contract currency를 사용하며 새 lifecycle 차원을 만들지 않는다.
+
+Worker가 새 material premise를 발견하거나 accepted premise를 무효화한 경우, delta가 behavior·architecture/dependency·data/security·public API·convention·irreversible effect·cascading work를 바꾸는 경우, 또는 verifier가 설명되지 않은 actual mismatch·숨은 material decision·stale locator·scope/convention conflict·모순되는 raw result를 찾은 경우 affected gate를 다시 연다. Outcome이 달라지거나 필수 evidence를 만들 수 없는 경우도 같다. Implementation Orchestrator가 current authority에 따라 narrow patch, 새 baseline revision, worker rework, research reopen, `NEEDS_DECISION`, `PARTIAL` 또는 `BLOCKED`를 선택하며 자동 transition·retry를 만들지 않는다.
+
 ## 6. Research를 여는 원리
 
 연구는 닫힌 keyword whitelist로 결정하지 않는다. 다음은 강한 신호이지 전부 충족해야 하는 규칙이 아니다.
@@ -339,6 +410,7 @@ Direction Review는 구현 전에 **계획이 성공하면 실제 사용자 outc
 - 쓰기는 겹치지 않는 소유 범위만 병렬화한다.
 - dependent worker는 선행 packet을 Implementation Orchestrator가 disposition한 다음 wave에서 시작한다.
 - 각 단계 후 worker는 changed files, 실행 명령, 결과, 계획 이탈, 남은 위험을 보고한다.
+- 역할·wave 사이의 material implementation premise는 위 [Implementation Basis continuity](#implementation-basis-continuity)에 따라 prospective baseline, delta-only receipt와 actual evidence를 연결한다.
 - main은 packet을 Implementation Orchestrator에 전달하고 material diff·raw result·권한 범위를 직접 확인한다. Phase semantic packet과 raw evidence가 충돌하면 main이 결론을 바꾸지 않고 `EVIDENCE_MISMATCH` packet을 같은 Implementation Orchestrator에 돌려보낸다. 진행·재작업·추가 연구·완료의 의미 판정은 Implementation Orchestrator가 한다.
 - Implementation Orchestrator는 모든 stage와 독립 검증을 닫은 뒤 close authorization 없는 `IMPLEMENTATION_COMPLETE`와 계획 이탈·남은 위험을 main에 보고한다. Main이 raw evidence와 Document Impact를 독립 검사해 `EVIDENCE_COMPLETE` receipt를 같은 owner에게 보내면 owner가 별도 `CLOSE_REQUESTED`를 내고, main은 실제 host evidence로 close disposition을 기록한다.
 

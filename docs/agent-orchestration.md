@@ -171,6 +171,18 @@ control_proxy: main
 - intended answer, 이전 critic의 결론, 숨은 grading key를 독립 role에 주지 않는다.
 - `stale_if`에는 base revision, 전제 문서, 계획 변경 또는 겹치는 파일 변경처럼 결과를 다시 확인해야 하는 조건을 넣는다.
 
+### Planner-worker-verifier basis continuity
+
+[`operating-model.md`의 Implementation Basis continuity](operating-model.md#implementation-basis-continuity)가 적용 trigger, prospective Implementation Basis Map과 Implementation Delta Receipt의 최소 필드, grouped convention 경계, wave gate, persistence와 stale/reopen 규칙을 유일하게 소유한다. 같은 문서의 [Implementation decision questions](operating-model.md#implementation-decision-questions)가 질문의 적용성·비례성·유지보수를 유일하게 소유한다. 이 절은 그 계약을 역할별로 사용하며 field list나 질문 목록을 다시 정의하지 않는다. Map, receipt와 긴 verifier evidence는 기존 [Two-channel owner-leaf handoff](#two-channel-owner-leaf-handoff)에 따라 artifact와 짧은 packet으로 전달한다.
+
+**Planner**는 user outcome과 Completion Contract, Document Binding과 accepted research/phase packet, target·write boundary·base revision, applicable convention·acceptance·risk, contract revision·stale condition·model binding을 입력으로 받는다. Planner는 canonical 질문에 대한 fixed decision, bounded Worker discretion과 material crossing/reopen 조건을 prospective map에 기록하고 stage/dependency·grouped write ownership·planned verification을 제안하며 artifact identity와 locator를 짧은 transport packet으로 반환한다. Planner는 자신의 unresolved item을 disposition하거나 worker wave를 승인하지 않는 advisory leaf다.
+
+**Worker**는 Implementation Orchestrator가 accepted한 자기 scope의 baseline entry와 prerequisite accepted delta, implementation contract, disjoint write scope, raw-evidence obligation과 stale condition만 받는다. Worker는 implementation과 delta return 시 actual work를 accepted discretion boundary와 비교하고, material crossing을 발견하면 조용히 넘기기 전에 linked operating policy에 따른 Delta Receipt와 actual evidence를 반환한다. 기존 changed-file·diff·command/result evidence는 별도 locator로 제공한다. `writer`는 write ownership을 가진 worker다. Worker는 자신의 delta를 채택하거나 baseline을 다시 쓰거나 material conflict를 면제하거나 다음 wave를 승인하지 않는다.
+
+**Verifier**는 fresh context에서 accepted baseline, accepted delta와 rejected/stale delta disposition, actual diff·current files·raw command result, acceptance criterion, current Document Binding·convention, write scope와 Document Impact candidate를 독립 비교한다. Verifier는 canonical 질문에 비추어 baseline/delta와 actual의 불일치, 숨은 material choice, convention applicability 오류, evidence freshness·scope와 worker의 unsupported `no_basis_delta` assertion을 직접 근거로 확인한다. Finding은 정확한 target과 mismatch, evidence locator, impact·limitation, 반박 또는 해소 조건과 권고 action을 포함하는 advisory output이다. Verifier는 delta나 finding을 닫거나 basis currency·phase verdict를 결정하지 않는다.
+
+Implementation Orchestrator만 linked wave gate를 적용하고 canonical 질문의 role-specific answer timing, planner baseline, worker delta, verifier finding과 stale/reopen recommendation을 disposition하며 worker/verifier wave와 phase semantic verdict를 승인한다. 이 continuity record는 기존 lifecycle ledger의 packet disposition evidence이지 새 lifecycle 차원이 아니다. Main은 two-channel correlation·safety와 verbatim transport만 수행하고, phase-complete 뒤 material locator를 독립 검사하는 기존 final evidence 책임만 유지한다.
+
 ### Direction Reviewer (ad hoc read-only leaf)
 
 Direction Review의 목적·trigger·finding·budget·reopen·termination은 [`operating-model.md`의 Direction Review](operating-model.md#direction-review)가 유일하게 소유한다. 이 역할은 fresh context에서 current plan, user outcome/Completion Contract, Document Binding, material evidence locator만 받으며 intended conclusion, 다른 critic의 결론, hidden grading key와 implementation working notes는 받지 않는다.

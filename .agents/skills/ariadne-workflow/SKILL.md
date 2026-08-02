@@ -232,6 +232,10 @@ Determine the role from the explicit session contract. Do not self-promote betwe
 - Require raw diff and command evidence before completion.
 - End the semantic phase with `IMPLEMENTATION_COMPLETE`, `PARTIAL`, `BLOCKED`, or `NEEDS_DECISION`. An `IMPLEMENTATION_COMPLETE` packet does not include close authorization; remain available for the main's evidence receipt or mismatch notice.
 
+#### Implementation Basis continuity adapter
+
+When the trigger in [`docs/operating-model.md` “Implementation Basis continuity”](../../../docs/operating-model.md#implementation-basis-continuity) applies, follow the role choreography in [`docs/agent-orchestration.md` “Planner-worker-verifier basis continuity”](../../../docs/agent-orchestration.md#planner-worker-verifier-basis-continuity): request a prospective planner baseline, disposition it before allocating workers, require workers to return only basis deltas plus actual evidence, and ask a fresh verifier to compare the accepted baseline and deltas with that evidence. Keep baseline, delta, finding, wave, stale/reopen, and phase dispositions with the Implementation Orchestrator. The linked policies remain the sole owners of fields, gates, persistence, and transport details.
+
 ### Leaf
 
 - Perform only the assigned bounded contract.
