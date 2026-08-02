@@ -171,18 +171,46 @@ control_proxy: main
 - intended answer, 이전 critic의 결론, 숨은 grading key를 독립 role에 주지 않는다.
 - `stale_if`에는 base revision, 전제 문서, 계획 변경 또는 겹치는 파일 변경처럼 결과를 다시 확인해야 하는 조건을 넣는다.
 
+### Direction Reviewer (ad hoc read-only leaf)
+
+Direction Review의 목적·trigger·finding·budget·reopen·termination은 [`operating-model.md`의 Direction Review](operating-model.md#direction-review)가 유일하게 소유한다. 이 역할은 fresh context에서 current plan, user outcome/Completion Contract, Document Binding, material evidence locator만 받으며 intended conclusion, 다른 critic의 결론, hidden grading key와 implementation working notes는 받지 않는다.
+
+- effective permission은 read-only다. repository write는 없으며 긴 근거가 필요할 때만 contract가 지정한 좁은 artifact sink를 쓴다.
+- 결과는 §5의 `LEAF_TRANSPORT_PACKET`과 `EVIDENCE_ARTIFACT` two-channel contract를 그대로 따른다. Main은 상관관계와 safety만 확인해 named phase owner에게 verbatim 전달하고, owner가 finding과 planner response를 disposition한다.
+- 이 역할은 ad hoc leaf다. 반복 사용이 custom agent 승격을 뜻하지 않으며, 미래 승격은 새 threshold 없이 기존 [§8 custom agent lifecycle](#8-custom-agent-생명주기)의 조건과 검증을 따른다.
+
 ## 5. Context Boundary와 packet 전달
 
 계층형 위임의 목적은 역할 연출이 아니라 context 오염을 줄이는 것이다.
 
 - main은 Session Orchestrator에 사용자 요구, completion contract, 관련 project/convention 문서와 이전 session의 **최종 packet**만 준다. 불필요한 전체 대화 history는 주지 않는다.
 - leaf는 main history나 Session Orchestrator의 intended conclusion을 받지 않는다. 자신의 source·파일·검증 범위만 받는다.
-- leaf는 raw 로그·긴 원문을 main 응답에 붙이지 않고 `claim/finding, evidence locator, limitation, verdict`의 bounded packet을 반환한다. 큰 artifact는 path·URL·command locator로 참조한다.
-- main은 leaf packet을 재요약·선별하지 않고 parent Session Orchestrator thread에 stable block으로 전달한다. transport 중 safety redaction이 필요하면 무엇을 제거했는지 표시한다.
+- leaf는 raw 로그·긴 원문을 main 응답에 붙이지 않고 짧은 `LEAF_TRANSPORT_PACKET`만 반환한다. 긴 근거는 별도 `EVIDENCE_ARTIFACT`에 두고 locator로 참조한다.
+- main은 packet의 leaf·parent·revision 상관관계와 transport safety만 확인하고 parent Session Orchestrator thread에 verbatim stable block으로 전달한다. safety redaction이 필요하면 제거 범위를 packet에 표시한다.
 - Research/Implementation Orchestrator가 packet의 관련성·품질·충돌·추가 조사 필요를 판정한다.
 - main은 전체 목표의 다음 phase 판단에 leaf packet 묶음이 아니라 phase semantic disposition과 evidence disposition을 함께 사용한다. 특히 dependent Implementation은 `RESEARCH_COMPLETE`만으로 열지 않고 Research `EVIDENCE_COMPLETE`를 요구한다. Material claim 검증 시 locator를 직접 열고 mismatch가 있으면 자신의 결론으로 덮지 않고 같은 Session Orchestrator에 `EVIDENCE_MISMATCH`를 보낸다.
 
 현재 surface에서는 main이 tool result를 수신하므로 leaf packet이 main context를 완전히 통과하지 않는 것은 불가능하다. 따라서 bounded packet과 raw-artifact locator로 오염을 제한한다. 완전한 context 격리가 실제 필수 요구가 되면 PLAN-0002 밖에서 새 evidence-backed decision을 검토한다.
+
+### Two-channel owner-leaf handoff
+
+이 흐름은 leaf 결과를 **짧은 운반 채널**과 **긴 근거 채널**로 분리한다. `LEAF_TRANSPORT_PACKET`은 main을 거쳐 이동하는 짧은 control-plane message이고, `EVIDENCE_ARTIFACT`는 owning Research/Implementation Orchestrator가 locator로 직접 여는 긴 report·diff·log·source bundle이다. 이는 Skill·문서에 따른 behavioral contract다. Hard context isolation, leaf output 형식의 hard enforcement 또는 direct agent-to-agent transport를 보장하지 않는다.
+
+`LEAF_TRANSPORT_PACKET`은 최소한 다음을 식별한다.
+
+- `leaf_id`, `parent_session_id`, `contract_revision`
+- `status`, `finding`, `limitation`, `verdict` (`none`인 항목도 구분)
+- `EVIDENCE_ARTIFACT` locator와 artifact identity
+
+Artifact identity는 owner가 packet과 근거를 상관시킬 수 있도록 producer leaf, parent session, contract revision, 해당하면 workspace와 base revision을 포함한다. Leaf가 새 artifact를 썼다면 content digest도 포함하고, byte size처럼 locator read-back에 유용한 identity를 함께 둘 수 있다. 기존 URL·repository path·diff·command log를 참조할 때는 그 source를 다시 찾고 신선도를 판정할 수 있는 revision, commit, command 또는 구간 locator를 사용한다.
+
+Main은 `leaf_id`, `parent_session_id`, `contract_revision`과 artifact identity의 상관관계를 확인한 뒤 packet을 지정된 `parent_session_id`에 verbatim 전달한다. 명시적 safety redaction만 허용하며 무엇을 가렸는지 표시한다. Transport 중 artifact를 routine으로 열거나, leaf 의미를 선별·수리·재작성하거나, 긴 근거를 새 packet으로 정상화하지 않는다. Owning phase Orchestrator가 locator를 직접 열어 artifact의 관련성·신선도·품질을 판정하고 leaf disposition과 follow-up을 소유한다.
+
+Phase owner가 complete packet을 낸 뒤 main이 최종 `EVIDENCE_COMPLETE`를 독립 판정할 때도 모든 leaf body를 기본으로 읽지 않는다. Acceptance, material claim, write scope, command result, 독립 검토와 Document Impact를 확인하는 데 필요한 **material locator만** 열고, packet·artifact mismatch는 기존 lifecycle 규칙대로 같은 owner에게 돌려보낸다.
+
+이 contract를 문장으로 자동 복구하지 않는다. Leaf가 긴 근거를 packet에 inline했거나, identity가 누락·불일치하거나, locator에 접근할 수 없거나, 새 artifact digest가 현재 content와 맞지 않거나, write scope를 넘겼으면 main은 해당 결과를 정상 packet으로 고쳐 만들지 않는다. Evidence를 `INCOMPLETE`로 유지하고 `CONTRACT_VIOLATION` finding을 원래 `parent_session_id`의 같은 owner에게 전달한다. Safety상 packet 자체를 전달할 수 없다면 redaction·차단 범위와 가능한 locator만 같은 owner에게 알린다.
+
+Researcher·reviewer 같은 read-only leaf가 새 긴 artifact를 써야 한다면 contract에 좁고 명시적인 artifact sink를 먼저 부여한다. Sink가 없으면 기존 URL·path·diff·log evidence를 참조하거나 `BLOCKED`를 반환해야 하며, 임의로 repository 또는 다른 filesystem write scope를 넓히지 않는다.
 
 ## 6. 실행 생명주기
 

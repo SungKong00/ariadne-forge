@@ -142,6 +142,15 @@ phase_owner_receipt:
 
 If the current surface cannot open or continue the required physical phase session, return `NEEDS_DECISION` or `BLOCKED`; do not silently let main perform the phase.
 
+### Direction Review adapter
+
+When an applicable phase needs to ask whether a plan would solve the user outcome, use the sole
+Direction Review policy in [`docs/operating-model.md`](../../../docs/operating-model.md#direction-review)
+and the ad hoc leaf/context/transport contract in
+[`docs/agent-orchestration.md`](../../../docs/agent-orchestration.md#direction-reviewer-ad-hoc-read-only-leaf).
+Route the returned packet to the owning phase Orchestrator before dependent implementation work; do
+not duplicate or reinterpret the policy here.
+
 ### Lifecycle adapter
 
 [`docs/agent-orchestration.md` §6](../../../docs/agent-orchestration.md#6-실행-생명주기) is the sole normative owner of lifecycle classification and closure. This section is only its compact operational adapter; do not recreate the normative table here.
@@ -151,8 +160,17 @@ If the current surface cannot open or continue the required physical phase sessi
 - Record `TERMINAL_HOST(completed | failed | interrupted)` only from an explicit correlated terminal signal, preserving its `spawn / item / turn / agent / session` scope and any observable retryability. Do not collapse retriable or nonterminal errors into terminal failure.
 - Keep six dimensions separate: host observation; contract currency (`CURRENT | STALE`); phase semantic disposition; evidence disposition (`INCOMPLETE | EVIDENCE_COMPLETE`); inspection trigger (`none | CHECKPOINT_DUE`); and close disposition (`none | CLOSE_REQUESTED | CLOSE_CONFIRMED | CLOSE_UNOBSERVABLE`). A value in one dimension never decides another.
 - `CHECKPOINT_DUE` is the only inspection/control marker. `NEEDS_INPUT` is normalized to a known wait, `EVIDENCE_MISMATCH` is an evidence finding returned to the owner while evidence stays `INCOMPLETE`, phase packets occupy phase semantic disposition, and `CLOSE_*` values occupy close disposition.
-- Keep host completion, an explicit `RESEARCH_COMPLETE` or `IMPLEMENTATION_COMPLETE` phase packet, and `EVIDENCE_COMPLETE` distinct. After the phase packet, main independently inspects the current raw artifacts and command evidence, mismatch resolution, fresh independent review, and Document Impact before recording `EVIDENCE_COMPLETE`.
+- Keep host completion, an explicit `RESEARCH_COMPLETE` or `IMPLEMENTATION_COMPLETE` phase packet, and `EVIDENCE_COMPLETE` distinct. After the phase packet, main independently inspects material raw artifacts in their current state and command evidence, mismatch resolution, fresh independent review, and Document Impact before recording `EVIDENCE_COMPLETE`.
 - Follow the canonical close sequence: the phase owner emits the phase-complete packet without close authorization; main records and sends the `EVIDENCE_COMPLETE` receipt to that same owner; the owner then emits a separate `CLOSE_REQUESTED`; main invokes host close and records `CLOSE_CONFIRMED` or `CLOSE_UNOBSERVABLE` from actual host evidence. Close disposition does not gate dependent Implementation once Research evidence is complete.
+
+### Two-channel leaf handoff adapter
+
+[`docs/agent-orchestration.md` §5 “Two-channel owner-leaf handoff”](../../../docs/agent-orchestration.md#two-channel-owner-leaf-handoff) is the sole normative owner. Apply it as a behavioral contract, not hard output enforcement or direct agent-to-agent transport.
+
+- A leaf returns only the short `LEAF_TRANSPORT_PACKET`; long evidence stays in an `EVIDENCE_ARTIFACT` identified by locator. Read-only leaves may create one only through an explicit narrow artifact sink.
+- Main correlates and forwards the packet verbatim to its named parent, except marked safety redaction. Do not routinely open, select, repair, rewrite, or normalize the artifact during transport.
+- The owning phase Orchestrator opens and dispositions the artifact. At final `EVIDENCE_COMPLETE`, main opens only material locators required for independent verification.
+- Missing or mismatched identity, inaccessible or stale artifact evidence, inline long evidence, or out-of-scope writes remain `INCOMPLETE`; report `CONTRACT_VIOLATION` to the same owner instead of repairing the packet.
 
 ### Main control-proxy loop
 
@@ -161,10 +179,10 @@ If the current surface cannot open or continue the required physical phase sessi
 3. Check only safety, permission, overlapping writes, host capacity, dependencies, and secret exposure.
 4. Spawn an initial wave of at most three independent leaves unless the phase orchestrator justifies another bounded wave and the host confirms capacity.
 5. Enter every handle in a lifecycle ledger immediately. If a batch spawn partly fails, preserve known handles and reconcile before retrying.
-6. Forward leaf packets to the same phase session without semantic selection or rewrite, except explicit safety redaction.
+6. Correlate and forward each `LEAF_TRANSPORT_PACKET` to its named phase session without semantic selection or rewrite, except explicit safety redaction; do not routinely open its artifact.
 7. Let the phase orchestrator disposition packets and request one narrow follow-up where evidence requires it.
 8. Record a host-completed turn after `DELEGATION_REQUEST` only as turn-scoped `TERMINAL_HOST(completed)`; it is not a phase semantic packet or `EVIDENCE_COMPLETE`.
-9. After a phase-complete packet without close authorization, independently inspect raw evidence. Return `EVIDENCE_MISMATCH` to the same owner while evidence stays `INCOMPLETE`, or record and send an `EVIDENCE_COMPLETE` receipt.
+9. After a phase-complete packet without close authorization, independently inspect only the material locators needed to verify raw evidence. Return `EVIDENCE_MISMATCH` to the same owner while evidence stays `INCOMPLETE`, or record and send an `EVIDENCE_COMPLETE` receipt.
 10. After that receipt, accept a separate `CLOSE_REQUESTED` from the same owner, invoke host close, and record `CLOSE_CONFIRMED` or `CLOSE_UNOBSERVABLE` from the actual response or observation limit.
 11. Open dependent Implementation on Research `EVIDENCE_COMPLETE`; do not substitute `RESEARCH_COMPLETE` or wait for close confirmation.
 
@@ -218,20 +236,7 @@ Determine the role from the explicit session contract. Do not self-promote betwe
 
 - Perform only the assigned bounded contract.
 - Do not spawn descendants, make the parent phase decision, or widen write scope.
-- Return a bounded evidence packet:
-
-```text
-role:
-scope:
-artifacts_checked:
-facts:
-risks:
-uncertainties:
-commands_run:
-evidence_refs:
-confidence:
-recommended_verdict:
-```
+- Return only the short `LEAF_TRANSPORT_PACKET` defined by the canonical [two-channel handoff](../../../docs/agent-orchestration.md#two-channel-owner-leaf-handoff). Put long evidence in its authorized artifact sink or reference existing evidence; return `BLOCKED` if neither is available.
 
 ## 7. Audit material decisions
 

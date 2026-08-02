@@ -301,6 +301,17 @@ Schema validator가 검사할 수 있는 것은 필수 field·내부 reference·
 
 기본 critique round는 1회다. material conflict에 필요한 좁은 추가 근거 요청 1회를 넘으면 무한 토론 대신 `NEEDS_DECISION` 또는 `BLOCKED`로 보낸다. 반박 성공률이나 finding 수를 agent 성과 지표로 쓰지 않는다.
 
+### Direction Review
+
+Direction Review는 구현 전에 **계획이 성공하면 실제 사용자 outcome을 해결하는가**를 묻는 한 번의 방향 점검이다. generic implementation critic의 결함 탐지나 최종 검증의 diff·실행 증거 확인을 대신하지 않으며, 새 acceptance criterion·framework·agent·validator를 만들거나 취향을 판정하지 않는다. 입력은 사용자 outcome·Completion Contract·Document Binding·현재 plan과 그 material premise의 직접 근거이고, 출력은 근거 locator와 함께 finding, 권고 action, planner response이다.
+
+- Quick은 기본적으로 열지 않는다. Standard는 material decision, 실질적인 복수 대안, 약한 oracle 또는 이에 준하는 방향 위험이 있을 때만 열며, Deep은 implementation plan을 확정하기 전에 정확히 한 번 연다.
+- review는 problem framing, 빠진 requirement/non-goal, outcome 연결, unsupported 또는 cascading premise, contrary evidence, 더 단순하고 reversible한 대안, proportionality, 현재 scope와 limitation/backlog의 구분을 본다. final verification·lint/test 재확인·critic-of-critic은 범위 밖이다.
+- finding은 `BLOCKER`, `LIMITATION`, `IMPROVEMENT`이고 action은 `CONTINUE`, `PATCH_PLAN`, `REPLAN`, `OPEN_RESEARCH`, `NEEDS_DECISION`, `STOP`이다. `BLOCKER`는 직접적인 user requirement·policy·Completion Contract 위반, outcome을 바꾸는 효과, 재현 또는 직접 locator로 검증 가능한 근거가 모두 있을 때만 쓴다.
+- planner는 `accepted`, `partially_accepted`, `rebutted`, `unresolved`로 응답한다. `rebutted`에는 더 강한 근거, 적용 범위 불일치, 재현 실패 또는 직접 반례가 필요하다. 해당 Research/Implementation Orchestrator가 finding과 planner response를 disposition하며, 독립 resolver는 기본값이 아니다.
+- budget은 initial review 1회와 planner response 1회다. material patch가 생겼을 때 changed part만 delta review 1회, material conflict에는 conflict-only evidence request 1회까지 허용한다. whole-plan 반복과 critic-of-critic은 하지 않는다.
+- material premise 실패, 같은 접근의 반복 실패, material scope/dependency/architecture 변경, validation machinery가 outcome보다 커짐, 또는 implementation이 다른 문제를 푸는 경우에만 다시 연다. 해결되지 않은 material conflict는 근거를 꾸며내지 않고 `OPEN_RESEARCH`, `NEEDS_DECISION`, `PARTIAL`, `BLOCKED`, 또는 `STOP`으로 종료하며, 새 검증 장치보다 claim 축소나 limitation 공개를 우선한다.
+
 ## 9. 구현과 검증
 
 ### 계획
