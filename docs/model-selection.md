@@ -150,13 +150,13 @@ Terra high와 Sol medium 사이에서는 “같은 bounded 문제를 더 깊게 
 | file map·검색·정형 추출 | ROUTINE medium | 극단적으로 단순할 때만 low; 규칙·내용 복잡도가 생기면 Luna high 또는 GENERAL |
 | 공식 문서·저장소 evidence leaf | GENERAL medium | exact locator 수집은 ROUTINE medium; 상충 해석이면 Terra high 또는 FRONTIER |
 | Research Orchestrator | FRONTIER high | source conflict·high stakes·복합 조율·최종 연구 phase disposition이면 Sol xhigh |
-| Implementation Orchestrator | FRONTIER high | calibration 전 Standard/Deep 기본은 Sol high; conflict·architecture·고위험·재작업 고비용이면 Sol xhigh. 좁고 reversible하며 strong-oracle인 Standard 역할에서만 별도 비교 후 강등 후보 |
+| Implementation Orchestrator | FRONTIER high | calibration 전 Standard/Deep 기본은 Sol high; Standard/Deep UI Design Assurance domain phase도 이 owner가 소유. conflict·architecture·고위험·재작업 고비용이면 Sol xhigh. 좁고 reversible하며 strong-oracle인 Standard 역할에서만 별도 비교 후 강등 후보 |
 | 일반 구현·디버깅 | GENERAL medium | 조금 복잡하면 Terra high; 모호성·넓은 종합은 Sol medium; 고위험 경계 변경은 Sol high/xhigh |
 | deterministic test·lint·schema 보조 | ROUTINE medium | 극도로 단순한 실행·전사만 low; 실패 의미와 acceptance 판정은 위험 하한 적용 |
 | 독립 코드·계획 critic·resolver leaf | GENERAL high | material security·architecture finding이면 Sol high, 복합 비판이면 xhigh; 최종 phase disposition이 아니라 advisory packet 반환 |
 | cross-phase route·최종 사용자 outcome 판정 | FRONTIER high | 복합·고비용이면 Sol xhigh; Session Orchestrator의 phase disposition을 대체하지 않고 mismatch는 해당 session에 반환 |
 | UI reference 수집·수치 측정 | ROUTINE/GENERAL medium | 저작권·출처·상태 해석이 복잡하면 GENERAL high |
-| Design Execution Contract·시각 종합 | GENERAL high | 새 visual system, 높은 독창성·완성도 요구는 FRONTIER high |
+| bounded Design Execution Contract·시각 종합 leaf | GENERAL high | Completion Contract·active convention에 종속된 advisory/implementation packet을 반환; 새 visual system, 높은 독창성·완성도 요구는 FRONTIER high |
 
 critic과 advisory resolver leaf는 finding을 만들지만 phase를 폐쇄하지 않는다. Phase를 폐쇄하는 Research/Implementation Orchestrator와 cross-phase 사용자 outcome을 판정하는 main은 각각 자신이 소유한 결정의 위험 하한보다 낮은 profile을 쓰지 않는다. 서로 다른 모델을 썼다는 사실도 독립성이나 정답의 증거가 아니다. fresh context, 원문 근거와 raw artifact 접근이 더 중요하다.
 

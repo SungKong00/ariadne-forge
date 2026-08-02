@@ -34,7 +34,7 @@ Harness Maestro는 코드 중심 오케스트레이션이 커지면서 구현·�
 | 단일 repo Skill + 기존 권위 문서 | 공식 discovery, 중복이 적고 수정 범위가 작음 | 절차적 강제이며 결정적 실행 보장은 없음 | **선택** |
 | 여러 Skill과 custom agents를 즉시 구성 | 역할 분리와 재사용 | trigger·체이닝·평가·유지보수 표면이 한꺼번에 늘어남 | 실패 증거가 생길 때까지 보류 |
 | 자체 reducer/Action Broker | 상태·권한을 코드로 강제 가능 | Maestro와 같은 복잡성, 호스트 우회·재시도·영속성 문제 | 중단 |
-| LangGraph/Agents SDK/MS Agent Framework | 내구성·handoff·관찰 도구 제공 | 현재 필요보다 큰 런타임 결합 | 명시적 승격 조건까지 보류 |
+| Codex SDK/App Server, Agents SDK, LangGraph, 기타 runtime graph | thread·event·handoff·관찰 도구 제공 가능 | 현재 필요보다 큰 runtime·dependency·이중 상태 결합 | **현재 구현에서 명시적 제외**; 직접 실패 증거가 생기면 새 decision과 plan으로만 재검토 |
 
 ## Decision
 
@@ -43,7 +43,7 @@ Harness Maestro는 코드 중심 오케스트레이션이 커지면서 구현·�
 3. `SKILL.md`는 routing·완료 조건·단계 선택만 담당하고 연구·구현·비판·문서 바인딩의 원본은 repository 권위 문서로 유지한다. 반복 누락이 전방 검증에서 확인될 때만 좁은 Skill reference를 추가한다.
 4. 초기에는 persistent custom agent를 만들지 않는다. Skill 지침으로 bounded ad hoc subagent를 사용하고 반복 실패가 측정된 역할만 `.codex/agents`로 승격한다.
 5. 스크립트는 링크, 필수 절, 상태 값처럼 결정론적으로 판정 가능한 실패가 반복될 때만 추가한다.
-6. 데이터베이스, graph runtime, 범용 Action Broker, semantic index는 승격 조건이 충족될 때 같은 평가 시나리오로 비교한다.
+6. PLAN-0002에는 Codex SDK, Codex App Server, OpenAI Agents SDK, LangGraph, runtime observer·graph·state runtime 코드·dependency·config를 넣지 않는다. 이는 active/deferred 구현 phase가 아니며, 반복된 직접 실패나 새 외부 요구가 관찰되면 별도 decision과 plan에서만 재검토한다.
 
 ## Consequences
 
@@ -61,6 +61,8 @@ Harness Maestro는 코드 중심 오케스트레이션이 커지면서 구현·�
 - 특정 모델·추론 강도 사용은 실제 spawn/config 증거가 있을 때만 주장할 수 있다.
 
 ## Revisit when
+
+아래 신호는 현재 구현의 deferred phase를 여는 것이 아니라 새 evidence-backed decision·plan을 검토할 trigger다.
 
 - multi-day crash-resume이나 외부 event trigger가 필수다.
 - 20개 이상의 동시 작업 또는 cross-process worker가 필요하다.

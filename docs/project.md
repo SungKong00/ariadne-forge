@@ -36,6 +36,7 @@ Ariadne Forge는 Codex가 개발 작업을 수행할 때 중요한 판단을 근
 - 범용 workflow engine, 프로젝트 관리 UI 또는 분산 worker를 먼저 만들기
 - 모든 작업에 다중 에이전트·리서치·비판을 강제하기
 - JSON, graph, 데이터베이스 또는 vector store를 제품 정체성으로 삼기
+- 현재 Skill-first 구현에 Codex SDK, Codex App Server, OpenAI Agents SDK, LangGraph 또는 runtime observer·graph·state runtime 코드와 dependency를 넣기
 - MengTo/Skills나 다른 외부 Skill의 결론을 프로젝트 디자인 권위로 취급하기
 - 폐기 예정인 Harness Maestro를 계승하거나 호환 계층을 만드는 것
 

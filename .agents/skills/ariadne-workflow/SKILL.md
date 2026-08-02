@@ -125,7 +125,7 @@ The invoking main is the cross-phase decision owner and host-control proxy. It m
 
 Before research leaf work, open a physical **Research Orchestrator session**. Before implementation planning, worker allocation, or phase verification, open a physical **Implementation Orchestrator session**. Bind this Skill explicitly to the session when the surface supports Skill injection.
 
-Open only the next dependency-ready phase. If research evidence can change implementation requirements, architecture, convention, or technology choice, run Research first. Do not open Implementation until `RESEARCH_COMPLETE` is received and its protocol, safety, and raw-evidence mismatches are checked. A request to parallelize dependent phases does not remove this barrier.
+Open only the next dependency-ready phase. If research evidence can change implementation requirements, architecture, convention, or technology choice, run Research first. Do not open dependent Implementation until main has independently inspected the Research artifacts, recorded `EVIDENCE_COMPLETE`, and sent that receipt to the same Research Orchestrator. `RESEARCH_COMPLETE` alone is not the dependency gate, and close confirmation is a separate control outcome. A request to parallelize dependent phases does not remove this barrier.
 
 Record before any leaf spawn or Standard/Deep mutation:
 
@@ -142,6 +142,18 @@ phase_owner_receipt:
 
 If the current surface cannot open or continue the required physical phase session, return `NEEDS_DECISION` or `BLOCKED`; do not silently let main perform the phase.
 
+### Lifecycle adapter
+
+[`docs/agent-orchestration.md` §6](../../../docs/agent-orchestration.md#6-실행-생명주기) is the sole normative owner of lifecycle classification and closure. This section is only its compact operational adapter; do not recreate the normative table here.
+
+- Derive host observation only from current evidence correlated to the handle. Use `ACTIVE_OBSERVED` only for an explicit nonterminal host status or event. Use `WAITING_KNOWN(reason, owner, resume_condition)` only when all three values are known; represent `NEEDS_INPUT` as this temporary wait, never as a terminal verdict. With no current correlated signal or no exposed status/control, use `UNOBSERVABLE`.
+- Treat `CHECKPOINT_DUE` only as a request to inspect and diagnose. When the contract permits inspection, silence, checkpoint arrival, elapsed time, or a wait timeout can produce only `CHECKPOINT_DUE`; they never prove failed, stalled, interrupted, completed, or deadline failure. An unscoped error or interruption also does not justify a stronger host observation.
+- Record `TERMINAL_HOST(completed | failed | interrupted)` only from an explicit correlated terminal signal, preserving its `spawn / item / turn / agent / session` scope and any observable retryability. Do not collapse retriable or nonterminal errors into terminal failure.
+- Keep six dimensions separate: host observation; contract currency (`CURRENT | STALE`); phase semantic disposition; evidence disposition (`INCOMPLETE | EVIDENCE_COMPLETE`); inspection trigger (`none | CHECKPOINT_DUE`); and close disposition (`none | CLOSE_REQUESTED | CLOSE_CONFIRMED | CLOSE_UNOBSERVABLE`). A value in one dimension never decides another.
+- `CHECKPOINT_DUE` is the only inspection/control marker. `NEEDS_INPUT` is normalized to a known wait, `EVIDENCE_MISMATCH` is an evidence finding returned to the owner while evidence stays `INCOMPLETE`, phase packets occupy phase semantic disposition, and `CLOSE_*` values occupy close disposition.
+- Keep host completion, an explicit `RESEARCH_COMPLETE` or `IMPLEMENTATION_COMPLETE` phase packet, and `EVIDENCE_COMPLETE` distinct. After the phase packet, main independently inspects the current raw artifacts and command evidence, mismatch resolution, fresh independent review, and Document Impact before recording `EVIDENCE_COMPLETE`.
+- Follow the canonical close sequence: the phase owner emits the phase-complete packet without close authorization; main records and sends the `EVIDENCE_COMPLETE` receipt to that same owner; the owner then emits a separate `CLOSE_REQUESTED`; main invokes host close and records `CLOSE_CONFIRMED` or `CLOSE_UNOBSERVABLE` from actual host evidence. Close disposition does not gate dependent Implementation once Research evidence is complete.
+
 ### Main control-proxy loop
 
 1. Give the phase orchestrator the user outcome, completion contract, document binding, authority, budget, model binding, and forbidden scope.
@@ -151,8 +163,10 @@ If the current surface cannot open or continue the required physical phase sessi
 5. Enter every handle in a lifecycle ledger immediately. If a batch spawn partly fails, preserve known handles and reconcile before retrying.
 6. Forward leaf packets to the same phase session without semantic selection or rewrite, except explicit safety redaction.
 7. Let the phase orchestrator disposition packets and request one narrow follow-up where evidence requires it.
-8. Treat a host-completed turn after `DELEGATION_REQUEST` as `HOST_TURN_DONE`, not phase completion.
-9. Close leaves only after disposition. Close the phase session only after its final packet requests closure and raw evidence has no unresolved mismatch.
+8. Record a host-completed turn after `DELEGATION_REQUEST` only as turn-scoped `TERMINAL_HOST(completed)`; it is not a phase semantic packet or `EVIDENCE_COMPLETE`.
+9. After a phase-complete packet without close authorization, independently inspect raw evidence. Return `EVIDENCE_MISMATCH` to the same owner while evidence stays `INCOMPLETE`, or record and send an `EVIDENCE_COMPLETE` receipt.
+10. After that receipt, accept a separate `CLOSE_REQUESTED` from the same owner, invoke host close, and record `CLOSE_CONFIRMED` or `CLOSE_UNOBSERVABLE` from the actual response or observation limit.
+11. Open dependent Implementation on Research `EVIDENCE_COMPLETE`; do not substitute `RESEARCH_COMPLETE` or wait for close confirmation.
 
 Use this minimum ledger:
 
@@ -163,10 +177,19 @@ agent_ledger:
 - objective:
 - dependencies:
 - write_scope:
-- status:
+- contract_revision:
 - stale_if:
+- host_observation:
+- observation_source_and_evidence:
+- last_observed:
+- limitation:
+- terminal_scope_outcome_and_retryability:
+- contract_currency: CURRENT | STALE
+- phase_disposition: NONE_RECORDED | RESEARCH_COMPLETE | IMPLEMENTATION_COMPLETE | INSUFFICIENT_EVIDENCE | PARTIAL | BLOCKED | NEEDS_DECISION | SESSION_FAILED
+- evidence_disposition: INCOMPLETE | EVIDENCE_COMPLETE
 - packet_disposition:
-- close_status:
+- inspection_trigger: none | CHECKPOINT_DUE
+- close_disposition: none | CLOSE_REQUESTED | CLOSE_CONFIRMED | CLOSE_UNOBSERVABLE
 ```
 
 ## 6. Follow the assigned session role
@@ -180,7 +203,7 @@ Determine the role from the explicit session contract. Do not self-promote betwe
 - Check packet relevance, authority, conflicts, contrary evidence, and unresolved assumptions.
 - Use one conflict-only rebuttal round when a material claim would change the verdict.
 - Require evidence for rebuttal; do not reward automatic resistance. Accept a criticism when a sound rebuttal cannot be supported.
-- End with `RESEARCH_COMPLETE`, `INSUFFICIENT_EVIDENCE`, or `NEEDS_DECISION`.
+- End the semantic phase with `RESEARCH_COMPLETE`, `INSUFFICIENT_EVIDENCE`, or `NEEDS_DECISION`. A `RESEARCH_COMPLETE` packet does not include close authorization; remain available for the main's evidence receipt or mismatch notice.
 
 ### Implementation Orchestrator
 
@@ -189,7 +212,7 @@ Determine the role from the explicit session contract. Do not self-promote betwe
 - Ensure plans cite requirements, project documents, conventions, research packets, and repository facts.
 - Disposition criticism as `accepted`, `partially_accepted`, `rejected`, or `needs_evidence` with reasons.
 - Require raw diff and command evidence before completion.
-- End with `IMPLEMENTATION_COMPLETE`, `PARTIAL`, `BLOCKED`, or `NEEDS_DECISION`.
+- End the semantic phase with `IMPLEMENTATION_COMPLETE`, `PARTIAL`, `BLOCKED`, or `NEEDS_DECISION`. An `IMPLEMENTATION_COMPLETE` packet does not include close authorization; remain available for the main's evidence receipt or mismatch notice.
 
 ### Leaf
 
@@ -236,7 +259,8 @@ Prefer raw artifacts over worker summaries:
 - inspect the actual diff and writable scope
 - run targeted tests, lint, build, browser, or source read-back that proves the claim
 - compare reported exit status with raw output
-- mark stale evidence and unresolved mismatches
+- mark stale evidence and return every raw-evidence mismatch to the owning phase orchestrator for revised disposition
+- require fresh independent review before `EVIDENCE_COMPLETE`; if unavailable, keep evidence `INCOMPLETE`
 - decide document impact as `update`, `create`, `unchanged`, or `supersede`
 
 Return a final packet:
@@ -255,6 +279,7 @@ Static package checks do not prove behavior. Do not call this Skill `VALIDATED` 
 
 ## Hard guardrails
 
+- This implementation explicitly excludes Codex SDK, Codex App Server, OpenAI Agents SDK, LangGraph, and any runtime observer, graph, state runtime, runtime code, dependency, or configuration. Future reconsideration requires new direct evidence and a new decision/plan; it is not an active or deferred PLAN-0002 phase.
 - Do not add a runtime, graph framework, hook, plugin, custom agent, or deterministic validator without an observed repeated failure that it directly solves.
 - Do not assume Skill-to-Skill recursion, descendant spawn, automatic retry, cleanup, model binding, or context invisibility.
 - Do not duplicate active project policy inside this package when a direct repository read is sufficient.

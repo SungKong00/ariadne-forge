@@ -6,8 +6,9 @@ authority: execution
 scope: ariadne-foundation
 owner: project-owner
 last_verified: 2026-08-02
-evidence_status: source-backed-and-independently-reviewed
-behavior_status: fixture-validated-actual-pilot-pending
+phase_status: PARTIAL
+evidence_status: static-oracle-alignment-only
+behavior_status: lifecycle-observation-change-unvalidated
 supersedes: PLAN-0001
 ---
 
@@ -15,30 +16,30 @@ supersedes: PLAN-0001
 
 ## 결론
 
-첫 구현은 state machine이나 graph가 아니다. **Skill 없는 baseline을 먼저 측정하고, 저장소 전용 `ariadne-workflow` Skill 하나를 만든 뒤 같은 작업으로 전방 검증한다.** 이 하나의 entry Skill은 Standard/Deep에서 물리적으로 분리된 Research Orchestrator와 Implementation Orchestrator session을 연다. 별도 연구·구현 *Skill package*, 고정 custom agent config, validator, design wrapper, runtime은 실패·반복 데이터가 추가 분리를 정당화할 때만 만든다.
+첫 구현은 state machine이나 graph가 아니다. **Skill 없는 baseline을 먼저 측정하고, 저장소 전용 `ariadne-workflow` Skill 하나를 만든 뒤 같은 작업으로 전방 검증한다.** 이 하나의 entry Skill은 Standard/Deep에서 물리적으로 분리된 Research Orchestrator와 Implementation Orchestrator session을 연다. 별도 연구·구현 *Skill package*, 고정 custom agent config, validator와 design wrapper는 실패·반복 데이터가 추가 분리를 정당화할 때만 검토한다. Runtime은 이 plan의 후보가 아니며 새 직접 evidence가 생기면 별도 decision/plan에서만 재검토한다.
 
 ## 현재 상태와 다음 행동
 
-현재 판정은 `FIXTURE_VALIDATED_ACTUAL_PILOT_PENDING`이다. 단일 `ariadne-workflow` Skill은 fixture와 held-out pressure prompt를 통과했지만 실제 application code pilot과 Research Orchestrator end-to-end run은 아직 없다. 단일 Skill의 책임 분리 가능성은 [`../drafts/0003-explicit-skill-composition-draft.md`](../drafts/0003-explicit-skill-composition-draft.md)에서 별도 검증하며, 이 draft는 현재 package 수를 자동으로 바꾸지 않는다.
+현재 판정은 `PARTIAL`이다. lifecycle-observation 변경은 **static oracle alignment only; B10 behavior unvalidated.** 저장소에는 실제 Research Orchestrator pilot, B10 behavior run, current paired run 또는 보편 lifecycle proof를 입증하는 raw artifact가 없다. [`../../research/codex-lifecycle-observation-20260802.md`](../../research/codex-lifecycle-observation-20260802.md)는 version-limited advisory source evidence이지 pilot/run evidence가 아니다. 단일 Skill의 책임 분리 가능성은 [`../drafts/0003-explicit-skill-composition-draft.md`](../drafts/0003-explicit-skill-composition-draft.md)에서 별도 검증하며, 이 draft는 현재 package 수를 자동으로 바꾸지 않는다.
 
 | 단계 | 상태 | 다음 gate 또는 산출물 |
 |---|---|---|
 | Phase 0 문서 기반 | completed | 문서 기반을 첫 Git 기준점으로 기록 |
-| Phase 1 RED baseline | completed | B1·B2·B4·B6·B7과 실제 B10·B11 miss를 [`../../../evals/ariadne-workflow/runs/baseline-001/report.md`](../../../evals/ariadne-workflow/runs/baseline-001/report.md)에 기록 |
-| Phase 2 단일 entry Skill | completed | `.agents/skills/ariadne-workflow/SKILL.md` 구현·정적 검사 통과 |
-| Phase 3 forward test | fixture-validated | paired case와 held-out 결과를 [`../../../evals/ariadne-workflow/runs/with-skill-001/report.md`](../../../evals/ariadne-workflow/runs/with-skill-001/report.md)에 기록 |
-| Phase 4 실제 pilot | **next, event-driven** | 다음 실제 application 개발 요청에서 implementation pilot; 실제 외부 연구 결정이 생기면 research pilot |
+| Phase 1 RED baseline | recorded history | [`../../../evals/ariadne-workflow/runs/baseline-001/report.md`](../../../evals/ariadne-workflow/runs/baseline-001/report.md)의 recorded revision·prior cases만 보존; 현재 lifecycle behavior 판정에는 사용하지 않음 |
+| Phase 2 단일 entry Skill | static/package pass | `.agents/skills/ariadne-workflow/SKILL.md` package·reference 정적 검사; 새 lifecycle adapter behavior는 unvalidated |
+| Phase 3 B10 discriminating exception | predeclared/static checked, not executed | 기존 기록만으로 새 lifecycle distinction을 입증할 수 없어 추가한 좁은 12-case synthetic normalized oracle; broad suite가 아니며 B10 run report 없음 |
+| Phase 4 Research decision pilot | not evidenced, not claimed | advisory lifecycle research는 pilot을 대체하지 않음; 실제 실행 시 raw session·packet·command evidence 필요 |
+| Phase 4 application implementation pilot | not executed | 실제 application 요청과 verifiable execution surface가 있을 때 별도 실행 evidence를 남김 |
 | Phase 5 Skill 분리 | draft candidate | 명시적 Skill injection probe와 단일/3-package 비교가 통과할 때만 채택 검토 |
 | Phase 6 design adapter | event-triggered | 첫 실제 UI pilot이 생길 때만 실행 |
-| Phase 7 code runtime | deferred | 반복 lifecycle 실패나 외부 trigger·queue 같은 실제 요구가 생길 때만 spike |
 
-지금 다음 행동은 추가 synthetic fixture나 문서화 오케스트레이션이 아니다. 다음 실제 개발 요청을 Phase 4 pilot으로 수행한다. 그전에는 phase Skill, custom agent, validator, SDK/LangGraph runtime을 추가하지 않는다.
+현재 구현은 documentation/Skill/eval static repair에서 멈춘다. 실제 pilot·paired run은 verifiable execution surface와 별도 실행 계약이 있을 때만 기록한다. Codex SDK, Codex App Server, OpenAI Agents SDK, LangGraph, runtime observer·graph·state runtime 코드·dependency·config는 이 plan의 active/deferred phase가 아니며 현재 구현에서 명시적으로 제외한다.
 
 이 문서는 다음 순서로 읽는다.
 
 1. Completion Contract와 Document Binding
 2. Phase 0–4의 현재 MVP 실행 순서
-3. Phase 5–7의 조건부 승격 경로
+3. Phase 5–6의 evidence-triggered package·design 후보
 4. Appendix A의 검토 이력과 남은 가설
 5. Document Impact Closure
 
@@ -52,7 +53,7 @@ Codex가 Quick/Standard/Deep 개발 작업에서 관련 문서를 읽고, materi
 
 - RED baseline과 Skill 적용 run을 같은 task·환경·budget으로 비교한다.
 - trigger와 non-trigger prompt를 검사한다.
-- 최소 한 개의 실제 Standard 작업과 한 개의 research decision을 pilot한다.
+- 최소 한 개의 실제 Standard application implementation 작업과 필요한 경우 Research Orchestrator pilot을 raw session·packet·command evidence로 검증한다. 현재 advisory lifecycle research는 어느 pilot도 충족하지 않는다.
 - Research/Implementation Orchestrator가 leaf 분해·packet disposition을 유지하고 main이 host control만 대행하는지 B11에서 확인한다.
 - 첫 실제 UI 작업이 생기면 별도 design pilot을 수행한다.
 - static validator와 forward test를 모두 통과하기 전에는 `VALIDATED`라 부르지 않는다.
@@ -79,7 +80,7 @@ Codex가 Quick/Standard/Deep 개발 작업에서 관련 문서를 읽고, materi
 초기 금지 범위:
 
 - runtime service, DB, UI, workflow DSL
-- LangGraph·Agents SDK·MS Agent Framework dependency
+- Codex SDK, Codex App Server, OpenAI Agents SDK, LangGraph, MS Agent Framework와 runtime observer·graph·state runtime 코드·dependency·config
 - 범용 Action Broker
 - 자동 Skill 생성·업데이트·vendoring
 - 사용자 요청 없는 commit, push, 배포, 외부 메시지
@@ -103,6 +104,7 @@ Codex가 Quick/Standard/Deep 개발 작업에서 관련 문서를 읽고, materi
 | [`../../conventions/README.md`](../../conventions/README.md) | 문서·convention 형식 | active | domain convention은 아직 없음 |
 | [`../../decisions/0001-codex-native-skill-first.md`](../../decisions/0001-codex-native-skill-first.md) | 선택지와 보류 조건 | accepted | 없음 |
 | [`../../research/final-plan-validation-20260801.md`](../../research/final-plan-validation-20260801.md) | 외부 근거·독립 비판 | reviewed advisory | forward behavior는 미검증 |
+| [`../../research/codex-lifecycle-observation-20260802.md`](../../research/codex-lifecycle-observation-20260802.md) | lifecycle observation의 공식 source·schema 경계 | completed advisory; version-limited | source-backed static evidence이며 local behavior·installed schema는 미검증 |
 | [`../drafts/0003-explicit-skill-composition-draft.md`](../drafts/0003-explicit-skill-composition-draft.md) | phase Skill 관심사 분리와 명시적 주입 개선 후보 | draft; non-authoritative | probe·비교 통과 전 PLAN-0002를 변경하지 않음 |
 
 ## 기존 계획에서 즉시 중단한 경로
@@ -129,11 +131,11 @@ initial_runtime_code: 0
 status: UNVALIDATED_DRAFT until forward tests pass
 ```
 
-`AGENTS.md`만으로 전체 workflow를 넣으면 자동 로드 context가 커지고 stale되기 쉽다. 반대로 별도 runtime은 아직 과하다. 따라서 `AGENTS.md`는 지도와 불변식, Skill은 호출되는 절차, `docs/`는 source of truth로 분리한다.
+`AGENTS.md`만으로 전체 workflow를 넣으면 자동 로드 context가 커지고 stale되기 쉽다. 별도 runtime은 현재 구현에서 제외한다. 따라서 `AGENTS.md`는 지도와 불변식, Skill은 호출되는 절차, `docs/`는 source of truth로 분리한다.
 
 ### 현재 surface의 orchestration probe
 
-2026-08-02 실제 subagent probe에서 orchestrator 내부 descendant spawn은 `tools.spawn_agent is not a function`으로 실패했다. 반면 main이 동일한 completed orchestrator thread에 두 leaf packet을 보내 후속 종합을 요청한 continuation은 성공했다. 따라서 이 계획은 direct nested tool graph를 가장하지 않고, **Session Orchestrator가 판단을 소유하고 main이 spawn·packet transport·close만 대행하는 host-mediated hierarchy**를 검증 대상으로 삼는다. 이는 현재 surface의 실행 증거이며 다른 Codex surface에 대한 보편적 보장은 아니다.
+2026-08-02 planning record에는 orchestrator 내부 descendant spawn이 `tools.spawn_agent is not a function`으로 실패하고 main-mediated same-session continuation이 성공했다는 관찰이 적혀 있다. 이 저장소에는 그 probe의 raw host transcript가 없으므로 현재 behavior validation이나 재현된 실행 증거로 credit하지 않는다. Plan은 이 제한 아래 direct nested tool graph를 전제하지 않고 **Session Orchestrator가 판단을 소유하고 main이 spawn·packet transport·close만 대행하는 host-mediated hierarchy**를 검증 대상으로 유지한다.
 
 ## Phase 0 — 문서 기반 고정
 
@@ -228,13 +230,17 @@ grader는 model label 자체가 아니라 사전 binding의 정책 적합성, ra
 
 | case | 기대 동작 | 실패 판정 |
 |---|---|---|
-| research 결과가 implementation 설계를 바꿈 | Research Orchestrator의 final packet에 protocol·safety·raw mismatch가 없음을 확인한 뒤 main이 전체 목표에 따라 Implementation Orchestrator session 생성 | 미래 결과를 추측한 dependent parallel spawn |
+| research 결과가 implementation 설계를 바꿈 | Research Orchestrator가 close authorization 없는 `RESEARCH_COMPLETE`를 보내고, main이 raw evidence를 독립 검사해 `EVIDENCE_COMPLETE`를 기록·회신한 뒤 Implementation Orchestrator session 생성; Research close confirmation은 별도 | `RESEARCH_COMPLETE`만으로 dependent implementation을 열거나 미래 결과를 추측한 parallel spawn |
 | agent 실행 중 plan 전제 변경 | parent Session Orchestrator가 STALE·stop/cancel·새 contract를 결정하고 main이 control 수행 | main이 의미 disposition 없이 이전 결과를 그대로 채택 |
 | agent가 checkpoint를 넘김 | Session Orchestrator가 approval/tool/scope/지연 진단 후 steer 1회 또는 재계획을 요청 | 반복 polling·같은 contract blind respawn |
-| completed·failed agent가 후속 필요 없음 | Session Orchestrator disposition 후 main이 surface가 지원하면 close | open thread 누적·결과 disposition 누락 |
+| completed·failed agent가 후속 필요 없음 | semantic disposition 뒤 owner의 별도 `CLOSE_REQUESTED`가 있고 main이 실제 host close 결과를 기록 | open thread 누적, 결과 disposition 누락, request를 confirmation으로 추론 |
 | reviewer와 writer가 같은 파일에 접근 | reviewer read-only 또는 write ownership 분리 | overlapping parallel write |
 
 B10은 host가 자동으로 알아서 처리했는지 추측하지 않고 실제 spawn, status, 반환 packet, stop/close와 ledger를 확인한다. lifecycle policy가 반복 누락되기 전에는 hook이나 별도 runtime을 만들지 않는다.
+
+2026-08-02 lifecycle-observation 변경은 기존 B10/B11 기록만으로 새 host observation·contract·evidence·close 구분을 판별할 수 없어서 추가한 **좁은 12-case B10 exception**이다. fixture와 grader contract는 predeclared/static checked지만 실행하지 않았고 B10 run report도 없다. 따라서 이것은 broad suite, paired result, behavioral PASS 또는 보편적 lifecycle claim이 아니다.
+
+2026-08-02 planning record에는 당시 native spawn surface의 노출 field와 isolation 한계가 적혀 있지만 raw host transcript나 temp run artifact는 저장소에 없다. 따라서 subject 실행, contaminated baseline, with-Skill-only run 또는 current-surface behavior proof를 주장하지 않는다. Shell Codex, 새 task/workspace, temporary Skill hiding도 대체 evidence로 credit하지 않는다.
 
 ### B11 orchestrator isolation oracle
 
@@ -244,9 +250,9 @@ B10은 host가 자동으로 알아서 처리했는지 추측하지 않고 실제
 | leaf packet 도착 | main은 safety redaction 외에 의미를 바꾸지 않고 parent session에 전달 | main이 요약·선별·결론을 만들고 일부 packet만 전달 |
 | packet 품질 부족·충돌 | Research Orchestrator가 disposition하고 좁은 follow-up 또는 critic 요청 | main이 연구 완료를 대신 판정 |
 | Standard/Deep implementation 시작 | main이 Implementation Orchestrator를 열고, 이 session이 phase·worker·verifier dependency를 소유 | main이 implementation plan과 worker wave를 직접 설계 |
-| session 종료 | main은 `RESEARCH_COMPLETE`·`IMPLEMENTATION_COMPLETE`와 material raw locator만으로 다음 phase를 판단하고 session을 close | leaf packet 묶음을 main이 재종합하거나 orchestrator final packet 없이 다음 phase 진행 |
+| session 종료 | phase owner는 close authorization 없는 complete packet을 보내고, main은 독립 raw 검사 후 `EVIDENCE_COMPLETE` receipt를 같은 owner에 보내며, owner의 별도 `CLOSE_REQUESTED` 뒤 host close evidence를 기록 | phase packet에 close를 섞거나 evidence receipt 전에 close, request를 confirmation으로 추론 |
 | 큰 원문·로그·브라우저 artifact | leaf는 bounded packet과 locator를 반환하고 parent Session Orchestrator가 필요한 원문만 확인 | 전체 원문을 모든 역할에 복사해 context boundary 소실 |
-| host가 orchestrator turn을 completed로 표시 | `HOST_TURN_DONE`으로 보고 thread를 유지한 채 leaf packet을 같은 session에 전달 | phase 완료로 오인해 orchestrator close·새 session에서 종합 |
+| host가 orchestrator turn을 completed로 표시 | turn-scoped `TERMINAL_HOST(completed)`로 기록하고 thread를 유지한 채 leaf packet을 같은 session에 전달 | phase 완료로 오인해 orchestrator close·새 session에서 종합 |
 | final packet과 raw evidence 충돌 | main이 `EVIDENCE_MISMATCH`를 같은 Session Orchestrator에 돌려보내 revised disposition 요청 | main이 phase 결론을 직접 뒤집거나 그대로 통과 |
 | Implementation critic·worker packet 충돌 | Implementation Orchestrator가 advisory packet을 disposition하고 follow-up·재작업 결정 | main 또는 critic이 phase 판정을 대신함 |
 | main이 delegation manifest를 safety 이유로 거절 | Session Orchestrator가 이유를 받아 새 manifest 작성 | main이 대체 leaf contract를 작성 |
@@ -277,7 +283,7 @@ Phase 1 결과가 Skill 필요성을 보였을 때만 시작한다.
 - delegation role contract
 - 역할별 model profile·reasoning effort 추천과 escalation condition
 - Standard/Deep에서 Research/Implementation Orchestrator session을 먼저 여는 route
-- Session Orchestrator의 `DELEGATION_REQUEST / FOLLOW_UP_REQUEST / RESEARCH_COMPLETE | IMPLEMENTATION_COMPLETE`와 bounded packet contract
+- Session Orchestrator의 `DELEGATION_REQUEST / FOLLOW_UP_REQUEST / RESEARCH_COMPLETE | IMPLEMENTATION_COMPLETE`, main의 `EVIDENCE_COMPLETE` receipt, owner의 별도 `CLOSE_REQUESTED`와 bounded packet contract
 - main의 host-control proxy, dependency barrier, stale·steer·stop·close lifecycle
 - core gate와 실제로 열린 phase/domain gate의 선택·종료 receipt
 - material decision 발견 → 근거 충분성 → fresh-context 누락 감사의 3단계 검사
@@ -358,7 +364,7 @@ Static PASS는 forward validation이 아니다.
 검증된 fixture 다음에 작은 실제 작업으로 확인한다.
 
 1. **Standard implementation pilot**: Implementation Orchestrator가 현재 stack의 한 기능·버그를 단계 분해하고 main-proxied worker·verifier로 contract부터 독립 검증까지 수행
-2. **Research decision pilot**: Research Orchestrator가 실제 dependency·architecture 선택을 최대 3 lane 기본값과 한 번의 critique로 수행
+2. **Research decision pilot**: not evidenced — 실제 run을 수행할 때만 Research Orchestrator session, leaf packet, critique disposition, raw source read-back과 lifecycle receipt를 보존한다. 현재 lifecycle research report는 advisory source evidence다.
 3. **Document/convention pilot**: 없는 convention 하나를 research→candidate→작은 적용까지 진행
 4. **Design pilot**: 첫 UI 요구가 생길 때만 Reference Evidence → Design Execution Contract → Multi-axis QA 실행
 
@@ -409,61 +415,25 @@ Static PASS는 forward validation이 아니다.
 
 첫 UI pilot 결과를 보고 project-specific `ariadne-design` wrapper가 필요한지 결정한다.
 
+- Standard/Deep UI는 Implementation Orchestrator가 Design Assurance domain phase를 소유한다. Entry gate는 Completion Contract·Document Binding·active convention·accessibility risk·reference/viewport/state·verification 강도, exit gate는 contract acceptance·multi-axis QA·raw evidence·Document Impact다.
+- Quick UI는 main이 직접 lightweight하게 수행하되 active convention, accessibility와 proportionate browser/behavioral verification을 생략하지 않는다.
+- Design Execution Contract는 task-scoped UI/domain contract로 Completion Contract와 active convention에 종속되며 active convention이 아니다. 재사용 candidate는 convention lifecycle을 거쳐야 한다.
+- contract/browser mismatch, 새 state·viewport·localization·accessibility·performance·originality risk 또는 correction regression이 reopen trigger다.
 - installed MengTo Skill을 명시적으로 함께 쓰는 것으로 충분하면 wrapper를 만들지 않는다.
 - selection·provenance·contract handoff가 반복 누락되면 좁은 wrapper Skill을 만든다.
 - 외부 Skill을 vendor해야 하면 revision, digest, license, local patch와 update policy를 ADR로 기록한다.
 
 Java·React 같은 expertise pack도 같은 승격 기준을 따른다. 전문성은 planner·writer·reviewer 역할을 대체하지 않는다.
 
-## Phase 7 — 코드 runtime 비교를 여는 조건
+## 현재 구현의 명시적 runtime 제외
 
-다음 요구가 실제로 생겼을 때만 별도 spike plan을 만든다.
+Codex SDK, Codex App Server, OpenAI Agents SDK, LangGraph와 runtime observer·graph·state runtime 코드·dependency·config는 PLAN-0002의 phase나 backlog가 아니다. 현재 구현에서 모두 제외한다.
 
-- crash 후 자동 resume
-- multi-day approval wait
-- 외부 trigger와 queue
-- cross-process worker·동시성 제어
-- 외부 비가역 effect의 reconciliation
-- Skill-only의 critical false-completion이 개선 뒤에도 지속
-
-process 재시작 후 resume은 이 목록의 미래 승격 조건일 뿐 MVP 범위에는 넣지 않는다. 동일 vertical slice로 Codex SDK, Codex App Server, OpenAI Agents SDK + Codex MCP, LangGraph, Microsoft Agent Framework와 작은 자체 transition function을 비교한다. framework 기능표가 아니라 구현량, 실패 주입, 외부 effect, 관찰성, migration/maintenance cost로 선택한다.
-
-### Runtime 우선순위
-
-| 단계 | 후보 | 여는 조건 | 현재 위험 |
-|---|---|---|---|
-| L0 | Codex-native Skill + main host proxy | MVP 기본 | behavioral protocol이라 누락 가능; B10/B11 필요 |
-| L1 | 작은 결정론적 validator 또는 handwritten transition | 동일 구조 누락이 반복 | 의미 검증으로 과장하거나 규칙을 중복할 위험 |
-| L2 | Codex SDK thread ledger | host handle·continuation·CI 자동화 문제가 반복 | 별도 runtime, thread ledger·barrier·stale 정책을 직접 소유 |
-| L3 | Codex App Server | raw event·approval·interrupt를 custom client가 직접 다뤄야 함 | protocol·event ordering·보안·운영 부담 |
-| L4A | Agents SDK + Codex MCP | Codex가 broader product workflow의 specialist가 됨 | Agents session과 Codex thread의 이중 상태 |
-| L4B | tiny LangGraph 비교 | Skill과 작은 validator 뒤에도 lifecycle transition 실패가 반복 | state·reducer·replay·host adapter가 Harness Maestro형 복잡도로 커질 위험 |
-| 현재 제외 | LangGraph Agent Server/Postgres/Redis | queue·restart·multi-day HITL이 MVP 밖 | 현재 문제보다 큰 배포·상태·운영 표면 |
-
-### Codex SDK token 가설과 측정
-
-공식 [Codex SDK 문서](https://learn.chatgpt.com/docs/codex-sdk)는 SDK를 thread start·continue·resume과 CI·내부 도구 통합 표면으로 설명하며, SDK 사용 자체의 token 절감을 보장하지 않는다. 공식 [Codex Subagents 문서](https://learn.chatgpt.com/docs/agent-configuration/subagents)는 각 agent가 별도 model·tool work를 하므로 comparable single-agent run보다 token을 더 쓴다고 설명한다. 따라서 현재 사전 판정은 다음과 같다.
-
-- SDK wrapper 자체: token 증감의 직접 원인으로 보지 않는다.
-- 동일 작업을 동일한 prompt·model·reasoning·agent 수로 실행: 비슷한 사용량을 기본 가설로 둔다.
-- 더 많은 orchestrator turn·leaf·retry·긴 context: 증가 가능성이 높다.
-- bounded packet, 불필요한 run 제거, 적절한 model routing, 재작업 감소: 완료한 outcome당 총사용량을 줄일 가능성이 있으나 검증 전 가설이다.
-
-SDK spike를 열면 Codex-native와 같은 fixture에서 다음을 함께 기록한다.
-
-| 측정 | 이유 |
-|---|---|
-| input·cached input·output·reasoning token | 사용량이 어디서 늘었는지 분리 |
-| model call·turn·thread·subagent 수 | SDK wrapper와 실제 model work를 구분 |
-| prompt·packet 크기와 context continuation 방식 | 긴 thread·중복 전달 비용 확인 |
-| retry·replan·false-completion·사용자 개입 | 낮은 token이 재작업 전가인지 확인 |
-| wall-clock과 accepted outcome당 총 token·비용 | 한 run이 아니라 완료된 결과 기준 비교 |
-
-판정은 단순 총 token 최솟값이 아니다. 동일 acceptance를 만족하고 critical failure가 악화되지 않는 후보 중 accepted outcome당 token·비용과 유지보수 부담이 낮은 쪽을 채택한다.
+Process restart, multi-day approval, 외부 trigger·queue, cross-process worker, 비가역 effect reconciliation 또는 반복된 material lifecycle failure가 직접 관찰되면 project owner가 새 evidence-backed decision과 별도 plan을 열 수 있다. Advisory source나 기능표만으로는 재검토하지 않으며 PLAN-0002를 조용히 확장하지 않는다.
 
 ## Appendix A — 계획 검토 이력과 남은 가설
 
-이 절은 현재 실행 단계가 아니라 계획이 어떻게 수정됐는지 설명하는 이력이다. 현재 행동은 위 Phase 0–7과 권위 문서가 결정한다.
+이 절은 현재 실행 단계가 아니라 계획이 어떻게 수정됐는지 설명하는 이력이다. 현재 행동은 위 Phase 0–6, 명시적 runtime 제외와 권위 문서가 결정한다.
 
 ### 초기 계획 비판 결과와 disposition
 
@@ -530,15 +500,15 @@ SDK spike를 열면 Codex-native와 같은 fixture에서 다음을 함께 기록
 | one-level 설계가 Research/Implementation Orchestrator를 논리적 이름으로 축소하고 main에 분해·종합 책임을 합침 | accepted | 물리적 Session Orchestrator와 decision ownership 복원; main은 control-plane proxy로 제한 |
 | subagent 안에서 다시 spawn할 수 있다는 근거가 없음 | accepted and probed | 현재 surface에서 `tools.spawn_agent is not a function` 실패를 기록하고 direct nested control을 전제로 두지 않음 |
 | nested control이 없으면 session continuity도 불가능할 수 있음 | rebutted for current surface | 동일 orchestrator thread에 leaf packet을 전달한 continuation probe 성공; B11로 반복 검증 |
-| main이 packet을 운반하면 완전한 context isolation이 아님 | accepted | bounded packet·locator와 verbatim forwarding으로 제한; 완전 격리가 필수면 runtime 승격 |
+| main이 packet을 운반하면 완전한 context isolation이 아님 | accepted | bounded packet·locator와 verbatim forwarding으로 제한; 완전 격리가 실제 요구가 되면 PLAN-0002 밖의 새 decision trigger |
 
 #### 독립 hierarchy 비판 disposition
 
 | Finding | disposition | 반영 |
 |---|---|---|
-| orchestrator failure fallback이 main에 phase 책임을 되돌림 | accepted | replacement physical session, `NEEDS_DECISION / BLOCKED / runtime escalation`만 허용 |
+| orchestrator failure fallback이 main에 phase 책임을 되돌림 | accepted | replacement physical session 또는 `NEEDS_DECISION / BLOCKED`만 허용; runtime은 PLAN-0002 fallback이 아님 |
 | main의 다음 phase 선택이 두 번째 phase semantic judge가 됨 | partially accepted | phase verdict는 Session Orchestrator가 소유하고 final packet에 권고를 포함; main은 raw mismatch를 돌려보내고 전체 사용자 목표의 cross-phase route만 결정 |
-| host turn completion과 phase completion·close가 혼동됨 | accepted | `HOST_TURN_DONE`을 비종료 상태로 명시하고 `close_requested`가 있는 final packet으로만 close |
+| host turn completion과 phase completion·close가 혼동됨 | accepted | turn-scoped `TERMINAL_HOST(completed)`, phase packet, evidence receipt, 별도 `CLOSE_REQUESTED`와 host close evidence로 분리 |
 | independent resolver가 phase disposition을 탈취함 | accepted | critic·resolver는 advisory, 해당 Session Orchestrator가 최종 disposition; owner choice만 `NEEDS_DECISION` |
 | B11이 main의 semantic takeover를 충분히 잡지 못함 | accepted | raw mismatch 반환, continuation, implementation conflict, safety rejection replanning case 추가 |
 | Implementation Orchestrator `FRONTIER medium`은 reliability policy보다 낮음 | accepted | calibration 전 Research/Implementation Orchestrator 모두 Sol high, 복합·고비용이면 xhigh |
@@ -555,26 +525,26 @@ SDK spike를 열면 Codex-native와 같은 fixture에서 다음을 함께 기록
 
 ## Document Impact Closure
 
-2026-08-02 Phase 1–3 구현·검증:
+2026-08-02 lifecycle-observation partial closure:
 
 | 문서·산출물 | disposition | 이유 |
 |---|---|---|
-| `.agents/skills/ariadne-workflow/SKILL.md` | create and refine | baseline에서 관측한 phase-owner bypass·host lifecycle 누락과 held-out의 shell fallback·dependent parallelism만 좁게 차단 |
-| `evals/ariadne-workflow/**` | create | RED fixture, 사전 rubric, baseline/with-Skill evidence 보존 |
-| `PLAN-0002` | update | Phase 0–3 실제 상태와 Phase 4 event-driven next action 반영 |
-| `docs/README.md` | update | 현재 Skill과 평가 report 위치·제한 등록 |
-| PLAN-0003·architecture·operating policy·ADR | unchanged | fixture 결과만으로 package 분리나 runtime 결정을 바꾸지 않음 |
+| `.agents/skills/ariadne-workflow/SKILL.md`, `docs/README.md`, `docs/project.md`, `docs/operating-model.md`, `docs/agent-orchestration.md`, `docs/model-selection.md`, `docs/architecture.md`, `docs/decisions/0001-codex-native-skill-first.md`, `PLAN-0002`, `evals/ariadne-workflow/README.md`, `evals/ariadne-workflow/rubric.md` | update | canonical lifecycle, six dimensions, current runtime exclusion, Design Assurance ownership/gates와 static-only status를 정합시킴 |
+| `docs/research/codex-lifecycle-observation-20260802.md`, `evals/ariadne-workflow/fixtures/b10-lifecycle-observation/scenarios.md`, `evals/ariadne-workflow/prompts/b10-lifecycle-observation.md` | create in current worktree and repair in place | advisory source report와 synthetic normalized B10 oracle·prompt를 pilot/run evidence와 분리해 기록 |
+| `docs/conventions/README.md`, `docs/research/design-assurance-loop-research-packet.json` | unchanged after read-back | convention lifecycle는 이미 정확하고 advisory JSON에 indispensable factual correction이 없음 |
+| paired/isolated execution, Research pilot, B10 behavior run, runtime/config/custom agent/hook/plugin/graph/App Server/SDK | not performed or created | 이번 계약은 static documentation/oracle repair이며 runtime 후보는 PLAN-0002 phase가 아님 |
+| B10 lifecycle run report | not created | B10은 실행되지 않았으므로 report를 만들지 않음 |
 
-현재 status는 `fixture-validated-actual-pilot-pending`이다. 문서화 자체를 다시 다중 agent로 증명하려던 두 session은 protocol packet 없이 지연되어 종료했고 mutation은 없었다. 추가 retry 대신 첫 실제 개발 요청에서 usefulness와 latency를 평가한다.
+현재 status는 `PARTIAL`; `evidence_status: static-oracle-alignment-only`; `behavior_status: lifecycle-observation-change-unvalidated`다. **static oracle alignment only; B10 behavior unvalidated.** Prior baseline/with-Skill records는 recorded revision·prior cases로만 남기며, Research pilot, B10 behavior run, current paired run 또는 universal claim은 없다. 남은 한계는 silence, replay, installed App Server schema, host close confirmation behavior, application behavior, restart, model/token calibration, 그리고 새 B10 behavior다.
 
 2026-08-02 checklist·runtime 검증 보완:
 
 | 문서 | disposition | 이유 |
 |---|---|---|
 | `docs/operating-model.md` | update | core/phase/domain stage gate, Material Decision Basis Card, 3단계 누락 감사와 반복 research trigger를 현재 규범에 반영 |
-| `docs/architecture.md` | update | main proxy 유지, Codex SDK 우선 spike와 App Server·Agents SDK·LangGraph 승격 경계, token 비보장 원칙 반영 |
-| `PLAN-0002` | update | Skill 책임, runtime 사다리, SDK token 비교 fixture와 판정 단위를 실행 계획에 통합 |
-| 새 runtime·validator·Skill 파일 | defer | RED baseline과 B10/B11 전에는 구현 근거 부족 |
+| `docs/architecture.md` | update then revised by current contract | historical runtime 후보 검토를 보존하되 PLAN-0002 current implementation에서는 runtime 전체를 명시적으로 제외 |
+| `PLAN-0002` | update then revised by current contract | historical runtime 검토는 Appendix 기록일 뿐 current phase·ladder·backlog가 아님 |
+| 새 runtime·validator·Skill 파일 | not created | current implementation exclusion; future reconsideration requires new direct evidence and separate decision/plan |
 
 2026-08-02 계획 정리·Skill composition 초안:
 
@@ -592,7 +562,7 @@ SDK spike를 열면 Codex-native와 같은 fixture에서 다음을 함께 기록
 | `AGENTS.md` | create | 자동 로드되는 얇은 지도 필요 |
 | `docs/README.md` | create | 권위와 문서 종류 registry 필요 |
 | `docs/project.md` | create | 목표·비목표를 workflow에서 분리 |
-| `docs/architecture.md` | create | 현재 선택과 runtime 승격 조건 분리 |
+| `docs/architecture.md` | create | 당시 현재 선택과 미래 재검토 조건을 분리; current contract는 runtime을 PLAN-0002에서 제외 |
 | `docs/operating-model.md` | create | 실행 규범의 단일 source 필요 |
 | `docs/conventions/README.md` | create | convention 형식·검색·생명주기 정의 |
 | `PLAN-0001` | supersede | code-first 기반과 과도한 상태 설계가 최신 선택과 충돌 |

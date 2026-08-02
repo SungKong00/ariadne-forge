@@ -24,14 +24,20 @@ flowchart TB
     R -. "leaf contract" .-> M
     M --> RL["research·critic leaves"]
     RL -. "bounded packet via main" .-> R
-    R --> RP["RESEARCH_COMPLETE"]
+    R --> RP["RESEARCH_COMPLETE without close authorization"]
     RP --> M
-    M --> I["Implementation Orchestrator session"]
+    M --> RE["Main independent inspection: EVIDENCE_COMPLETE"]
+    RE -->|"receipt"| R
+    R -->|"CLOSE_REQUESTED"| M
+    RE -->|"dependent implementation gate"| I["Implementation Orchestrator session"]
     I -. "leaf contract" .-> M
     M --> IL["planner·writer·verifier leaves"]
     IL -. "bounded packet via main" .-> I
-    I --> IP["IMPLEMENTATION_COMPLETE"]
+    I --> IP["IMPLEMENTATION_COMPLETE without close authorization"]
     IP --> M
+    M --> IE["Main independent inspection: EVIDENCE_COMPLETE"]
+    IE -->|"receipt"| I
+    I -->|"CLOSE_REQUESTED"| M
     M --> O["완료 / 재작업 / 연구 재개 / 사용자 결정"]
 ```
 
@@ -72,21 +78,21 @@ Skill의 상태는 package 생성 직후에도 `UNVALIDATED_DRAFT`다. 정적 �
 - 요구사항과 완료 계약 확인
 - 임시 작업 경로 선택과 재평가
 - 필요한 문서 바인딩 확인
-- 해당 phase의 Research/Implementation Orchestrator session 생성과 final packet의 구조·안전·raw-evidence mismatch 확인
+- 해당 phase의 Research/Implementation Orchestrator session 생성, close authorization 없는 phase packet 수신, raw evidence의 독립 검사와 `EVIDENCE_COMPLETE` receipt 회신
 - session orchestrator가 요청한 역할·모델·병렬화 manifest의 안전·권한·write overlap·host feasibility 검사
-- spawn·send·wait·stop·close handle과 terminal 상태 관리
+- spawn·send·wait·stop·close handle, 여섯 lifecycle 차원과 실제 host close evidence 관리
 - leaf packet을 의미 재종합 없이 parent session에 전달하고, material locator·diff·실행 결과를 직접 확인
 - Session Orchestrator의 `phase_verdict`와 `recommended_next_action`을 입력으로 전체 사용자 목표의 다음 phase 또는 중단 상태 결정
 - 사용자에게 근거와 남은 위험을 포함한 최종 보고
 
-Quick 작업은 직접 답하거나 구현할 수 있다. Standard/Deep에서 해당 연구·구현 phase가 열리면 main은 leaf 분해·연구 종합·구현 진행 판정을 직접 흡수하지 않는다. Session Orchestrator가 실패하면 새 물리적 Session Orchestrator에 stable packet을 넘기거나 `NEEDS_DECISION / BLOCKED / runtime escalation`로 끝낸다. main-owned leaf 분해로 fallback하지 않는다.
+Quick 작업은 직접 답하거나 구현할 수 있다. Standard/Deep에서 해당 연구·구현 phase가 열리면 main은 leaf 분해·연구 종합·구현 진행 판정을 직접 흡수하지 않는다. Session Orchestrator가 실패하면 새 물리적 Session Orchestrator에 stable packet을 넘기거나 `NEEDS_DECISION / BLOCKED`로 끝낸다. main-owned leaf 분해나 PLAN-0002 runtime fallback을 사용하지 않는다.
 
 ### 4. Research/Implementation Orchestrator
 
 두 역할은 이름만 붙인 논리적 단계가 아니라 main과 분리된 물리적 Codex session이다.
 
-- **Research Orchestrator**: 결정 질문과 source plan 수립, research·critic leaf 계약, packet 품질·충돌·반례 판정, 좁은 follow-up, 비판 disposition, `RESEARCH_COMPLETE` 보고를 소유한다.
-- **Implementation Orchestrator**: acceptance criterion을 단계·dependency·write ownership으로 분해하고 planner·writer·verifier leaf 계약, 단계 진척·stale·재계획, 계획 비판과 구현 검증 disposition, `IMPLEMENTATION_COMPLETE` 보고를 소유한다.
+- **Research Orchestrator**: 결정 질문과 source plan 수립, research·critic leaf 계약, packet 품질·충돌·반례 판정, 좁은 follow-up, 비판 disposition, close authorization 없는 `RESEARCH_COMPLETE` 보고와 evidence receipt 이후의 별도 `CLOSE_REQUESTED`를 소유한다.
+- **Implementation Orchestrator**: acceptance criterion을 단계·dependency·write ownership으로 분해하고 planner·writer·verifier leaf 계약, 단계 진척·stale·재계획, 계획 비판과 구현 검증 disposition, Standard/Deep UI Design Assurance domain phase, close authorization 없는 `IMPLEMENTATION_COMPLETE` 보고와 evidence receipt 이후의 별도 `CLOSE_REQUESTED`를 소유한다.
 - 둘 다 main에 `DELEGATION_REQUEST`를 보내며, 현재 surface에서는 main이 host tool을 대행하고 결과 packet을 같은 session에 돌려준다.
 - main은 안전·권한·scope·host 가능성 외의 이유로 manifest를 다시 설계하거나 leaf 결과 중 편한 것만 골라 전달하지 않는다.
 
@@ -121,9 +127,9 @@ Role contract에는 반드시 다음을 넣는다.
 | 동시 thread 상한 | `agents.max_concurrent_threads_per_session` 지원 | baseline 전 project 값 고정하지 않음 |
 | Skill 간 직접 호출 API | 확인되지 않음 | Skill 체인을 결정적 함수 호출처럼 설계하지 않음 |
 | 정확한 fan-out·순서 | 명시 요청은 지원되지만 deterministic 실행 보장은 문서화되지 않음 | Session Orchestrator의 manifest와 barrier를 main이 실행하고 실제 spawn·완료를 확인 |
-| descendant spawn | 현재 probe에서 subagent 내부 `spawn_agent`가 노출되지 않아 실패 | direct nested control 대신 main이 host control만 대행 |
-| orchestrator continuation | 현재 probe에서 동일 orchestrator thread에 packet 전달 후 후속 판단 성공 | 물리적 session과 decision ownership을 leaf wave 사이에도 유지 |
-| 완전한 context 격리 | main이 host tool result를 수신하므로 현재 surface에서는 불가능 | bounded packet·raw artifact locator로 오염 제한; 완전 격리가 필수면 runtime 승격 |
+| descendant spawn | planning record에는 subagent 내부 `spawn_agent` 미노출 실패가 있으나 raw host transcript 없음 | behavior validation으로 credit하지 않고 direct nested control을 전제하지 않음 |
+| orchestrator continuation | planning record에는 same-session continuation 성공이 있으나 raw host transcript 없음 | 물리적 session 가설은 유지하되 pilot에서 직접 검증 |
+| 완전한 context 격리 | main이 host tool result를 수신하므로 현재 surface에서는 불가능 | bounded packet·raw artifact locator로 오염 제한; 완전 격리가 실제 요구가 되면 PLAN-0002 밖의 새 evidence-backed decision 검토 |
 | 의미 기반 근거 검증 | 기본 제공 아님 | schema/link 검사와 semantic review를 분리 |
 | 문서만으로 path write 강제 | 보장되지 않음 | 권한 모드, 소유 범위, diff 검증을 함께 사용 |
 
@@ -138,7 +144,7 @@ Role contract에는 반드시 다음을 넣는다.
 - 실제 사실: 현재 파일, Git diff, 명령 종료값, 테스트·브라우저 산출물
 - 둘 이상의 agent wave: plan 안의 작은 Lifecycle Ledger; 별도 orchestration DB 없음
 
-다음 상태 이름은 의사소통용이지 코드 state machine enum이 아니다.
+다음 순서는 phase 사이의 의사소통·workflow state를 위한 표기이지 host observation state가 아니며, 코드 state machine enum이나 reducer도 아니다. lifecycle observation, contract currency, evidence completion, close semantics의 규범적 분류·판정은 [`agent-orchestration.md`](agent-orchestration.md)가 유일하게 소유한다. 이 문서는 그 값을 다시 정의하지 않는다.
 
 ```text
 INTAKE -> PLANNED -> RESEARCHING? -> IMPLEMENTING? -> VERIFYING
@@ -170,38 +176,18 @@ INTAKE -> PLANNED -> RESEARCHING? -> IMPLEMENTING? -> VERIFYING
 
 정적 validator는 왼쪽만 판정한다. 오른쪽까지 검증했다고 표현하지 않는다.
 
-## 런타임 승격 조건
+## 현재 구현의 runtime 제외
 
-다음 중 하나가 실제 요구나 반복 실패로 확인될 때만 code-first runtime spike를 연다.
+PLAN-0002 구현은 Codex SDK, Codex App Server, OpenAI Agents SDK, LangGraph와 runtime observer·graph·state runtime 코드, dependency, configuration을 명시적으로 채택하지 않는다. 이 항목들은 PLAN-0002 안의 active·deferred phase, ladder 또는 spike가 아니다.
 
-- process 종료 후 자동 resume이 필요하다.
-- 수시간·수일의 human-in-the-loop 대기가 업무 요구다.
-- 외부 event가 안정적으로 workflow를 시작해야 한다.
-- 다수 작업의 queue·동시성·재시도·관찰이 필요하다.
-- 절차적 Skill로 false-completion 또는 권한 우회를 허용 수준까지 낮추지 못한다.
-
-process 재시작 후 resume은 미래 승격 신호지만 MVP acceptance criterion은 아니다. 따라서 SDK·Agents SDK·LangGraph의 resumability는 현재 채택 근거로 계산하지 않는다.
-
-그때 동일 vertical slice와 동일 평가 budget으로 비교한다.
-
-| 후보 | 적합한 상황 | 해결하지 않는 것 | 현재 판정 |
-|---|---|---|---|
-| Codex SDK | coding-focused thread handle, 프로그램식 start·continue, CI·내부 자동화, turn별 sandbox | Ariadne의 barrier·stale·authority·semantic evidence 정책을 자동 제공하지 않음 | host 제어 누락이나 자동화 요구가 측정되면 첫 spike 후보 |
-| Codex App Server | custom client의 thread·turn·event·approval 관찰과 steer·interrupt | 문서화된 임의 descendant spawn이나 의미 검증을 가정할 수 없음 | event-level control이 material할 때만 비교 |
-| OpenAI Agents SDK + Codex MCP | Codex가 더 넓은 manager/tool/handoff workflow의 specialist일 때 | Codex host lifecycle, exactly-once external effect, Ariadne authority protocol을 자동 제공하지 않음 | 현재는 별도 runtime과 이중 상태 부담 때문에 보류 |
-| LangGraph | 반복된 phase-order·stale·barrier·retry 오류를 typed state와 transition으로 막을 때 | Codex spawn 권한, source truth, permission isolation, exactly-once effect | Skill 개선 뒤 lifecycle failure가 반복될 때 handwritten transition과 tiny graph를 비교 |
-| Microsoft Agent Framework | typed workflow와 Microsoft stack integration이 실제 요구일 때 | 같은 semantic·permission 문제 | 현재 요구 없음 |
-
-Codex SDK는 토큰 절감 기능이 아니라 Codex thread를 프로그램으로 제어하는 표면이다. 같은 prompt·model·reasoning·tool work와 같은 agent 수를 실행한다면 SDK를 쓴다는 사실만으로 토큰이 줄어든다고 가정하지 않는다. 반대로 추가 orchestrator turn, subagent, retry와 긴 thread context가 늘면 총사용량도 늘 수 있다. bounded packet, 불필요한 run 제거, 적절한 model·effort, 동일 thread continuation으로 재작업을 줄이는 경우에만 **전체 작업 완료당** token·비용 감소 가능성을 실험으로 판정한다.
-
-기존 계획의 “Agents SDK는 durable workflow를 제공하지 않는다”는 표현은 현재 sessions·resumable run 지원을 반영하지 못해 폐기한다.
+향후 재검토는 process restart 자동 resume, multi-day human wait, 외부 event·queue, cross-process worker, 반복된 false-completion·권한 우회처럼 **직접 관찰된 material 요구나 실패**가 생긴 경우에만 시작한다. 그때도 PLAN-0002를 암묵적으로 확장하지 않고 새 decision과 plan에서 동일 vertical slice, 실패 주입, 보안·상태 소유, migration·maintenance cost를 비교한다. 기능표나 advisory research만으로 재검토를 열지 않는다.
 
 ## 외부 디자인 Skill 경계
 
-MengTo/Skills는 디자인 전용 adapter 후보다. 첫 UI pilot 전에는 복사하거나 wrapper Skill을 만들지 않는다.
+MengTo/Skills는 디자인 전용 bounded adapter 후보다. 첫 UI pilot 전에는 설치·복사·vendor하거나 wrapper Skill을 만들지 않는다. Standard/Deep UI domain phase는 Implementation Orchestrator가 소유하고, Quick UI는 active convention·accessibility·proportionate verification 아래 main이 직접 처리할 수 있다.
 
 - reference capture·해석: `stitched-full-page-capture`, `video-to-superprompt`, `html-to-interaction-prompts`
 - proposal: `design-first-ui-prompting`과 좁은 layout/motion Skill
 - 보조 QA: originality·animation·performance 관련 Skill
 
-외부 Skill의 산출물은 후보와 관찰이다. 프로젝트 목적, active convention, 접근성, 반응형·상태 동작, 성능, 독창성, 실제 브라우저 결과가 최종 판단 근거다. vendoring이 필요해지면 license, upstream revision, digest와 수정 내역을 별도 결정으로 기록한다.
+외부 Skill의 산출물은 후보와 관찰이다. Task-scoped Design Execution Contract는 Completion Contract와 active convention에 종속되며 active convention 자체가 아니다. Candidate 값은 convention lifecycle을 거쳐야만 승격된다. 프로젝트 목적, active convention, 접근성, 반응형·상태 동작, 성능, 독창성, 실제 브라우저 결과가 최종 판단 근거다. 설치·vendoring이 필요해지면 현재 구현 범위를 넓히지 말고 license, upstream revision, digest와 수정 내역을 별도 결정으로 검토한다.

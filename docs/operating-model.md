@@ -113,7 +113,7 @@ Standard/Deep의 main material role과 material decision을 내리는 delegated 
 - Standard/Deep에서 research phase를 열면 물리적인 Research Orchestrator session이 질문 분해, leaf 계약, packet 판정, follow-up과 최종 보고를 소유한다.
 - Standard/Deep에서 implementation phase를 열면 물리적인 Implementation Orchestrator session이 단계 분해, planner·writer·verifier 계약, 진척·재계획·검증 판정과 최종 보고를 소유한다.
 - 현재 surface에서 main은 session 생성, safety·permission 검사와 spawn·send·wait·stop·close만 대행하는 control-plane proxy다. leaf packet을 재종합하지 않고 parent session에 전달한다.
-- direct descendant spawn은 현재 probe에서 실패했지만 같은 Session Orchestrator의 continuation은 성공했다. 따라서 역할 분리를 없애지 않고 host-mediated hierarchy로 구현한다.
+- planning record에는 direct descendant spawn 실패와 same-session continuation 성공이 적혀 있지만 raw host transcript가 없어 behavior validation으로 credit하지 않는다. 따라서 direct nested control을 전제하지 않고 host-mediated hierarchy를 pilot 대상으로 유지한다.
 
 ## 5. Completion Contract
 
@@ -137,7 +137,7 @@ Standard/Deep 작업은 delegation이나 구현 전에 다음을 고정한다.
 - 완료, needs-decision, blocked, failed 조건
 ```
 
-완료 조건은 “코드를 작성함”이 아니라 관측 가능한 결과다. 테스트를 못 돌리면 이유와 미검증 범위를 남기며 통과한 것처럼 표현하지 않는다.
+완료 조건은 “코드를 작성함”이 아니라 관측 가능한 결과다. 테스트를 못 돌리면 이유와 미검증 범위를 남기며 통과한 것처럼 표현하지 않는다. 적용되는 agent lifecycle가 있는 repository/phase의 `COMPLETE`는 [`agent-orchestration.md`](agent-orchestration.md)의 evidence gate를 통과해야 하며, host completion, completed turn/item 또는 phase semantic packet 하나만으로는 충분하지 않다.
 
 ### Stage gate receipt
 
@@ -242,7 +242,7 @@ Standard/Deep에서 생략하면 한 줄 rationale을 남긴다. 연구 필요�
 
 모든 연구에 모든 lane을 열지 않는다. Standard/Deep 연구가 열리면 main은 먼저 Research Orchestrator session에 결정 질문, completion contract, Document Binding과 source 제약을 준다. Research Orchestrator가 주제에 맞는 lane과 초기 leaf 수를 판단해 `DELEGATION_REQUEST`를 만들고, main은 안전 검사 뒤 host spawn을 대행한다. 초기 leaf는 최대 3개가 기본이지만 hard threshold는 아니다. 한 lane만으로도 material gap을 닫을 수 있으면 줄이고, 세 개를 넘겨야 하면 독립성·추가 가치·검증 가능성을 설명한다.
 
-leaf packet은 main을 거쳐 Research Orchestrator에 전달된다. Research Orchestrator가 관련성·출처 품질·상충·누락을 판정하고, 결정에 영향을 주는 gap에만 좁은 follow-up을 요청하며, critic 결과의 수용·반박·미해결 disposition까지 마친 뒤 `RESEARCH_COMPLETE`를 main에 올린다. main은 leaf 원문을 대신 종합하지 않는다.
+leaf packet은 main을 거쳐 Research Orchestrator에 전달된다. Research Orchestrator가 관련성·출처 품질·상충·누락을 판정하고, 결정에 영향을 주는 gap에만 좁은 follow-up을 요청하며, critic 결과의 수용·반박·미해결 disposition까지 마친 뒤 close authorization 없는 `RESEARCH_COMPLETE`를 main에 올린다. Main은 leaf 원문을 대신 종합하지 않고 raw evidence를 독립 검사한다. `EVIDENCE_COMPLETE`를 기록해 같은 Research Orchestrator에 receipt로 보낸 뒤에만 dependent Implementation을 열며, close confirmation은 이 dependency gate와 별개다.
 
 ### Source tier
 
@@ -328,8 +328,8 @@ Schema validator가 검사할 수 있는 것은 필수 field·내부 reference·
 - 쓰기는 겹치지 않는 소유 범위만 병렬화한다.
 - dependent worker는 선행 packet을 Implementation Orchestrator가 disposition한 다음 wave에서 시작한다.
 - 각 단계 후 worker는 changed files, 실행 명령, 결과, 계획 이탈, 남은 위험을 보고한다.
-- main은 packet을 Implementation Orchestrator에 전달하고 material diff·raw result·권한 범위를 직접 확인한다. final packet과 raw evidence가 충돌하면 main이 결론을 바꾸지 않고 `EVIDENCE_MISMATCH` packet을 같은 Implementation Orchestrator에 돌려보낸다. 진행·재작업·추가 연구·완료의 의미 판정은 Implementation Orchestrator가 한다.
-- Implementation Orchestrator는 모든 stage와 독립 검증을 닫은 뒤 `IMPLEMENTATION_COMPLETE`와 계획 이탈·남은 위험을 main에 보고한다.
+- main은 packet을 Implementation Orchestrator에 전달하고 material diff·raw result·권한 범위를 직접 확인한다. Phase semantic packet과 raw evidence가 충돌하면 main이 결론을 바꾸지 않고 `EVIDENCE_MISMATCH` packet을 같은 Implementation Orchestrator에 돌려보낸다. 진행·재작업·추가 연구·완료의 의미 판정은 Implementation Orchestrator가 한다.
+- Implementation Orchestrator는 모든 stage와 독립 검증을 닫은 뒤 close authorization 없는 `IMPLEMENTATION_COMPLETE`와 계획 이탈·남은 위험을 main에 보고한다. Main이 raw evidence와 Document Impact를 독립 검사해 `EVIDENCE_COMPLETE` receipt를 같은 owner에게 보내면 owner가 별도 `CLOSE_REQUESTED`를 내고, main은 실제 host evidence로 close disposition을 기록한다.
 
 계획과 다른 선택이 더 타당하면 숨기지 않는다. 이유·근거·영향을 제시하고 재계획 또는 owner 결정을 거친다.
 
@@ -375,6 +375,15 @@ active convention이 없거나 의심스러우면 다음 순서를 사용한다.
 
 ## 12. Design Assurance Loop
 
+Design Assurance는 UI·design 작업에만 여는 domain gate다. Completion Contract와 적용 가능한 active convention이 상위 계약이고, 아래 Reference Evidence System·Design Execution Contract·Multi-axis Visual QA는 그 계약을 구체화한다.
+
+- **owner**: Standard/Deep UI의 domain phase와 semantic disposition은 Implementation Orchestrator가 소유한다. Reference 수집·작성·검증을 leaf에 위임할 수 있지만 main이나 외부 Skill이 owner를 대체하지 않는다. Quick UI는 main이 직접 가볍게 처리한다.
+- **entry gate**: UI scope·사용자 목적·Completion Contract·Document Binding·writable scope를 확인하고, 적용할 active convention, 접근성 위험, reference 필요성, viewport/state와 검증 강도를 정한다. Standard/Deep은 Implementation Orchestrator가 이 receipt를 승인해야 구현을 시작한다.
+- **exit gate**: applicable active convention 준수, task-scoped Design Execution Contract acceptance, 실제 결과의 multi-axis QA, accessibility, proportionate behavioral/performance evidence, originality·provenance risk, raw artifact read-back과 Document Impact가 닫혀야 한다.
+- **reopen triggers**: 목적·content·reference·active convention 변경, 새로운 viewport/state/localization/accessibility/performance/originality 위험, browser 결과와 contract 불일치, raw evidence mismatch 또는 수정 회귀가 생기면 contract나 필요한 QA lane을 다시 연다.
+
+Quick UI는 별도 무거운 domain-phase ceremony 없이 직접 처리할 수 있지만, 적용 가능한 convention과 accessibility를 지키고 scope·risk에 비례한 browser/behavioral verification과 Document Impact를 남긴다.
+
 디자인 작업은 다음 세 시스템을 기본 뼈대로 쓰되, 여섯 축 QA로 완성한다.
 
 ### A. Reference Evidence System
@@ -395,6 +404,8 @@ active convention이 없거나 의심스러우면 다음 순서를 사용한다.
 기본은 full-page context 1개와 결정에 중요한 section/state 증거다. trace·video는 상호작용 원인 조사, 실패, 고위험 상태에 선택적으로 사용하고 모든 성공 run에 상시 수집하지 않는다. coverage matrix에는 확인한 viewport/state/interaction과 확인하지 않은 영역을 함께 적는다.
 
 ### B. Design Execution Contract
+
+Design Execution Contract는 한 task의 UI/domain 실행 계약이며 Completion Contract와 active convention에 종속된다. 그 자체는 active convention이 아니고 project-wide 기본값을 만들지 않는다. 반복 가치가 있는 candidate 값·패턴은 [`conventions/README.md`](conventions/README.md)의 lifecycle을 거쳐야만 convention으로 들어간다.
 
 화면 또는 section마다 다음을 적는다.
 
@@ -428,13 +439,13 @@ Screenshot baseline 비교에서는 browser·OS·font·viewport와 animation 상
 
 ### MengTo/Skills 사용
 
-첫 UI pilot에서 필요한 좁은 Skill만 명시적으로 선택한다. upstream 전체를 자동 설치·갱신하지 않는다.
+첫 UI pilot에서 이미 가용한 좁은 Skill만 명시적으로 선택한다. upstream 전체를 자동 설치·갱신하거나 vendor하지 않는다.
 
 - capture/interpretation Skill → Reference Evidence 보조
 - design-first·layout·motion Skill → contract 후보 보조
 - originality·performance·animation Skill → QA 보조
 
-각 사용에는 Skill 이름, source revision/digest(가능한 경우), 입력 project context, 산출물과 limitation을 기록한다. MengTo 결과는 접근성·프로젝트 token·완료 판정의 권위가 아니다.
+각 사용에는 Skill 이름, source revision/digest(가능한 경우), 입력 project context, 산출물과 limitation을 기록한다. MengTo 결과는 bounded adapter output일 뿐 접근성·프로젝트 token·convention 승격·phase disposition·완료 판정의 권위가 아니다.
 
 ## 13. 재사용 자산 승격
 
