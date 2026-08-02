@@ -23,3 +23,34 @@ Fixture 원본은 실행 중 수정하지 않는다. 실행 복사본과 원시 
 - 현재 목적: Skill이 해결해야 할 실제 누락과 이미 잘 되는 행동을 분리
 
 현재 B10 상태는 **static oracle alignment only; B10 behavior unvalidated.** B10 run 또는 paired behavior 결과는 이 디렉터리의 현재 fixture·rubric만으로 주장하지 않는다.
+
+## 등록된 candidate experiment
+
+| candidate | plan | frozen oracle | current execution record / claim boundary |
+|---|---|---|---|
+| `reference-research-team` explicit `embedded-method` | [`../../docs/plans/drafts/0003-explicit-skill-composition-draft.md`](../../docs/plans/drafts/0003-explicit-skill-composition-draft.md) | [`contract.md`](experiments/0003-reference-research-team-embedded-method/contract.md): W0-R3 identity-only `FROZEN_ON_V0_RECEIPT`; its `NOT_RUN` cells are frozen input | [`run-record.md`](experiments/0003-reference-research-team-embedded-method/run-record.md): B/F1 owner `PASS`, B/F2 second owner `PASS`, B/F3 owner `FAIL`; B/F4 + two mode smokes `NOT_RUN` after required termination. No independent grade, bridge, compatibility, adoption, effect, or model claim. |
+
+```yaml
+contract_path: evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/contract.md
+contract_revision: W0-R3
+freeze_receipt: independent V0 FREEZE
+oracle_revision: sha256:89614f394877f4e52afd0b39c428cf1c96bf8343b579dde8964e8a37df098285
+source_set_digest: sha256:a3a5dde752eeebbebc38e14511d59d86af3eb3a6904bf9d18ed40689b42a86e8
+source_set_scope: implemented ten-file identity; not whole-package or source-semantics proof
+identity_only_diff: verified
+v1_static_implementation: accepted
+superseded_oracle_receipt: W0-R2 sha256:6890421241774922b3b8bf4f70cb87db5b743ba3759b3cd36717e365638d62d0; non-executable history
+canonical_blocks: 23 exact/matching; 19 R2-unaffected payloads byte-identical
+frozen_oracle_results: NOT_RUN
+current_execution_record: experiments/0003-reference-research-team-embedded-method/run-record.md
+current_execution_claim_boundary: no independent grade, bridge, compatibility, adoption, effect, or model claim
+runner_pre_subject_gate: exact-match oracle_revision and source_set_digest; block on either mismatch
+```
+
+이 등록은 frozen oracle과 W2 execution evidence를 분리한다. PLAN-0002 baseline A는 그대로
+보존하며 strict A/B Skill-effect는 `NOT_ISOLATABLE`이다. External freeze receipt는 behavior
+result나 candidate adoption이 아니며 W2 record도 independent grade가 아니다. W0-R2 receipt는
+non-executable superseded history다. Required termination 때문에 grader, verifier, held-out smoke,
+bridge writer는 launch되지 않았고 `bridge_added: false`다. 따라서 current record는 compatibility,
+adoption, effect 또는 model claim을 만들지 않으며, contract와 append-only run record는 수정하지
+않는다.

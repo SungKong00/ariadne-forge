@@ -35,6 +35,8 @@ last_verified: 2026-08-02
 | [`../evals/ariadne-workflow/runs/baseline-001/report.md`](../evals/ariadne-workflow/runs/baseline-001/report.md) | no-Skill RED baseline 기록 | recorded revision / prior cases only; not current lifecycle behavior evidence |
 | [`../evals/ariadne-workflow/runs/with-skill-001/report.md`](../evals/ariadne-workflow/runs/with-skill-001/report.md) | with-Skill prior-case 기록 | recorded revision / prior cases only; not a current paired or universal claim |
 | [`../evals/ariadne-workflow/fixtures/b10-lifecycle-observation/scenarios.md`](../evals/ariadne-workflow/fixtures/b10-lifecycle-observation/scenarios.md) | 12-case lifecycle observation grader oracle | predeclared and static checked; not executed; behavior-unvalidated; no B10 run report |
+| [`../evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/contract.md`](../evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/contract.md) | PLAN-0003 W0-R3 frozen oracle | identity-only `FROZEN_ON_V0_RECEIPT`; 23 canonical blocks exact/matching; its `NOT_RUN` cells are frozen oracle state, not current execution results |
+| [`../evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/run-record.md`](../evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/run-record.md) | W2 candidate execution record | B/F1 owner `PASS`, B/F2 second owner `PASS`, B/F3 owner `FAIL`; B/F4 and two mode smokes `NOT_RUN` after required termination; no independent grade, bridge, compatibility, adoption, effect, or model claim |
 
 ## 개선 초안
 
@@ -42,7 +44,7 @@ last_verified: 2026-08-02
 
 | 문서 | 검토 주제 | 상태·권위 |
 |---|---|---|
-| [`plans/drafts/0003-explicit-skill-composition-draft.md`](plans/drafts/0003-explicit-skill-composition-draft.md) | 재귀 호출이 아닌 명시적 Skill injection, phase package 분리와 1-vs-3 package 비교 | draft; non-authoritative until adoption |
+| [`plans/drafts/0003-explicit-skill-composition-draft.md`](plans/drafts/0003-explicit-skill-composition-draft.md) | PLAN-0002 baseline A를 보존한 same-owner embedded-method B의 historical candidate execution disposition; 1-vs-3은 deferred Option E | completed; historical partial candidate execution; W0-R3 freeze receipt와 W2 partial execution을 구분해 기록하며, required termination 뒤 재개 지시·adoption 권위 없음 |
 
 ## 문서 종류와 쓰임
 

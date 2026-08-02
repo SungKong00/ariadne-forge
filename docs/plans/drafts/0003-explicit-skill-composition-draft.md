@@ -1,422 +1,419 @@
 ---
 id: PLAN-0003
 kind: execution-plan
-status: draft
+status: completed
 authority: execution
 scope: ariadne-skill-composition
 owner: project-owner
 last_verified: 2026-08-02
 supersedes: null
 related_plan: PLAN-0002
-behavior_status: unvalidated-draft
+behavior_status: historical-partial-candidate-execution
+evaluation_contract: ../../../evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/contract.md
 ---
 
-# 명시적 Skill composition과 phase package 분리 초안
+# `reference-research-team` 명시적 embedded-method 후보 계획
 
 ## 문서 상태
 
-이 문서는 [`PLAN-0002`](../active/0002-codex-native-skill-first-plan.md)의 현재 실행 순서를 바꾸지 않는 **추후 개선 후보**다. 공식 지원 사실과 현재 surface probe를 바탕으로 비교 실험을 설계하지만, Skill injection forward test와 단일/분리 package 비교가 끝나지 않았으므로 채택된 아키텍처가 아니다.
+이 문서는 [`PLAN-0002`](../active/0002-codex-native-skill-first-plan.md)의 current
+architecture를 바꾸지 않는 bounded candidate plan이다. Identity-only W0-R3의 exact bytes에는
+independent V0 `FREEZE` receipt가 기록됐고 W0-R2 receipt는 non-executable superseded history다.
+W0-R3 freeze receipt는 결과가 아니라 frozen oracle identity다. W2의 partial candidate execution은
+required termination으로 끝났으며, 이 draft는 그 disposition을 보존하는 historical record이지
+matrix를 재개하라는 active instruction이 아니다.
 
 ```yaml
-status: UNVALIDATED_DRAFT
-current_authority: none beyond this bounded experiment
+status: HISTORICAL_PARTIAL_CANDIDATE_EXECUTION
 current_plan: PLAN-0002 remains active
-next_gate: explicit skill-injection probe
-repository_mutation_allowed_by_this_draft: none
+candidate_a: preserved baseline; no immediate subject session
+candidate_b: explicit embedded-method historical candidate execution
+strict_a_b_skill_effect: NOT_ISOLATABLE on current host
+execution_record: evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/run-record.md
+execution_matrix: B/F1 owner PASS; B/F2 second owner PASS; B/F3 owner FAIL; B/F4 and two mode smokes NOT_RUN due required termination
+downstream: grader, verifier, held-out smoke, and bridge writer not launched; bridge_added false
+independent_w2_grade: none
+model_comparison: not claimed
+contract_path: evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/contract.md
+contract_revision: W0-R3
+contract_freeze_state: FROZEN_ON_V0_RECEIPT
+freeze_receipt: independent V0 FREEZE
+oracle_revision: sha256:89614f394877f4e52afd0b39c428cf1c96bf8343b579dde8964e8a37df098285
+source_set_digest: sha256:a3a5dde752eeebbebc38e14511d59d86af3eb3a6904bf9d18ed40689b42a86e8
+source_set_scope: implemented ten-file identity; not whole-package or source-semantics proof
+identity_only_diff: verified
+v1_static_implementation: accepted
+superseded_oracle_receipt: W0-R2 sha256:6890421241774922b3b8bf4f70cb87db5b743ba3759b3cd36717e365638d62d0; non-executable history
+canonical_blocks: 23 exact/matching; 19 R2-unaffected payloads byte-identical
+frozen_oracle_results: NOT_RUN
+claim_boundary: no compatibility, adoption, effect, or model claim
+next_action: no matrix-resumption instruction; any future work requires a newly authorized plan
 ```
+
+The remaining candidate-design and matrix text is retained for historical traceability only. It does
+not authorize a rerun, new evidence collection, a frozen-contract rewrite, or an append-only
+run-record rewrite.
 
 ## 결정 요약
 
-검토할 후보는 **재귀 Skill 호출**이 아니라 다음의 명시적 choreography다.
+후보 B의 목표 topology는 유지한다.
 
 ```text
-ariadne-workflow entry
-  -> Main creates a physical phase session with an explicit Skill binding
-     -> phase orchestrator requests bounded leaves and optional expertise Skills
-        -> Main performs host controls and injects requested Skills
-     <- bounded packets return to the same phase orchestrator
-  <- phase final packet returns to Main
+Main (control_proxy)
+  -> one physical Ariadne Research Orchestrator (semantic_owner)
+     + ariadne-workflow role contract
+     + explicit reference-research-team embedded-method
+  <- DELEGATION_REQUEST
+Main performs requested host controls
+embedded method returns research_packet_v4 to the same owner only
+Research Orchestrator owns synthesis and research-phase disposition
 ```
 
-초기 비교 후보는 세 package다.
+하지만 current Codex Desktop multi-agent host에서는 cwd가 repository이고 subject의 oracle
+filesystem 접근 가능성을 제거할 수 없다. Direct oracle read는 invalidation할 수 있지만 읽지
+않았다는 absence는 증명할 수 없다. 따라서 strict A/B Skill-effect는 `NOT_ISOLATABLE`이며,
+현재 immediate matrix에는 A session을 넣지 않는다.
 
-1. `ariadne-workflow`: intake, route, cross-phase transition과 user outcome closure
-2. `ariadne-research-session`: research decomposition, evidence conflict, critique disposition과 research verdict
-3. `ariadne-implementation-session`: plan, worker dependency, implementation progress, verifier·critic disposition과 implementation verdict
+- **A**: PLAN-0002 baseline으로 보존하되 current host에서는 실행하지 않는다.
+- **B**: same owner + explicit `reference-research-team` `embedded-method`; compatibility candidate다.
+- **C**: 두 번째 research orchestrator/session은 ownership 중복 때문에 reject한다.
+- **D**: 범용 연구 규칙의 Ariadne 복사는 drift와 중복 때문에 reject한다.
+- **E**: 기존 1-vs-3 Ariadne package 분리는 역사적 후속 선택지로 defer한다.
+- custom agent도 반복 역할·comparison evidence 전까지 defer한다.
+- runtime, Codex SDK, Codex App Server integration, OpenAI Agents SDK, LangGraph, hook,
+  plugin과 state/graph observer는 current plan에서 제외한다.
 
-critic, planner, writer, verifier, Java·React·design expertise는 초기 고정 package가 아니다. bounded role prompt 또는 이미 설치된 좁은 expertise Skill로 시작하고 반복 가치가 검증될 때만 승격한다.
+## Historical completion contract (non-authorizing)
 
-## Completion Contract
+The following W0 completion, verification, constraint, boundary, and stop language records the
+frozen candidate design. It is not current permission to execute or resume any session.
 
 ### Outcome
 
-현재 단일 Skill보다 관심사와 context를 명확히 분리하면서도 Harness Maestro형 runtime을 만들지 않는 Skill composition 후보를 검증한다.
+Accepted V0 correction에 맞춰 subject-visible role/prompt/binding과 runner-only oracle을
+canonical byte blocks로 분리한 historical candidate execution과 its termination boundary를 정확히
+기록한다.
 
 ### Verification
 
-- current surface에서 spawned session에 명시한 Skill이 실제 output contract를 바꾸는지 확인한다.
-- 같은 physical phase session continuation에서 Skill 계약이 유지되는지 확인한다.
-- missing·duplicate Skill이 silent fallback되지 않는지 확인한다.
-- 단일 package와 세 package를 동일 fixture·model·effort·permission·retry budget으로 비교한다.
-- concern isolation, trigger 정확도, phase ownership, packet 준수, false completion, token·시간을 함께 측정한다.
-- static validation과 realistic forward test 전에는 `CANDIDATE`나 `ADOPTED`로 부르지 않는다.
+- evaluation contract의 23 canonical blocks를 documented convention으로 추출한다.
+- 각 block의 `block_id`, begin/end marker, byte length와 SHA-256 manifest를 독립 두 방법으로
+  재계산한다.
+- F2–F4 subject prompts에 expected disposition, rubric 또는 rebuttal outcome이 없는지 읽는다.
+- fixed Desktop/repository/Sol-high/inherited-permission envelope와 six-session matrix를 대조한다.
+- exact write scope와 `git diff --check`를 확인한다.
+- 이 documentation disposition에서 experiment rerun, 새 evidence, A subject, model comparison 또는
+  result claim을 만들지 않는다.
 
 ### Constraints
 
-- Skill-to-Skill direct call이나 recursion을 Codex 보장 기능으로 주장하지 않는다.
-- direct descendant spawn을 전제로 하지 않고 main의 host-control proxy를 유지한다.
-- phase Skill은 project policy나 user outcome 권한을 소유하지 않는다.
-- expertise Skill은 advisory leaf이며 phase verdict를 소유하지 않는다.
-- personal absolute path를 package 지침에 고정하지 않는다.
-- hooks, plugin, custom agent, SDK, DB, graph runtime을 이 실험에 추가하지 않는다.
-- restart/resume은 범위 밖이다.
+- physical Research Orchestrator는 정확히 1명이고 semantic owner다.
+- Main만 control proxy다.
+- embedded method는 `spawn`, `send/continue`, `wait`, `stop`, `close`를 수행하거나 소유하지
+  않는다.
+- method output은 `research_packet_v4`로 같은 owner에게만 간다.
+- B compatibility grading에는 unique resolved identity + matching `source_set_digest`와
+  direct instruction-read observation이 모두 필요하다.
+- causal assurance는 `behavioral_only | unobservable`로 별도 기록하며 compatibility를
+  자동 차단하지 않지만 Skill-effect claim은 절대 지지하지 않는다.
+- F4 instruction-read-unobservable subcase는 read receipt가 없으므로 fail closed한다.
+- unsupported F4 host state는 synthetic product behavior로 만들지 않고 `NOT_ISOLATABLE`이다.
+- requested model/effort와 actual values를 분리하고 actual이 보이지 않으면
+  `unobservable`로 기록한다.
+- same-name Skill candidates는 merge하지 않고 deterministic precedence를 발명하지 않는다.
+- implemented ten-file digest는 whole package나 source semantics가 아니라 `source_set_digest`다.
+- App Server 공식 claim은 App Server scope로 제한한다.
 
-### Boundaries
+### Historical W0 boundaries (non-authorizing)
 
-초안 승인 뒤 probe에서 허용할 수 있는 범위:
+Historical W0 writable scope:
 
-- disposable fixture 또는 별도 test workspace
-- temporary physical subagent sessions
-- Skill binding·packet·token 측정 기록
-- probe가 통과한 뒤에만 `.agents/skills/ariadne-*/**` candidate package
+- `docs/plans/drafts/0003-explicit-skill-composition-draft.md`
+- `docs/README.md`
+- `evals/ariadne-workflow/README.md`
+- `evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/contract.md`
 
-금지 범위:
+금지:
 
-- production code 변경
-- current normative policy 자동 수정
-- commit, push, 배포, 외부 메시지
-- global Skill 복사·수정·vendoring
+- global `reference-research-team`과 repo `ariadne-workflow` 수정
+- run record, schema, script, runtime, config, production code
+- PLAN-0002, architecture, operating/model/agent policy, ADR, convention 변경
+- behavior session, A/B comparison, model comparison, commit, push, deploy, external message
 
-### Stop when
+### Historical W0 stop conditions (non-authorizing)
 
-- `ADOPT_CANDIDATE`: 명시 주입이 작동하고 분리 variant가 critical regression 없이 관심사 분리를 개선
-- `KEEP_SINGLE_SKILL`: 주입이 불안정하거나 분리 이득이 overhead·trigger failure보다 작음
-- `REVISE`: binding protocol·package boundary가 수정 가능한 원인으로 실패
-- `BLOCKED`: current surface에서 주입 여부를 관찰하거나 비교할 수 없음
-- `NEEDS_DECISION`: 품질·비용·portability trade-off가 근거만으로 닫히지 않음
+- `FREEZE_RECEIPT_RECORDED`: 23 block manifest가 두 extraction에서 정확히 일치하고
+  independent external V0 SHA-256 receipt가 기록됨
+- `RECEIPT_MISMATCH`: runner가 session 전 다시 계산한 exact contract SHA-256이 receipt와 다름
+- `BLOCKED`: mismatch가 해소되기 전 behavior session을 시작할 수 없음
 
 ## Document Binding
 
-| 문서·자료 | 적용 이유 | 상태·신선도 | 이 초안에서의 사용 |
+| 문서·자료 | 적용 이유 | 상태 | 이 plan의 사용 |
 |---|---|---|---|
-| [`../../project.md`](../../project.md) | 낮은 유지보수 비용, 오류 격리, 유연성 | active | runtime·거대 Skill tree 금지 |
-| [`../../architecture.md`](../../architecture.md) | current single entry Skill과 main-proxy 구조 | active | 실험 전 current architecture 유지 |
-| [`../../operating-model.md`](../../operating-model.md) | phase authority, evidence, stage gate | active | package가 규칙을 복제하지 않고 읽음 |
-| [`../../agent-orchestration.md`](../../agent-orchestration.md) | physical session, main proxy, lifecycle | active; behavior unvalidated | explicit binding을 기존 Role Contract에 추가하는 후보 |
-| [`../../model-selection.md`](../../model-selection.md) | role별 model·effort와 paired comparison | active; mapping unvalidated | variant 간 exact configuration 고정 |
-| [`../active/0002-codex-native-skill-first-plan.md`](../active/0002-codex-native-skill-first-plan.md) | current execution plan | active | 이 draft가 변경하지 않음 |
-| [OpenAI Build skills](https://learn.chatgpt.com/docs/build-skills) | explicit/implicit activation, progressive disclosure, one-job focus | current official; checked 2026-08-02 | direct recursive API가 아니라 explicit binding 후보의 근거 |
-| [OpenAI App Server](https://learn.chatgpt.com/docs/app-server) | turn input의 explicit `skill` item | current official; checked 2026-08-02 | SDK/App Server를 도입하지 않고도 binding contract를 설계하는 참고 |
-| [OpenAI Subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents) | host orchestration과 token trade-off | current official; checked 2026-08-02 | main-proxy와 physical session 유지 |
-| `reference-research-team` installed Skill | embedded packet return과 owner-held spawn 패턴 | local reusable example; not repo authority | bootstrap probe 후보, repository dependency로 고정하지 않음 |
+| [`../../project.md`](../../project.md) | evidence traceability, low maintenance | active | no runtime·no overclaim |
+| [`../../architecture.md`](../../architecture.md) | one owner, Main proxy, runtime exclusion | active | B topology boundary |
+| [`../../operating-model.md`](../../operating-model.md) | authority, evidence, semantic read-back | active | claim and completion boundary |
+| [`../../model-selection.md`](../../model-selection.md) | requested/actual split, model comparison isolation | active; behavior unvalidated | fixed run request, no calibration claim |
+| [`../../agent-orchestration.md`](../../agent-orchestration.md) | physical owner and lifecycle controls | active; behavior unvalidated | Main-only control proxy |
+| [`../../conventions/README.md`](../../conventions/README.md) | draft/candidate lifecycle | active | non-authoritative status |
+| [`../../decisions/0001-codex-native-skill-first.md`](../../decisions/0001-codex-native-skill-first.md) | single-Skill baseline and runtime exclusion | accepted | A preserved |
+| [`../active/0002-codex-native-skill-first-plan.md`](../active/0002-codex-native-skill-first-plan.md) | current execution authority | active; partial/static-only | exact A baseline |
+| [`contract.md`](../../../evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/contract.md) | canonical blocks, six-session matrix, hidden oracle | W0-R3; `FROZEN_ON_V0_RECEIPT`; `NOT_RUN` is frozen oracle state | sole frozen experiment contract |
+| [`run-record.md`](../../../evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/run-record.md) | raw W2 candidate execution and required termination | append-only advisory evidence | sole current execution-status locator; no independent grade |
+| installed `reference-research-team` source set | method/source/checker facts | read-only; repo authority 아님 | B identity input only |
 
-## 확인된 사실과 프로젝트 추론
+Missing/stale/conflicting: accepted V0 correction supersedes this draft's prior 8+2 A/B execution
+shape. No equal-authority repository conflict remains.
 
-### 확인된 사실
+## Subject/runner separation
 
-- Codex는 Skill을 명시적 또는 description 기반으로 활성화하고, 선택된 Skill의 전체 `SKILL.md`를 progressive disclosure로 읽는다.
-- App Server 문서는 turn 시작 시 `$skill` text와 `skill` input item을 함께 넣는 explicit injection을 설명한다.
-- 공식 문서는 Skill A가 Skill B를 함수처럼 호출하고 await하는 재귀 API를 설명하지 않는다.
-- 공식 문서는 Skill을 한 가지 알아볼 수 있는 작업에 집중하도록 권한다.
-- 현재 Ariadne surface에서 descendant spawn은 실패했고, main-mediated same-session continuation은 성공했다.
-- 현재 host tool schema는 spawn input에 `type: skill`, `name`, `path` 형태를 받을 수 있지만, Ariadne phase Skill에 대한 실제 주입 결과는 아직 probe하지 않았다.
+The contract defines four independent context classes.
 
-### 프로젝트 추론
-
-- Skill composition은 호출 stack보다 **session creation manifest에 Skill binding을 포함하는 방식**이 더 관찰 가능하고 현재 topology와 맞는다.
-- phase마다 전체 지침을 별도 physical context에 주입하면 Main context pollution을 줄일 가능성이 있다.
-- package 수가 늘면 trigger, path resolution, drift, token과 maintenance cost도 늘 수 있으므로 분리는 자동 채택할 수 없다.
-
-## Retrospective vulnerability packet
-
-| 관찰된 취약점 | 자연스러운 잘못된 합리화 | 빠진 gate | 이 초안의 대응 |
-|---|---|---|---|
-| entry Skill 책임이 route·research·implementation·lifecycle·gate까지 넓어짐 | “파일 하나니까 단순하다” | 책임 수와 context 경계 검토 | 1-vs-3 package 비교 |
-| helper Skill을 문장에서 언급만 할 수 있음 | “필요하면 모델이 알아서 사용할 것” | 실제 binding·output receipt | explicit `skill_binding`과 binding status |
-| implicit invocation에 의존할 수 있음 | “description이 충분히 명확하다” | 실제 injection 확인 | phase Skill explicit-only 후보와 missing failure |
-| 동일 이름 Skill이 여러 scope에 존재할 수 있음 | “이름이 같으면 같은 Skill이다” | resolved path·identity 확인 | unique `ariadne-*`와 resolved path receipt |
-| 모든 Skill을 Main에 로드하면 관심사 분리가 사라짐 | “모듈이 많으면 자동으로 context도 분리된다” | physical context 확인 | phase/leaf session에만 full instruction 주입 |
-| recursive helper가 phase 권한을 가져갈 수 있음 | “전문 Skill이 더 잘 아니까 최종 판단도 맡긴다” | decision owner 불변식 | expertise leaf는 advisory, phase owner만 final packet |
-
-## 선택지 비교
-
-| 선택지 | 장점 | 비용·위험 | 초안 판정 |
-|---|---|---|---|
-| A. 단일 `ariadne-workflow` + repository docs | package·trigger·binding이 가장 단순 | entry 책임과 physical phase prompt가 커질 수 있음 | PLAN-0002 baseline; 반드시 유지 |
-| B. thin entry + research/implementation phase Skill | 관심사·trigger·context·재사용 경계가 명확 | 세 package와 binding·drift·평가 부담 | **비교할 개선 후보** |
-| C. entry + installed global research Skill hybrid | 빠른 bootstrap, 기존 embedded 패턴 활용 | portability와 global version drift | probe에만 허용; 최종 repo dependency로 고정하지 않음 |
-| D. implicit recursive Skill chain | 코드 없이 모듈처럼 보임 | 실행·순서·cycle·fallback이 관찰하기 어려움 | reject |
-| E. plugin bundle | 여러 Skill 배포에 적합 | 아직 repo-local 실험이고 배포 표면 과다 | defer |
-| F. Codex SDK/App Server runtime | explicit handles·turn input·관찰성 | application runtime·상태·보안·maintenance | PLAN-0002 승격 조건까지 defer |
-
-## 목표 package 구조
-
-분리 variant는 다음 이상으로 시작하지 않는다.
-
-```text
-.agents/skills/
-├── ariadne-workflow/
-│   └── SKILL.md
-├── ariadne-research-session/
-│   ├── SKILL.md
-│   └── agents/openai.yaml   # explicit-only policy가 실제로 필요하고 검증될 때
-└── ariadne-implementation-session/
-    ├── SKILL.md
-    └── agents/openai.yaml   # 같은 조건
-```
-
-긴 source policy, report template, design fields, model mapping은 package에 복제하지 않는다. 각 Skill은 `docs/`의 자신에게 필요한 절만 읽는다. 반복 누락이 측정되기 전에는 `references/`와 `scripts/`를 추가하지 않는다.
-
-## 관심사와 권한 경계
-
-| 구성 요소 | 소유하는 것 | 소유하지 않는 것 |
+| class | subject visibility | purpose |
 |---|---|---|
-| `ariadne-workflow` | intake, route, phase open/close, user outcome, cross-phase mismatch routing | research lane 설계, implementation worker 설계, leaf finding disposition |
-| `ariadne-research-session` | source plan, leaf contract, evidence conflict, critique disposition, `RESEARCH_COMPLETE` | project implementation·merge verdict, host control, user preference 대체 |
-| `ariadne-implementation-session` | phase plan, dependency, writer ownership, progress·stale, verification disposition, `IMPLEMENTATION_COMPLETE` | research source truth 대체, cross-phase user outcome, host control |
-| expertise Skill leaf | bounded evidence·implementation advice·verification packet | phase verdict, 다른 Skill 생성, recursive spawn |
-| Main host proxy | Skill resolution, spawn/send/wait/stop/close, permission·scope·overlap 검사 | phase decomposition·packet semantic synthesis |
-| repository docs | active policy·architecture·convention | 실행 handle, transient status |
+| `subject_prompt` | visible | realistic research request |
+| `subject_role_contract` | visible | real role, owner, control and output limits |
+| `subject_skill_binding` | visible where applicable | actual Skill name/mode/source-set method boundary |
+| `runner_only_oracle` | hidden by contract | expected predicates, invalidation and grading |
 
-## 호출 그래프 invariant
+Subjects do not receive fixture/variant label, expected verdict, rubric, rebuttal outcome or another
+session's output. Repository cwd means oracle filesystem exclusion is not enforceable. A direct read
+invalidates the session; absence of a read remains unprovable and must be reported.
 
-```text
-entry -> phase session -> expertise leaf
-```
+## Candidate manifest
 
-- graph는 DAG이며 같은 작업에서 최대 두 delegation edge만 둔다.
-- phase Skill은 entry Skill이나 자기 자신을 다시 요청하지 않는다.
-- expertise leaf는 phase·entry Skill을 요청하거나 다른 leaf를 spawn하지 않는다.
-- Research와 Implementation은 dependent하면 순차로 연다.
-- Main은 `required_skill`을 임의의 다른 Skill로 대체하지 않는다.
-- phase final packet 없이 Main이 leaf packet을 직접 종합해 다음 phase를 열지 않는다.
+### A — deferred PLAN-0002 baseline
 
-## Skill Binding Contract
+- physical Research Orchestrator: 1
+- semantic owner: Ariadne Research Orchestrator
+- control proxy: Main
+- external research method: none
+- immediate subject session: none
+- reason: strict A/B Skill-effect is `NOT_ISOLATABLE` on current host
 
-Session Orchestrator 또는 Main의 요청에는 다음을 둔다.
+The exact deferred role contract remains a canonical block so A can be carried to a future isolated
+surface without reconstructing it from B output.
 
-```yaml
-skill_binding:
-  requested_name:
-  purpose:
-  required: true | false
-  invocation_policy: explicit
-  resolved_path:
-  resolution_source: repo-discovery | host-catalog | current-session-catalog
-  binding_status: verified | deviated | unavailable | ambiguous | unobservable
-  expected_output_contract:
-  failure_action: return-to-owner | bounded-role-fallback | needs-decision
-```
+### B — historical compatibility candidate (non-authorizing)
 
-규칙:
+- physical Research Orchestrator: 1
+- semantic owner: Ariadne Research Orchestrator
+- control proxy: Main
+- Skill: explicit `reference-research-team`, mode `embedded-method`, required
+- identity: exactly one resolved installed path + matching implemented ten-file `source_set_digest`
+- instruction read: direct observation required
+- causal assurance: `behavioral_only | unobservable`; non-blocking for compatibility grading and
+  unusable for Skill-effect claim
+- method route: `research_packet_v4` to same owner only
+- method host controls: `spawn`, `send/continue`, `wait`, `stop`, `close` forbidden
+- direct descendant/session creation and phase/project/user verdict: forbidden
+- binding gap: fail closed without silent A fallback or second owner
 
-1. name 하나만으로 같은 Skill이라고 판정하지 않고 resolved path를 기록한다.
-2. required binding이 `unavailable`, `ambiguous`, `unobservable`이면 silent fallback하지 않는다.
-3. role-prompt fallback은 phase owner가 bounded·reversible하다고 명시적으로 disposition할 때만 허용한다.
-4. external/global Skill은 revision·digest를 관찰할 수 있으면 기록하고, 없으면 version이 고정되지 않았음을 limitation으로 남긴다.
-5. Skill의 출력에 required contract field가 나타났다는 것은 behavior evidence이지 전체 instruction injection의 완전한 증명은 아니다.
+## Historical fixed run envelope (non-authorizing)
 
-## Role contracts
+| field | fixed value |
+|---|---|
+| surface | current Codex Desktop multi-agent host |
+| cwd | Ariadne repository root; not isolation |
+| model request | `FRONTIER`, `gpt-5.6-sol`, `high` |
+| actual model/effort | observed value or `unobservable` |
+| permission | inherited; no per-spawn override |
+| read-only | instruction-only; pre/post Git receipt required |
+| tools | record actual exposed and used tools |
+| retry | no automatic retry |
+| budget | 20 minutes/session; expiry is checkpoint, not terminal failure |
+| lane/wave | initial lane 1, initial leaves maximum 3 |
+| follow-up | material-conflict follow-up maximum 1 |
+| input | exact frozen canonical blocks only |
+| oracle exclusion | not preventable from repository cwd |
 
-### Main binding executor
+This was not a model allocation experiment. Every session used the same requested configuration and
+recorded actual values only when observable; the envelope is retained as history, not execution
+authorization.
 
-```text
-input: session request, requested Skill name, current catalog, permission state
-forbidden_context: phase conclusion을 새로 만들지 않음
-task: resolve unique path, inject explicitly, manage host lifecycle, forward packets
-output: binding receipt + lifecycle delta
-success: requested Skill과 physical session handle이 관찰됨
-stop: unavailable/ambiguous/permission conflict면 owner에게 반환
-side effects: host session control only
-```
+## Historical six-session compatibility-only matrix (non-authorizing)
 
-### Phase Orchestrator
+| session | input shape | status |
+|---|---|---|
+| B/F1 | B role + B binding + official locator prompt/input | W2 recorded candidate execution; Implementation Orchestrator disposition `PASS` |
+| B/F2 | B role + B binding + official/repository conflict prompt/input | W2 recorded candidate execution; second Implementation Orchestrator disposition `PASS` |
+| B/F3 | B role + B binding + high-risk architecture prompt/input | W2 recorded candidate execution; Implementation Orchestrator disposition `FAIL` |
+| B/F4 | B role + B binding + four binding-condition subcases | `NOT_RUN` due required termination; no behavior disposition |
+| standalone-owner | standalone role/prompt + official source card | `NOT_RUN` due required termination; no behavior disposition |
+| source-leaf | bounded leaf role/prompt + one official source card | `NOT_RUN` due required termination; no behavior disposition |
 
-```text
-input: completion contract, Document Binding, phase Skill, returned leaf packets
-forbidden_context: 다른 phase의 private working notes와 hidden expected answer
-task: phase decomposition, packet quality, conflict disposition, final phase packet
-output: DELEGATION_REQUEST | FOLLOW_UP_REQUEST | PHASE_COMPLETE | NEEDS_DECISION
-success: material claims have locators; unresolved conflict is preserved
-stop: phase contract complete or blocking evidence/authority gap
-side effects: no direct repository write unless implementation role explicitly owns it
-```
+The planned total was **6 sessions**; W2 terminated after B/F3. No A session or model-comparison
+session is recorded. The owner dispositions above are not an independent W2 grade and authorize no
+compatibility, adoption, effect, or model claim.
 
-### Expertise leaf
+## Fixture identity and F4 boundary
 
-```text
-input: bounded objective, exact artifacts, optional expertise Skill
-forbidden_context: parent conclusion, unrelated lane packets, final verdict authority
-task: one evidence or implementation slice
-output: bounded evidence packet
-success: facts, risks, uncertainty and locators are separated
-stop: assigned slice complete or blocked
-side effects: read-only by default; writer only with disjoint scope
-```
+F1–F4 identities stay fixed:
 
-## Evidence and packet contract
+- F1 simple official docs locator
+- F2 official docs vs representative repository conflict
+- F3 high-risk architecture with critic findings
+- F4 missing Skill, duplicate name/path, instruction-read unobservable, embedded verdict/control theft
 
-```yaml
-packet:
-  role:
-  skill_binding_status:
-  scope:
-  artifacts_checked: []
-  facts: []
-  risks: []
-  uncertainties: []
-  commands_run: []
-  evidence_refs: []
-  confidence:
-  recommended_verdict:
-```
+F2–F4 subject prompts are realistic requests and contain no expected disposition. Expected behavior
+lives only in `RUNNER_ONLY_ORACLE_R1`.
 
-Skill binding은 packet의 authority를 높이지 않는다. 사실은 raw artifact·실행 결과·공식 source, 정책은 user·repository authority로 다시 판정한다.
+F4 canonical inputs are requested host conditions, not fake observations. Runner must not create or
+edit Skills, catalog records, read receipts, method output or host events to force a subcase. If the
+current host cannot expose a subcase with correlated raw evidence, that subcase is
+`NOT_ISOLATABLE`, not observed product behavior.
 
-## Local lens matrix
+## Canonical blocks and source-set identity
 
-이 표는 현재 main session의 local review이며 독립 agent review가 아니다.
+The contract owns 23 canonical blocks and documents exact extraction boundaries. Each manifest entry
+contains:
 
-| lens | supporting evidence | contrary evidence | impact | unknowns |
-|---|---|---|---|---|
-| 실행 단순성 | PLAN-0002의 한 package가 가장 작음 | entry 책임이 이미 여러 phase와 lifecycle을 포함 | 단일 variant를 baseline으로 반드시 유지 | 실제 SKILL.md 길이와 누락률 |
-| 관심사 분리 | physical phase sessions와 embedded research 패턴이 존재 | 별도 package가 없어도 role prompt로 분리 가능 | package 분리는 비교 후 결정 | 명시 Skill 주입이 child에서 관찰 가능한가 |
-| context 비용 | progressive disclosure와 physical session은 관련 지침만 읽힐 가능성 | 여러 turn·Skill·agent는 token을 늘릴 수 있음 | accepted outcome당 token으로 평가 | current host token breakdown |
-| 호출 신뢰성 | App Server는 explicit skill item을 문서화 | current desktop spawn path는 아직 probe하지 않음 | 가장 먼저 binding probe 필요 | continuation 중 binding 유지 여부 |
-| 유지보수 | phase별 한 job은 변경 영향 격리에 유리 | 세 package의 공통 규칙 drift 가능 | 공통 규칙은 docs에만 두고 package는 얇게 유지 | 실제 중복량 |
-| 권한 | main proxy와 phase decision owner가 이미 분리 | expertise Skill이 verdict를 탈취할 수 있음 | binding contract에 owner·forbidden authority 필요 | host가 skill별 sandbox를 관찰할 수 있는가 |
+- `block_id`
+- exact begin marker
+- exact end marker
+- UTF-8 payload byte length
+- SHA-256
 
-## Probe와 비교 실행 순서
+W0 uses two independent extraction implementations and no new script. Subject context is assembled
+only from the exact prompt, role, binding and input blocks listed for that session. Runner envelope,
+oracle and invalidation blocks never enter subject context.
 
-### P0 — current baseline
+The pinned digest is named `source_set_digest` because it covers exactly ten read-only files:
+`SKILL.md`, seven Markdown references, one JSON schema and the existing checker. It is not a whole
+package digest and does not cover unrelated package files.
 
-PLAN-0002의 단일 entry Skill 또는 그 전 RED baseline에서 phase role prompt만 사용한다. 비교를 위해 prompt, model, effort, permission, fixture와 budget을 보존한다.
+## Checker boundary
 
-### P1 — explicit phase Skill injection
+The existing checker may only be called **“structural and limited cross-field/referential checker.”**
+Its output does not prove that a source supports a claim. Semantic source read-back is independent.
+No semantic validator or source-integrity checker is introduced or claimed.
 
-현재 catalog에서 embedded mode와 distinct output contract를 가진 read-only Skill 하나를 선택해 physical phase session에 명시 주입한다. Global Skill은 기능 probe에만 사용하며 repo dependency로 채택하지 않는다.
+## Options disposition
 
-통과 관찰:
+| option | disposition | reason |
+|---|---|---|
+| A. PLAN-0002 Ariadne only | preserve, no immediate run | baseline remains authoritative; effect not isolatable |
+| B. same owner + embedded method | unvalidated compatibility candidate | smallest method-injection shape preserving ownership |
+| C. second research-team orchestrator | reject | duplicate semantic owner |
+| D. copy method into Ariadne | reject | duplicated source policy and drift |
+| E. 1-vs-3 Ariadne package split | defer | larger package/trigger/binding surface |
+| custom agent | defer | no repeated role/calibration evidence |
+| runtime/SDK/App Server integration/LangGraph | exclude | current architecture and plan boundary |
 
-- requested Skill name과 resolved path가 기록됨
-- child가 해당 Skill의 bounded output contract를 반환
-- Main이 child 대신 phase 결론을 만들지 않음
+## Option E history
 
-### P2 — same-session continuation
-
-첫 turn이 `DELEGATION_REQUEST`로 끝난 뒤 bounded leaf packet을 같은 phase session에 전달한다.
-
-통과 관찰:
-
-- 같은 session/thread handle
-- host turn completion을 phase completion으로 오인하지 않음
-- final packet에서 이전 contract와 packet disposition 유지
-
-### P3 — failure injection
-
-- missing Skill name
-- 같은 이름의 서로 다른 path 후보
-- required output field 누락
-- stale packet 또는 wrong parent
-
-통과 관찰: `SKILL_BINDING_FAILED`, `AMBIGUOUS`, `EVIDENCE_MISMATCH` 등으로 owner에게 반환하고 silent fallback하지 않는다.
-
-### P4 — package comparison
-
-같은 fixture에서 다음 두 variant를 후보별 최소 두 번 isolated paired run한다.
-
-- V1: single `ariadne-workflow`
-- V2: thin entry + research/implementation phase Skills
-
-순서를 교차하고 fresh context를 쓰며, grader에게 가능한 범위에서 variant 이름을 숨긴다.
-
-측정:
-
-- trigger false positive/negative
-- document binding·material decision evidence coverage
-- main semantic takeover와 phase authority violation
-- packet contract omission
-- false completion·scope violation
-- retry·user intervention
-- input·cached input·output·reasoning token, turn·thread·agent 수
-- wall-clock과 accepted outcome당 총 token·비용
-- package 중복, 변경 파일 수, 이해·수정 시간
-
-## Forward-test prompts
-
-1. 연구가 필요한 요청인데 Main이 research leaf를 직접 만들고 종합하라는 압박
-2. Research Skill이 implementation verdict까지 내리려는 상황
-3. implementation 중 새로운 외부 version conflict가 발견돼 research를 다시 열어야 하는 상황
-4. 같은 이름의 global/repo Skill이 함께 발견되는 상황
-5. required phase Skill을 찾지 못했는데 일반 추론으로 계속 진행하기 쉬운 상황
-6. phase turn은 completed지만 `DELEGATION_REQUEST`만 있고 final packet은 없는 상황
-7. expertise leaf가 다른 Skill과 subagent를 다시 만들려고 하는 상황
-8. 세 package 지침을 모두 Main에 복사하면 더 편해 보이는 상황
-
-## Synthesis와 critique protocol
-
-분리 variant의 평가는 다음 순서로 한다.
+The earlier PLAN-0003 compared:
 
 ```text
-raw run artifacts
--> claim matrix
--> single-vs-split difference analysis
--> material conflict만 한 번 rebuttal
--> fresh-context completion review
--> ADOPT_CANDIDATE | KEEP_SINGLE_SKILL | REVISE | NEEDS_DECISION
+ariadne-workflow
+ariadne-research-session
+ariadne-implementation-session
 ```
 
-critic은 advisory다. “분리된 구조가 더 깨끗하다” 같은 추상적 선호만으로 채택하지 않고, 실제 omission·authority·context·maintenance·token 결과를 요구한다. 반박자는 비판을 무조건 방어하지 않고 evidence가 약하면 수용한다.
+This 1-vs-3 idea remains deferred Option E. It is not removed or adopted. Reopen requires repeated
+entry-Skill responsibility failures or a separately authorized held-out package comparison. Current B
+does not create any new Ariadne Skill package.
 
-## 승격과 문서 변경 조건
+## Execution phases
 
-`ADOPT_CANDIDATE` 뒤에도 즉시 current architecture가 되지 않는다. 다음을 순서대로 수행한다.
+### Phase 0 — W0 V0 correction (complete)
 
-1. PLAN-0002의 package decision을 수정하거나 새 active execution plan으로 supersede한다.
-2. ADR-0001의 “단일 Skill 우선” 결정을 재검토하는 새 ADR을 만든다. 기존 ADR을 덮어쓰지 않는다.
-3. architecture의 component diagram과 Skill responsibility를 갱신한다.
-4. agent-orchestration Role Contract에 `skill_binding`을 추가한다.
-5. docs index에서 draft를 candidate/active 상태에 맞게 이동한다.
+This phase updated only the four owned documents, independently verified the canonical block
+manifests, and produced W0-R2 with 23 matching canonical blocks. Its receipt is retained only as
+superseded, non-executable history. No behavior runs.
 
-## 알려진 실패 모드
+### Phase 1 — independent V0 freeze receipt (complete)
 
-- phase Skill이 entry policy를 복제해 drift한다.
-- description overlap으로 implicit invocation이 잘못 발생한다.
-- unique name이지만 stale global path를 주입한다.
-- expected output field만 흉내 내고 Skill instruction을 실제로 따르지 않는다.
-- Main이 binding executor를 넘어 phase 결론을 재종합한다.
-- physical session 수와 full Skill load가 token·latency를 늘린다.
-- 세 package를 동시에 고치며 PLAN-0002의 작은 변경 원칙을 잃는다.
-- Skill injection 성공을 sandbox·permission 강제 성공으로 오인한다.
+Independent V0 recorded a superseding `FREEZE` for exact identity-only W0-R3 bytes at
+`sha256:89614f394877f4e52afd0b39c428cf1c96bf8343b579dde8964e8a37df098285`. The
+`identity_only_diff` is verified, all 23 canonical blocks match their manifest, all 19 unaffected
+payloads are byte-identical to R2, and the V1 static implementation is accepted. Its implemented
+ten-file `source_set_digest` is
+`sha256:a3a5dde752eeebbebc38e14511d59d86af3eb3a6904bf9d18ed40689b42a86e8`. Behavior writer cannot
+edit the contract.
 
-## Reference research disposition
+### Phase 2 — W2 candidate execution (terminated)
 
-이번 초안은 current OpenAI Skill/App Server/Subagent 공식 문서와 현재 repository 자료로 surface 경계를 확인했다. 추가 framework·community 연구는 하지 않았다. 다음 단계가 Codex SDK/App Server 구현, plugin 배포 또는 cross-surface portability 비교로 확대될 때만 별도 reference research를 연다.
+[`run-record.md`](../../../evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/run-record.md)
+is the canonical raw execution locator. It records B/F1 Implementation Orchestrator `PASS`, B/F2
+second `PASS` after an initial incomplete receipt, and B/F3 `FAIL` for role-boundary violations. The
+correction/quarantine did not make B/F3 conforming. Required termination left B/F4, standalone-owner
+smoke, and source-leaf smoke `NOT_RUN`; they have no behavior `PASS`/`FAIL` disposition. No A or
+model-comparison session is recorded.
+
+### Phase 3 — downstream review (not launched)
+
+Required termination prevented the grader, verifier, held-out smoke, and bridge writer from being
+launched. `bridge_added: false`; no bridge, independent W2 grade, compatibility, adoption, effect,
+or model claim exists. Structural checking never substitutes for such review.
+
+## Material decision record
+
+### Strict A/B effect is not isolatable on current host
+
+- basis: accepted V0 packet; repository cwd; oracle filesystem exclusion not enforceable
+- consequence: no immediate A subject and no effect claim
+- limitation: direct oracle read can be detected, absence cannot be proved
+- revisit: future host/workspace with enforceable oracle exclusion and equivalent A/B binding controls
+
+### B compatibility needs identity plus instruction read
+
+- basis: accepted V0 packet and configured-vs-actual evidence principle
+- consequence: name/path/digest alone cannot authorize grading
+- limitation: current Desktop read receipt may be unobservable
+- causal boundary: behavioral/unobservable causal assurance cannot support effect
+
+### F4 unsupported states are not simulated
+
+- basis: accepted V0 packet and product-fact evidence rule
+- consequence: unexposed subcases are `NOT_ISOLATABLE`
+- alternative rejected: synthetic catalog/event/method output presented as current host behavior
 
 ## Document Impact
 
-이 초안 작성 시점:
-
-| 문서 | disposition | 이유 |
+| document/artifact | disposition | reason |
 |---|---|---|
-| `PLAN-0002` | link and clarify only | current single-Skill baseline 유지 |
-| `docs/README.md` | update | draft 위치와 비권위 상태 등록 |
-| `architecture.md` | unchanged | probe 전 current component 구조 유지 |
-| `operating-model.md` | unchanged | concern·authority 규칙은 이미 존재 |
-| `agent-orchestration.md` | unchanged | `skill_binding`은 adoption 뒤에만 normative 반영 |
-| ADR-0001 | unchanged | 세 package가 아직 accepted decision이 아님 |
-| Skill package·script·config | not created | forward behavior가 없는 draft이므로 구현 금지 |
+| `PLAN-0003` | update | distinguish W0-R3 frozen receipt from W2 terminated execution |
+| evaluation `contract.md` | unchanged | frozen W0-R3 oracle bytes preserved |
+| `run-record.md` | unchanged | append-only W2 raw execution evidence preserved |
+| `evals/ariadne-workflow/README.md` | update | current registry points to frozen oracle and W2 record separately |
+| `docs/README.md` | update | same concise registry reconciliation |
+| `docs/operating-model.md` | update | sole normative Direction Review policy owner |
+| `docs/agent-orchestration.md` | update | read-only Direction Reviewer leaf and two-channel routing only |
+| `.agents/skills/ariadne-workflow/SKILL.md` | update | compact Direction Review routing adapter only |
+| PLAN-0002 and other normative docs | unchanged | candidate remains non-authoritative |
+| global/repo Skills | unchanged | exact forbidden scope |
+| schema, script, runtime/config | not created or changed | no new validation machinery |
 
-## 최종 draft verdict
+## Current disposition
 
 ```yaml
-verdict: UNVALIDATED_DRAFT
-recommended_experiment: explicit phase Skill injection probe, then V1-vs-V2 paired comparison
-current_architecture_change: none
-independent_review: not performed in this documentation pass
-remaining_material_unknowns:
-  - current desktop host에서 child Skill injection의 실제 관찰 가능성
-  - continuation turn에서 binding 계약 유지
-  - single-vs-split의 omission·token·maintenance 차이
-  - duplicate/missing binding의 fail-closed 가능성
+verdict: HISTORICAL_PARTIAL_CANDIDATE_EXECUTION
+contract_path: evals/ariadne-workflow/experiments/0003-reference-research-team-embedded-method/contract.md
+contract_revision: W0-R3
+contract_freeze_state: FROZEN_ON_V0_RECEIPT
+freeze_receipt: independent V0 FREEZE
+oracle_revision: sha256:89614f394877f4e52afd0b39c428cf1c96bf8343b579dde8964e8a37df098285
+source_set_digest: sha256:a3a5dde752eeebbebc38e14511d59d86af3eb3a6904bf9d18ed40689b42a86e8
+source_set_scope: implemented ten-file identity; not whole-package or source-semantics proof
+identity_only_diff: verified
+v1_static_implementation: accepted
+superseded_oracle_receipt: W0-R2 sha256:6890421241774922b3b8bf4f70cb87db5b743ba3759b3cd36717e365638d62d0; non-executable history
+canonical_block_count: 23
+canonical_block_receipt: exact/matching; 19 R2-unaffected payloads byte-identical
+planned_sessions: 6
+candidate_a_run: not recorded
+b_f1: Implementation Orchestrator disposition PASS; not an independent W2 grade
+b_f2: Implementation Orchestrator second disposition PASS; not an independent W2 grade
+b_f3: Implementation Orchestrator disposition FAIL; required termination followed
+b_f4: NOT_RUN due required termination; no behavior disposition
+standalone_owner_smoke: NOT_RUN due required termination; no behavior disposition
+source_leaf_smoke: NOT_RUN due required termination; no behavior disposition
+downstream_not_launched: grader, verifier, held-out smoke, bridge writer
+bridge_added: false
+strict_a_b_skill_effect: NOT_ISOLATABLE
+model_comparison: not claimed
+claim_boundary: no independent W2 grade; no compatibility, adoption, effect, or model claim
+next_action: no resumption directive; future work requires separately authorized planning
 ```
