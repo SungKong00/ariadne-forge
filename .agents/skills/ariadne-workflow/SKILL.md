@@ -271,6 +271,7 @@ Prefer raw artifacts over worker summaries:
 - mark stale evidence and return every raw-evidence mismatch to the owning phase orchestrator for revised disposition
 - require fresh independent review before `EVIDENCE_COMPLETE`; if unavailable, keep evidence `INCOMPLETE`
 - decide document impact as `update`, `create`, `unchanged`, or `supersede`
+- for a change task not explicitly marked no-commit, create one scoped commit per verified cohesive implementation unit according to the repository operating model; do not mix unrelated, unverified, or out-of-scope changes
 
 Return a final packet:
 

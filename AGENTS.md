@@ -26,10 +26,12 @@
 8. Standard/Deep의 연구·구현 phase는 물리적으로 분리된 Research/Implementation Orchestrator가 분해·packet 판정·후속 작업을 소유한다. 현재 surface에서 main은 이들이 요청한 spawn·send·wait·stop·close를 안전 검사 후 대행하고 packet을 재종합하지 않은 채 전달한다. direct nested control이나 자동 cleanup을 전제로 설계하지 않는다.
 9. 완료 보고는 실제 산출물, diff, 명령 결과, 테스트와 남은 위험을 근거로 한다. 스키마나 링크 검사만으로 내용의 진실성이 검증됐다고 표현하지 않는다.
 10. 변경 후 관련 문서의 `update / create / unchanged / supersede` 판단을 남긴다.
+11. 사용자가 금지하지 않는 변경 작업은 검증된 응집 구현 단위마다 scoped commit을 만든다. 서로 무관한 변경, 미검증 변경, 사용자 소유의 범위 밖 변경을 한 commit에 섞지 않는다.
 
 ## 안전 경계
 
-- 사용자 요청 없이 commit, push, 배포, 외부 메시지 전송, 비가역 작업을 하지 않는다.
+- 변경 작업의 scoped commit은 기본 동작이다. 사용자가 commit을 금지하거나, 해당 단위의 검증·scope 확인이 끝나지 않았으면 만들지 않고 그 이유를 보고한다.
+- push, 배포, 외부 메시지 전송, 그 밖의 비가역 작업은 사용자 요청 없이 하지 않는다.
 - 작업 시작 시 writable 범위와 금지 범위를 정한다. 범위를 벗어난 기존 변경은 보존한다.
 - 비밀·토큰·개인정보를 연구 packet, 로그, 예시 또는 프롬프트에 복사하지 않는다.
 - 외부 Skill은 제안·수집·검사 도구다. 프로젝트 규범이나 완료 판정 권한을 넘기지 않는다.

@@ -416,6 +416,19 @@ Direction Review는 구현 전에 **계획이 성공하면 실제 사용자 outc
 
 계획과 다른 선택이 더 타당하면 숨기지 않는다. 이유·근거·영향을 제시하고 재계획 또는 owner 결정을 거친다.
 
+### 구현 단위와 commit
+
+사용자가 금지하지 않는 변경 작업은 **검증 가능한 응집 구현 단위**가 끝날 때마다 scoped commit을 만든다. 이는 작업 중간의 모든 파일 저장을 commit으로 만들거나, 최종에 하나의 큰 commit만 만드는 규칙이 아니다. 한 commit은 하나의 설명 가능한 사용자 가치·버그 수정·리팩터링 경계·문서 동기화 단위를 담는다.
+
+commit 전에는 다음을 확인한다.
+
+1. 그 단위의 writable scope와 실제 diff가 일치한다.
+2. 해당 단위의 비례적인 검증 명령 또는 직접 관측이 성공했고, 실패·미실행 항목은 숨기지 않았다.
+3. 같은 동작 변경에 필요한 normative 문서 영향이 함께 닫혔거나, `unchanged` 또는 명시적 `defer` 근거가 있다.
+4. 사용자 소유의 기존 변경과 무관한 변경을 섞지 않았고, commit 메시지가 단위를 정확히 설명한다.
+
+dependent work는 선행 단위가 검증되어 commit된 뒤 다음 단위로 진행하는 것을 기본으로 한다. 단, 여러 파일이 하나의 원자적 acceptance criterion을 함께 구성하거나 검증이 중간 상태를 허용하지 않으면 하나의 commit으로 유지한다. 테스트가 불가능하거나 scope·근거가 열려 있으면 commit을 만들지 않고 `PARTIAL`, `BLOCKED`, 또는 다음 gate로 남긴다. commit은 push·배포·외부 효과의 승인이 아니다.
+
 ### 검증
 
 1. **Mechanical**: syntax, schema, lint, type, test exit status
