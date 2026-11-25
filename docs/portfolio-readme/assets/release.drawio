@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="ariadne-release" name="Ariadne Forge | 릴리스 검증은 세 단계" alt="Ariadne Forge | 릴리스 검증은 세 단계 · 패키지 검사, 설치 대상 확인, Codex 실제 호출은 서로 다른 증거를 요구한다.">
+    <mxGraphModel page="1" pageScale="1" pageWidth="1290" pageHeight="656" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" math="0" shadow="0" background="#F9FAFB">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="canvas" parent="1" vertex="1" value="" style="fillColor=#F9FAFB;strokeColor=none;movable=0;resizable=0;editable=0;selectable=0;html=0;">
+          <mxGeometry x="0" y="0" width="1290" height="656" as="geometry" />
+        </mxCell>
+        <mxCell id="title" parent="1" vertex="1" value="Ariadne Forge | 릴리스 검증은 세 단계" style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#15283D;fontSize=35;fontStyle=1;fontFamily=Arial;">
+          <mxGeometry x="43" y="24" width="1205" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" vertex="1" value="패키지 검사, 설치 대상 확인, Codex 실제 호출은 서로 다른 증거를 요구한다." style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#485D72;fontSize=21;fontStyle=0;fontFamily=Arial;">
+          <mxGeometry x="45" y="74" width="1200" height="39" as="geometry" />
+        </mxCell>
+        <mxCell id="pipeline" parent="1" vertex="1" value="검증 순서 · 앞 단계 통과는 다음 단계의 증거가 아님" style="rounded=1;arcSize=7;html=0;whiteSpace=wrap;fillColor=#F0F4F7;fillOpacity=70;strokeColor=#B7C9D8;dashed=1;dashPattern=6 4;strokeWidth=1;align=left;verticalAlign=top;spacingLeft=14;spacingTop=9;fontSize=16;fontStyle=1;fontColor=#435D72;fontFamily=Arial;">
+          <mxGeometry x="44" y="146" width="1202" height="217" as="geometry" />
+        </mxCell>
+        <mxCell id="commit" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#435968&quot;&gt;정확한 Git 커밋&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:12px;line-height:1.16;color:#34485A&quot;&gt;브랜치 이름 대신 검증할 SHA 고정&lt;/span&gt;" style="shape=document;size=0.12;fillColor=#F0F2F4;strokeColor=#ABB7C1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="61" y="220" width="233" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="package" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#214F87&quot;&gt;① 패키지 확인&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:13px;line-height:1.16;color:#34485A&quot;&gt;manifest · 파일 · 패키지 검사&lt;/span&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.12;fillColor=#EDF4FF;strokeColor=#A7BBD8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="373" y="220" width="232" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="install" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#12614F&quot;&gt;② 설치 확인&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:13px;line-height:1.16;color:#34485A&quot;&gt;실제 파일 · 영수증 · 백업 대조&lt;/span&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.12;fillColor=#E7F3EE;strokeColor=#9FBEB1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="686" y="220" width="234" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="host" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#543E83&quot;&gt;③ 호스트 확인&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:17px;line-height:1.16;color:#34485A&quot;&gt;Codex 명시 호출 관찰&lt;/span&gt;" style="rounded=1;arcSize=10;fillColor=#F1EEFA;strokeColor=#B9ADD4;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="1000" y="220" width="226" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="flag" parent="1" vertex="1" value="&lt;b style=&quot;font-size:22px;line-height:1.15;color:#8B3C25&quot;&gt;불일치: 정지·대조&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:12px;line-height:1.16;color:#34485A&quot;&gt;대상 파일 누락은 설치 성공이 아님&lt;/span&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.12;fillColor=#F8ECE6;strokeColor=#C9A899;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="686" y="457" width="234" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" value="고정 SHA" edge="1" parent="1" source="commit" target="package" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-1" value="검사 통과" edge="1" parent="1" source="package" target="install" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-2" value="파일 대조" edge="1" parent="1" source="install" target="host" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-3" value="누락 · 불일치" edge="1" parent="1" source="install" target="flag" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;dashed=1;dashPattern=6 4;strokeColor=#75818D;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" parent="1" vertex="1" value="후속 로컬 검증 흐름. abc004e는 ① 통과, 격리 설치 테스트만 확인. 사용 프로필 설치·호스트 호출은 미확인." style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#43586D;fontSize=17;fontStyle=0;fontFamily=Arial;">
+          <mxGeometry x="45" y="604" width="1200" height="38" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

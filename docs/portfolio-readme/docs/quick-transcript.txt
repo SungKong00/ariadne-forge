@@ -1,0 +1,11 @@
+$ cat src/greeting.txt
+hello
+$ update-greeting
+annyeong
+$ sh test.sh
+$ echo "Test exit: $?"
+Test exit: 0
+$ git --no-pager diff --stat
+ evals/ariadne-workflow/fixtures/b1-quick/src/greeting.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+$

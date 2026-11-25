@@ -1,0 +1,74 @@
+<?xml version='1.0' encoding='utf-8'?>
+<mxfile host="app.diagrams.net" type="device">
+  <diagram id="ariadne-routing" name="Ariadne Forge | 짧은 수정과 독립 검토" alt="Ariadne Forge | 짧은 수정과 독립 검토 · 같은 저장소 스킬을 쓴 평가에서도, 수정 내용에 따라 검토 단계가 달라졌다.">
+    <mxGraphModel page="1" pageScale="1" pageWidth="1240" pageHeight="741" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" math="0" shadow="0" background="#F9FAFB">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="canvas" parent="1" vertex="1" value="" style="fillColor=#F9FAFB;strokeColor=none;movable=0;resizable=0;editable=0;selectable=0;html=0;">
+          <mxGeometry x="0" y="0" width="1240" height="741" as="geometry" />
+        </mxCell>
+        <mxCell id="title" parent="1" vertex="1" value="Ariadne Forge | 짧은 수정과 독립 검토" style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#15283D;fontSize=35;fontStyle=1;fontFamily=Arial;">
+          <mxGeometry x="43" y="24" width="1155" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" parent="1" vertex="1" value="같은 저장소 스킬을 쓴 평가에서도, 수정 내용에 따라 검토 단계가 달라졌다." style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#485D72;fontSize=21;fontStyle=0;fontFamily=Arial;">
+          <mxGeometry x="45" y="74" width="1150" height="39" as="geometry" />
+        </mxCell>
+        <mxCell id="quick" parent="1" vertex="1" value="01  B1 · 직접 수정" style="rounded=1;arcSize=7;html=0;whiteSpace=wrap;fillColor=#F0F4F7;fillOpacity=70;strokeColor=#B7C9D8;dashed=1;dashPattern=6 4;strokeWidth=1;align=left;verticalAlign=top;spacingLeft=14;spacingTop=9;fontSize=16;fontStyle=1;fontColor=#435D72;fontFamily=Arial;">
+          <mxGeometry x="409" y="141" width="774" height="174" as="geometry" />
+        </mxCell>
+        <mxCell id="standard" parent="1" vertex="1" value="02  B2 · 구현과 독립 확인 분리" style="rounded=1;arcSize=7;html=0;whiteSpace=wrap;fillColor=#F0F4F7;fillOpacity=70;strokeColor=#B7C9D8;dashed=1;dashPattern=6 4;strokeWidth=1;align=left;verticalAlign=top;spacingLeft=14;spacingTop=9;fontSize=16;fontStyle=1;fontColor=#435D72;fontFamily=Arial;">
+          <mxGeometry x="409" y="335" width="774" height="341" as="geometry" />
+        </mxCell>
+        <mxCell id="rules" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#435968&quot;&gt;저장소 규칙&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px;line-height:1.16;color:#34485A&quot;&gt;요청 범위와 완료 조건 먼저 확인&lt;/span&gt;" style="shape=document;size=0.12;fillColor=#F0F2F4;strokeColor=#ABB7C1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="73" y="328" width="266" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="one" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#214F87&quot;&gt;문구 한 줄&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:17px;line-height:1.16;color:#34485A&quot;&gt;한 파일을 주 세션이 직접 수정&lt;/span&gt;" style="rounded=1;arcSize=10;fillColor=#EDF4FF;strokeColor=#A7BBD8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="440" y="195" width="287" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="small" parent="1" vertex="1" value="&lt;b style=&quot;font-size:22px;line-height:1.15;color:#12614F&quot;&gt;확인 · 추가 작업자 없음&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:17px;line-height:1.16;color:#34485A&quot;&gt;테스트 정상 종료&lt;/span&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.12;fillColor=#E7F3EE;strokeColor=#9FBEB1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="862" y="195" width="289" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="owner" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#543E83&quot;&gt;배송 정책 변경&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:15px;line-height:1.16;color:#34485A&quot;&gt;구현 책임자가 작성 → 검토 순서 결정&lt;/span&gt;" style="rounded=1;arcSize=9;strokeWidth=2;fillColor=#F1EEFA;strokeColor=#B9ADD4;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="441" y="389" width="288" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="writer" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#543E83&quot;&gt;작성 담당 한 명&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:17px;line-height:1.16;color:#34485A&quot;&gt;허용된 네 파일만 변경&lt;/span&gt;" style="rounded=1;arcSize=9;strokeWidth=2;fillColor=#F1EEFA;strokeColor=#B9ADD4;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="862" y="389" width="290" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="review" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#12614F&quot;&gt;읽기 전용 검토&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:15px;line-height:1.16;color:#34485A&quot;&gt;작성 이후 diff·테스트·범위 확인&lt;/span&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.12;fillColor=#E7F3EE;strokeColor=#9FBEB1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
+          <mxGeometry x="861" y="554" width="290" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-0" value="B1 · Quick" edge="1" parent="1" source="rules" target="one" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="377" y="378" />
+              <mxPoint x="377" y="242" />
+            </Array>
+            <mxPoint x="-5" y="-8" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-1" value="B2 · Standard" edge="1" parent="1" source="rules" target="owner" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="377" y="378" />
+              <mxPoint x="377" y="436" />
+            </Array>
+            <mxPoint x="-5" y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge-2" value="테스트" edge="1" parent="1" source="one" target="small" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-3" value="단독 수정권 전달" edge="1" parent="1" source="owner" target="writer" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge-4" value="작성 결과 이후" edge="1" parent="1" source="writer" target="review" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" parent="1" vertex="1" value="185fc97의 B1/B2 단일 사례 기록. 배송 사례는 스킬 없이도 통과했다." style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#43586D;fontSize=17;fontStyle=0;fontFamily=Arial;">
+          <mxGeometry x="45" y="689" width="1150" height="38" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -1,0 +1,12 @@
+$ verify-source
+{"commit":"abc004e","files":5,"status":"ok"}
+$ install-skill
+{"status":"ok","digest":"72ea74cfd666"}
+$ check-installed
+{"status":"ok","digest":"72ea74cfd666"}
+$ remove-reference
+profile/skills/ariadne-workflow/references/system-coherence-gates.md
+$ check-installed
+error: installed Skill topology or content mismatch
+Exit: 1
+$
