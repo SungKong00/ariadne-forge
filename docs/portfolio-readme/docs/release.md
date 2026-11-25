@@ -14,4 +14,4 @@
 
 배포 도구 검증, 현재 설치 검증, Codex 호스트에서 일어난 명시 호출은 서로 다른 증거입니다. 실제 사용자 프로필과 원본 저장소는 그대로 뒀으며, 후속 작업본의 Codex 호출은 녹화하거나 확인하지 않았습니다. 공개 저장소의 네이티브 작업 시연을 대신하는 영상이 아닙니다.
 
-[편집용 draw.io](../assets/release.drawio) · [SVG](../assets/release.svg) · 검증 결과 JSON · [명령 출력](release-transcript.txt)
+[편집용 draw.io](../assets/release.drawio) · [SVG](../assets/release.svg) · [명령 출력](release-transcript.txt)
