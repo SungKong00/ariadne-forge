@@ -1,125 +1,91 @@
 <?xml version='1.0' encoding='utf-8'?>
-<mxfile host="app.diagrams.net" type="device">
-  <diagram id="ariadne-system" name="Ariadne Forge | 검증 깊이와 실행 방식은 별개" alt="Ariadne Forge | 검증 깊이와 실행 방식은 별개 · 같은 Codex 주 세션에서도, 확인할 깊이와 누가 수행할지는 서로 다른 선택이다.">
-    <mxGraphModel page="1" pageScale="1" pageWidth="1240" pageHeight="730" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" math="0" shadow="0" background="#F9FAFB">
+<mxfile host="app.diagrams.net" version="32.7.4">
+  <diagram id="system" name="system">
+    <mxGraphModel page="1" pageWidth="598" pageHeight="358" grid="1" gridSize="10" connect="1" arrows="1" fold="1" background="#FFFFFF">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="canvas" parent="1" vertex="1" value="" style="fillColor=#F9FAFB;strokeColor=none;movable=0;resizable=0;editable=0;selectable=0;html=0;">
-          <mxGeometry x="0" y="0" width="1240" height="730" as="geometry" />
+        <mxCell id="bounds" value="" style="shape=rectangle;fillColor=#FFFFFF;strokeColor=none;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="598" height="358" as="geometry" />
         </mxCell>
-        <mxCell id="title" parent="1" vertex="1" value="Ariadne Forge | 검증 깊이와 실행 방식은 별개" style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#15283D;fontSize=35;fontStyle=1;fontFamily=Arial;">
-          <mxGeometry x="43" y="24" width="1155" height="45" as="geometry" />
+        <mxCell id="decor1" value="시스템 구조" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=17;fontColor=#14679D;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="18" y="10" width="562" height="25" as="geometry" />
         </mxCell>
-        <mxCell id="subtitle" parent="1" vertex="1" value="같은 Codex 주 세션에서도, 확인할 깊이와 누가 수행할지는 서로 다른 선택이다." style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#485D72;fontSize=21;fontStyle=0;fontFamily=Arial;">
-          <mxGeometry x="45" y="74" width="1150" height="39" as="geometry" />
+        <mxCell id="decor2" value="검증 깊이와 실행 방식은 따로 판단" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=27;fontColor=#172D44;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="18" y="40" width="562" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="inputs" parent="1" vertex="1" value="입력과 근거" style="rounded=1;arcSize=7;html=0;whiteSpace=wrap;fillColor=#F0F4F7;fillOpacity=70;strokeColor=#B7C9D8;dashed=1;dashPattern=6 4;strokeWidth=1;align=left;verticalAlign=top;spacingLeft=14;spacingTop=9;fontSize=16;fontStyle=1;fontColor=#435D72;fontFamily=Arial;">
-          <mxGeometry x="45" y="137" width="277" height="471" as="geometry" />
+        <mxCell id="b0" value="" style="rounded=1;arcSize=6;strokeWidth=1.4;strokeColor=#91BFAF;fillColor=#ECF8F3;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="323" y="88" width="256" height="248" as="geometry" />
         </mxCell>
-        <mxCell id="choice" parent="1" vertex="1" value="독립적으로 고르는 두 축" style="rounded=1;arcSize=7;html=0;whiteSpace=wrap;fillColor=#F0F4F7;fillOpacity=70;strokeColor=#B7C9D8;dashed=1;dashPattern=6 4;strokeWidth=1;align=left;verticalAlign=top;spacingLeft=14;spacingTop=9;fontSize=16;fontStyle=1;fontColor=#435D72;fontFamily=Arial;">
-          <mxGeometry x="663" y="137" width="264" height="469" as="geometry" />
+        <mxCell id="decor3" value="분기 결과" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#087D68;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="335" y="95" width="232" height="28" as="geometry" />
         </mxCell>
-        <mxCell id="request" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#435968&quot;&gt;사용자 목표&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:15px;line-height:1.16;color:#34485A&quot;&gt;바꾸려는 결과와 허용 범위&lt;/span&gt;" style="shape=stadium;perimeter=stadiumPerimeter;fillColor=#F0F2F4;strokeColor=#ABB7C1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
-          <mxGeometry x="66" y="184" width="231" height="91" as="geometry" />
+        <mxCell id="in" value="" style="rounded=1;arcSize=13;fillColor=#FFFFFF;strokeColor=#9FBCCF;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry x="24" y="189" width="230" height="74" as="geometry" />
         </mxCell>
-        <mxCell id="authority" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#435968&quot;&gt;저장소 기준&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:12px;line-height:1.16;color:#34485A&quot;&gt;AGENTS · 정책 · 결정 · 컨벤션&lt;/span&gt;" style="shape=document;size=0.12;fillColor=#F0F2F4;strokeColor=#ABB7C1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
-          <mxGeometry x="66" y="321" width="231" height="105" as="geometry" />
+        <mxCell id="decor4" value="" style="ellipse;fillColor=#EDF5FB;strokeColor=none;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="32" y="211.5" width="29" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="skill" parent="1" vertex="1" value="&lt;b style=&quot;font-size:19px;line-height:1.15;color:#214F87&quot;&gt;명시적으로 쓰는 스킬&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:17px;line-height:1.16;color:#34485A&quot;&gt;작업·인계·검증 규칙&lt;/span&gt;" style="shape=document;size=0.12;fillColor=#EDF4FF;strokeColor=#A7BBD8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
-          <mxGeometry x="66" y="479" width="231" height="96" as="geometry" />
+        <mxCell id="decor5" value="" style="shape=image;imageAspect=1;aspect=fixed;image=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%2314679D%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m8%2015%2016-8%2016%208v18l-16%208-16-8zM8%2015l16%208%2016-8M24%2023v18m-8-30%2016%208%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="35.48" y="214.98" width="22.04" height="22.04" as="geometry" />
         </mxCell>
-        <mxCell id="main" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#214F87&quot;&gt;Codex 주 세션&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:15px;line-height:1.16;color:#34485A&quot;&gt;요청과 저장소 기준을 비교&lt;/span&gt;" style="rounded=1;arcSize=10;fillColor=#EDF4FF;strokeColor=#A7BBD8;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
-          <mxGeometry x="380" y="332" width="212" height="100" as="geometry" />
+        <mxCell id="decor6" value="Codex 주 세션" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#172D44;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="67" y="194" width="183" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="depth" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#765008&quot;&gt;검증 깊이&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px;line-height:1.16;color:#34485A&quot;&gt;Quick · Standard · Deep&lt;/span&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.12;fillColor=#FBF2DF;strokeColor=#CFB879;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
-          <mxGeometry x="688" y="193" width="221" height="93" as="geometry" />
+        <mxCell id="decor7" value="요청 · 지침 · 스킬" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#50657B;fontStyle=0;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="67" y="219" width="183" height="41" as="geometry" />
         </mxCell>
-        <mxCell id="shape" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#543E83&quot;&gt;실행 방식&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:14px;line-height:1.16;color:#34485A&quot;&gt;직접 · 독립 검토 · 단계 위임&lt;/span&gt;" style="rounded=1;arcSize=9;strokeWidth=2;fillColor=#F1EEFA;strokeColor=#B9ADD4;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
-          <mxGeometry x="688" y="460" width="221" height="93" as="geometry" />
+        <mxCell id="up" value="" style="rounded=1;arcSize=13;fillColor=#FFFFFF;strokeColor=#91BFAF;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry x="341" y="131" width="220" height="70" as="geometry" />
         </mxCell>
-        <mxCell id="work" parent="1" vertex="1" value="&lt;b style=&quot;font-size:20px;line-height:1.15;color:#12614F&quot;&gt;수행 · 직접 확인&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:12px;line-height:1.16;color:#34485A&quot;&gt;diff · 테스트 · 관련 지침&lt;/span&gt;" style="rounded=1;arcSize=9;strokeWidth=2;fillColor=#E7F3EE;strokeColor=#9FBEB1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
-          <mxGeometry x="983" y="287" width="184" height="93" as="geometry" />
+        <mxCell id="decor8" value="" style="ellipse;fillColor=#ECF8F3;strokeColor=none;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="349" y="151.5" width="29" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="decide" parent="1" vertex="1" value="&lt;b style=&quot;font-size:23px;line-height:1.15;color:#12614F&quot;&gt;완료 판단&lt;/b&gt;&lt;br&gt;&lt;span style=&quot;font-size:13px;line-height:1.16;color:#34485A&quot;&gt;채택 · 축소 · 재검토 · 중단&lt;/span&gt;" style="shape=hexagon;perimeter=hexagonPerimeter2;size=0.12;fillColor=#E7F3EE;strokeColor=#9FBEB1;whiteSpace=wrap;html=1;align=center;verticalAlign=middle;spacing=5;spacingLeft=10;spacingRight=10;strokeWidth=1.4;fontFamily=Arial;">
-          <mxGeometry x="969" y="469" width="211" height="93" as="geometry" />
+        <mxCell id="decor9" value="" style="shape=image;imageAspect=1;aspect=fixed;image=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23087D68%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2220%22%20cy%3D%2220%22%20r%3D%2212%22%2F%3E%3Cpath%20d%3D%22m29%2029%2010%2010%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="352.48" y="154.98" width="22.04" height="22.04" as="geometry" />
         </mxCell>
-        <mxCell id="edge-0" value="목표" edge="1" parent="1" source="request" target="main" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
+        <mxCell id="decor10" value="세 가지 검증 깊이" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#172D44;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="384" y="136" width="173" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="decor11" value="Quick · Standard · Deep" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#50657B;fontStyle=0;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="384" y="161" width="173" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="dn" value="" style="rounded=1;arcSize=13;fillColor=#FFFFFF;strokeColor=#D5AE86;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry x="341" y="251" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="decor12" value="" style="ellipse;fillColor=#FFFAF2;strokeColor=none;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="349" y="271.5" width="29" height="29" as="geometry" />
+        </mxCell>
+        <mxCell id="decor13" value="" style="shape=image;imageAspect=1;aspect=fixed;image=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23A9530D%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2224%22%20cy%3D%2224%22%20r%3D%2217%22%2F%3E%3Cpath%20d%3D%22m17%2024%205%205%209-10M6%2024h4m28%200h4%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="352.48" y="274.98" width="22.04" height="22.04" as="geometry" />
+        </mxCell>
+        <mxCell id="decor14" value="직접 · 역할 분리" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#172D44;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="384" y="256" width="173" height="24" as="geometry" />
+        </mxCell>
+        <mxCell id="decor15" value="쓸 사람과 확인할 사람 결정" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#50657B;fontStyle=0;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="384" y="281" width="173" height="37" as="geometry" />
+        </mxCell>
+        <mxCell id="decor16" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#14679D;strokeWidth=2;endArrow=block;endFill=1;endSize=8;dashed=0;dashPattern=5 5;exitX=1;exitY=0.32;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="in" target="up">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="334" y="230" />
-              <mxPoint x="488" y="230" />
+              <mxPoint x="297" y="213" />
+              <mxPoint x="297" y="166" />
             </Array>
-            <mxPoint x="5" y="-10" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge-1" value="적용 기준" edge="1" parent="1" source="authority" target="main" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry" />
+        <mxCell id="decor17" value="검증 깊이" style="text;html=0;align=center;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#14679D;fontStyle=1;fillColor=#FFFFFF;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="253" y="136" width="87" height="21" as="geometry" />
         </mxCell>
-        <mxCell id="edge-2" value="작업 규칙" edge="1" parent="1" source="skill" target="main" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
+        <mxCell id="decor18" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#14679D;strokeWidth=2;endArrow=block;endFill=1;endSize=8;dashed=0;dashPattern=5 5;exitX=1;exitY=0.68;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="in" target="dn">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="335" y="527" />
-              <mxPoint x="488" y="527" />
+              <mxPoint x="297" y="239" />
+              <mxPoint x="297" y="286" />
             </Array>
-            <mxPoint x="0" y="-10" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="edge-3" value="얼마나 확인?" edge="1" parent="1" source="main" target="depth" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="488" y="240" />
-            </Array>
-            <mxPoint x="0" y="-9" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="edge-4" value="누가 수행?" edge="1" parent="1" source="main" target="shape" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="488" y="507" />
-            </Array>
-            <mxPoint x="0" y="-11" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="edge-5" value="확인 범위" edge="1" parent="1" source="depth" target="work" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1075" y="240" />
-            </Array>
-            <mxPoint x="0" y="-8" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="edge-6" value="담당과 인계" edge="1" parent="1" source="shape" target="work" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="935" y="508" />
-              <mxPoint x="935" y="412" />
-              <mxPoint x="1075" y="412" />
-            </Array>
-            <mxPoint x="0" y="-8" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="edge-7" value="실제 증거" edge="1" parent="1" source="work" target="decide" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1074" y="434" />
-              <mxPoint x="1139" y="434" />
-              <mxPoint x="1139" y="445" />
-            </Array>
-            <mxPoint x="32" y="0" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="edge-8" value="중요한 변수가 나오면 다시 판단" edge="1" parent="1" source="decide" target="main" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#F9FAFB;labelPadding=2;fontFamily=Arial;dashed=1;dashPattern=6 4;strokeColor=#75818D;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="1080" y="648" />
-              <mxPoint x="488" y="648" />
-            </Array>
-            <mxPoint x="0" y="-11" as="offset" />
-          </mxGeometry>
-        </mxCell>
-        <mxCell id="note" parent="1" vertex="1" value="설계 해설 근거. 자동 스케줄러나 권한 강제 기능이 아니라 작업 스킬의 규칙이다." style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#43586D;fontSize=17;fontStyle=0;fontFamily=Arial;">
-          <mxGeometry x="45" y="678" width="1150" height="38" as="geometry" />
+        <mxCell id="decor19" value="실행 방식" style="text;html=0;align=center;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#14679D;fontStyle=1;fillColor=#FFFFFF;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="253" y="258" width="87" height="21" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>

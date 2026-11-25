@@ -1,111 +1,102 @@
 <?xml version='1.0' encoding='utf-8'?>
-<mxfile host="app.diagrams.net" type="device">
-  <diagram id="ariadne-environment" name="Ariadne Forge | 실행 환경과 버전 경계" alt="Ariadne Forge | 실행 환경과 버전 경계 · 저장소 스킬의 호스트 활성화와 포터블 패키지 검증은 별개 경로다.">
-    <mxGraphModel page="1" pageScale="1" pageWidth="1240" pageHeight="670" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" math="0" shadow="0" background="#FFFFFF">
+<mxfile host="app.diagrams.net" version="32.7.4">
+  <diagram id="environment" name="environment">
+    <mxGraphModel page="1" pageWidth="598" pageHeight="376" grid="1" gridSize="10" connect="1" arrows="1" fold="1" background="#FFFFFF">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="canvas" parent="1" vertex="1" value="" style="fillColor=#FFFFFF;strokeColor=none;movable=0;resizable=0;editable=0;selectable=0;html=0;">
-          <mxGeometry x="0" y="0" width="1240" height="670" as="geometry" />
+        <mxCell id="bounds" value="" style="shape=rectangle;fillColor=#FFFFFF;strokeColor=none;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="0" y="0" width="598" height="376" as="geometry" />
         </mxCell>
-        <mxCell id="title" parent="1" vertex="1" value="Ariadne Forge | 실행 환경과 버전 경계" style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#15283D;fontSize=35;fontStyle=1;fontFamily=Arial;">
-          <mxGeometry x="43" y="24" width="1155" height="45" as="geometry" />
+        <mxCell id="decor1" value="실행 환경" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=17;fontColor=#14679D;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="18" y="10" width="562" height="25" as="geometry" />
         </mxCell>
-        <mxCell id="subtitle" parent="1" vertex="1" value="저장소 스킬의 호스트 활성화와 포터블 패키지 검증은 별개 경로다." style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#485D72;fontSize=21;fontStyle=0;fontFamily=Arial;">
-          <mxGeometry x="45" y="74" width="1150" height="39" as="geometry" />
+        <mxCell id="decor2" value="공개 스킬 호출과 후속 CLI 설치를 분리" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=27;fontColor=#172D44;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="18" y="40" width="562" height="38" as="geometry" />
         </mxCell>
-        <mxCell id="main" parent="1" vertex="1" value="공개 저장소 사용 경로" style="rounded=1;arcSize=7;html=0;whiteSpace=wrap;fillColor=#F8FBFD;fillOpacity=85;strokeColor=#C8DAE5;dashed=1;dashPattern=7 5;strokeWidth=1.2;align=left;verticalAlign=top;spacingLeft=14;spacingTop=9;fontSize=16;fontStyle=1;fontColor=#435D72;fontFamily=Arial;">
-          <mxGeometry x="54" y="143" width="1141" height="196" as="geometry" />
+        <mxCell id="b0" value="" style="rounded=1;arcSize=6;strokeWidth=1.4;strokeColor=#9FBCCF;fillColor=#EDF5FB;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="17" y="91" width="564" height="124" as="geometry" />
         </mxCell>
-        <mxCell id="isolate" parent="1" vertex="1" value="이번 시연에서 검증한 설치 경로" style="rounded=1;arcSize=7;html=0;whiteSpace=wrap;fillColor=#F8FBFD;fillOpacity=85;strokeColor=#C8DAE5;dashed=1;dashPattern=7 5;strokeWidth=1.2;align=left;verticalAlign=top;spacingLeft=14;spacingTop=9;fontSize=16;fontStyle=1;fontColor=#435D72;fontFamily=Arial;">
-          <mxGeometry x="54" y="390" width="815" height="192" as="geometry" />
+        <mxCell id="decor3" value="공개 Git 기준 · 185fc97" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#14679D;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="29" y="98" width="540" height="28" as="geometry" />
         </mxCell>
-        <mxCell id="workspace" parent="1" vertex="1" value="" style="rounded=0;fillColor=none;strokeColor=none;whiteSpace=wrap;html=0;">
-          <mxGeometry x="97" y="207" width="278" height="89" as="geometry" />
+        <mxCell id="b1" value="" style="rounded=1;arcSize=6;strokeWidth=1.4;strokeColor=#91BFAF;fillColor=#ECF8F3;dashed=0;" vertex="1" parent="1">
+          <mxGeometry x="17" y="230" width="564" height="124" as="geometry" />
         </mxCell>
-        <mxCell id="workspace_tile" parent="workspace" vertex="1" value="" style="rounded=1;arcSize=16;fillColor=#FFFFFF;strokeColor=#B9ADD4;strokeWidth=1.2;html=0;">
-          <mxGeometry x="2" y="24" width="40" height="40" as="geometry" />
+        <mxCell id="decor4" value="후속 작업본 · abc004e" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#087D68;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="29" y="237" width="540" height="28" as="geometry" />
         </mxCell>
-        <mxCell id="workspace_icon" parent="workspace" vertex="1" value="" style="shape=image;imageAspect=1;image=data:image/svg+xml,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9IiM1NDNFODMiCiAgc3Ryb2tlLXdpZHRoPSIyIgogIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICBzdHJva2UtbGluZWpvaW49InJvdW5kIgo+CiAgPHJlY3Qgd2lkdGg9IjgiIGhlaWdodD0iNCIgeD0iOCIgeT0iMiIgcng9IjEiIHJ5PSIxIiAvPgogIDxwYXRoIGQ9Ik0xNiA0aDJhMiAyIDAgMCAxIDIgMnYxNGEyIDIgMCAwIDEtMiAySDZhMiAyIDAgMCAxLTItMlY2YTIgMiAwIDAgMSAyLTJoMiIgLz4KICA8cGF0aCBkPSJNMTIgMTFoNCIgLz4KICA8cGF0aCBkPSJNMTIgMTZoNCIgLz4KICA8cGF0aCBkPSJNOCAxMWguMDEiIC8+CiAgPHBhdGggZD0iTTggMTZoLjAxIiAvPgo8L3N2Zz4K;">
-          <mxGeometry x="10" y="32" width="24" height="24" as="geometry" />
+        <mxCell id="0a" value="" style="rounded=1;arcSize=13;fillColor=#FFFFFF;strokeColor=#9FBCCF;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry x="29" y="137" width="219" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="workspace_label" parent="workspace" vertex="1" value="공개 Git 작업 폴더" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=21;fontColor=#543E83;fontStyle=1;fontFamily=Arial;">
-          <mxGeometry x="49" y="17" width="224" height="29" as="geometry" />
+        <mxCell id="decor5" value="" style="ellipse;fillColor=#EDF5FB;strokeColor=none;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="37" y="153.5" width="29" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="workspace_desc" parent="workspace" vertex="1" value="185fc97 · AGENTS.md · 로컬 스킬" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=13;fontColor=#425E70;fontStyle=0;fontFamily=Arial;">
-          <mxGeometry x="49" y="45" width="224" height="41" as="geometry" />
+        <mxCell id="decor6" value="" style="shape=image;imageAspect=1;aspect=fixed;image=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%2314679D%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M19%2012h21M19%2024h21M19%2036h21M8%2012h2m-2%2012h2m-2%2012h2%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="40.48" y="156.98" width="22.04" height="22.04" as="geometry" />
         </mxCell>
-        <mxCell id="host" parent="1" vertex="1" value="" style="rounded=0;fillColor=none;strokeColor=none;whiteSpace=wrap;html=0;">
-          <mxGeometry x="520" y="207" width="295" height="89" as="geometry" />
+        <mxCell id="decor7" value="저장소 작업 폴더" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#172D44;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="72" y="142" width="172" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="host_tile" parent="host" vertex="1" value="" style="rounded=1;arcSize=16;fillColor=#FFFFFF;strokeColor=#A7BBD8;strokeWidth=1.2;html=0;">
-          <mxGeometry x="2" y="24" width="40" height="40" as="geometry" />
+        <mxCell id="decor8" value="AGENTS.md · 로컬 스킬" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#50657B;fontStyle=0;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="72" y="167" width="172" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="host_icon" parent="host" vertex="1" value="" style="shape=image;imageAspect=1;image=data:image/svg+xml,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9IiMyMTRGODciCiAgc3Ryb2tlLXdpZHRoPSIyIgogIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICBzdHJva2UtbGluZWpvaW49InJvdW5kIgo+CiAgPHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjE0IiB4PSIyIiB5PSIzIiByeD0iMiIgLz4KICA8bGluZSB4MT0iOCIgeDI9IjE2IiB5MT0iMjEiIHkyPSIyMSIgLz4KICA8bGluZSB4MT0iMTIiIHgyPSIxMiIgeTE9IjE3IiB5Mj0iMjEiIC8+Cjwvc3ZnPgo=;">
-          <mxGeometry x="10" y="32" width="24" height="24" as="geometry" />
+        <mxCell id="0b" value="" style="rounded=1;arcSize=13;fillColor=#FFFFFF;strokeColor=#9FBCCF;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry x="352" y="137" width="217" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="host_label" parent="host" vertex="1" value="사용자가 여는 Codex" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=21;fontColor=#214F87;fontStyle=1;fontFamily=Arial;">
-          <mxGeometry x="49" y="17" width="241" height="29" as="geometry" />
+        <mxCell id="decor9" value="" style="ellipse;fillColor=#EDF5FB;strokeColor=none;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="153.5" width="29" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="host_desc" parent="host" vertex="1" value="저장소 안에서 스킬 명시 호출" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=17;fontColor=#425E70;fontStyle=0;fontFamily=Arial;">
-          <mxGeometry x="49" y="45" width="241" height="41" as="geometry" />
+        <mxCell id="decor10" value="" style="shape=image;imageAspect=1;aspect=fixed;image=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%2314679D%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m8%2015%2016-8%2016%208v18l-16%208-16-8zM8%2015l16%208%2016-8M24%2023v18m-8-30%2016%208%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="363.48" y="156.98" width="22.04" height="22.04" as="geometry" />
         </mxCell>
-        <mxCell id="native" parent="1" vertex="1" value="" style="rounded=0;fillColor=none;strokeColor=none;whiteSpace=wrap;html=0;">
-          <mxGeometry x="920" y="207" width="255" height="89" as="geometry" />
+        <mxCell id="decor11" value="사용자가 연 Codex" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#172D44;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="395" y="142" width="170" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="native_tile" parent="native" vertex="1" value="" style="rounded=1;arcSize=16;fillColor=#FFFFFF;strokeColor=#9FBEB1;strokeWidth=1.2;html=0;">
-          <mxGeometry x="2" y="24" width="40" height="40" as="geometry" />
+        <mxCell id="decor12" value="네이티브 역할은 필요할 때" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#50657B;fontStyle=0;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="395" y="167" width="170" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="native_icon" parent="native" vertex="1" value="" style="shape=image;imageAspect=1;image=data:image/svg+xml,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9IiMxMjYxNEYiCiAgc3Ryb2tlLXdpZHRoPSIyIgogIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICBzdHJva2UtbGluZWpvaW49InJvdW5kIgo+CiAgPHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjE0IiB4PSIyIiB5PSIzIiByeD0iMiIgLz4KICA8bGluZSB4MT0iOCIgeDI9IjE2IiB5MT0iMjEiIHkyPSIyMSIgLz4KICA8bGluZSB4MT0iMTIiIHgyPSIxMiIgeTE9IjE3IiB5Mj0iMjEiIC8+Cjwvc3ZnPgo=;">
-          <mxGeometry x="10" y="32" width="24" height="24" as="geometry" />
+        <mxCell id="1a" value="" style="rounded=1;arcSize=13;fillColor=#FFFFFF;strokeColor=#91BFAF;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry x="29" y="276" width="219" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="native_label" parent="native" vertex="1" value="네이티브 역할 제어" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=21;fontColor=#12614F;fontStyle=1;fontFamily=Arial;">
-          <mxGeometry x="49" y="17" width="201" height="29" as="geometry" />
+        <mxCell id="decor13" value="" style="ellipse;fillColor=#ECF8F3;strokeColor=none;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="37" y="292.5" width="29" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="native_desc" parent="native" vertex="1" value="별도 책임자가 필요한 작업만" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=15;fontColor=#425E70;fontStyle=0;fontFamily=Arial;">
-          <mxGeometry x="49" y="45" width="201" height="41" as="geometry" />
+        <mxCell id="decor14" value="" style="shape=image;imageAspect=1;aspect=fixed;image=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23087D68%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M36%2018a14%2014%200%201%200%201%2012M37%209v10H27%22%2F%3E%3Cpath%20d%3D%22M24%2017v8l5%203%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="40.48" y="295.98" width="22.04" height="22.04" as="geometry" />
         </mxCell>
-        <mxCell id="release" parent="1" vertex="1" value="" style="rounded=0;fillColor=none;strokeColor=none;whiteSpace=wrap;html=0;">
-          <mxGeometry x="97" y="453" width="278" height="89" as="geometry" />
+        <mxCell id="decor15" value="릴리스 CLI" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#172D44;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="72" y="281" width="172" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="release_tile" parent="release" vertex="1" value="" style="rounded=1;arcSize=16;fillColor=#FFFFFF;strokeColor=#A7BBD8;strokeWidth=1.2;html=0;">
-          <mxGeometry x="2" y="24" width="40" height="40" as="geometry" />
+        <mxCell id="decor16" value="선택 커밋의 내용 확인" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#50657B;fontStyle=0;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="72" y="306" width="172" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="release_icon" parent="release" vertex="1" value="" style="shape=image;imageAspect=1;image=data:image/svg+xml,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9IiMyMTRGODciCiAgc3Ryb2tlLXdpZHRoPSIyIgogIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICBzdHJva2UtbGluZWpvaW49InJvdW5kIgo+CiAgPHJlY3Qgd2lkdGg9IjIwIiBoZWlnaHQ9IjgiIHg9IjIiIHk9IjIiIHJ4PSIyIiByeT0iMiIgLz4KICA8cmVjdCB3aWR0aD0iMjAiIGhlaWdodD0iOCIgeD0iMiIgeT0iMTQiIHJ4PSIyIiByeT0iMiIgLz4KICA8bGluZSB4MT0iNiIgeDI9IjYuMDEiIHkxPSI2IiB5Mj0iNiIgLz4KICA8bGluZSB4MT0iNiIgeDI9IjYuMDEiIHkxPSIxOCIgeTI9IjE4IiAvPgo8L3N2Zz4K;">
-          <mxGeometry x="10" y="32" width="24" height="24" as="geometry" />
+        <mxCell id="1b" value="" style="rounded=1;arcSize=13;fillColor=#FFFFFF;strokeColor=#91BFAF;strokeWidth=1.5;" vertex="1" parent="1">
+          <mxGeometry x="352" y="276" width="217" height="62" as="geometry" />
         </mxCell>
-        <mxCell id="release_label" parent="release" vertex="1" value="후속 로컬 배포 CLI" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=21;fontColor=#214F87;fontStyle=1;fontFamily=Arial;">
-          <mxGeometry x="49" y="17" width="224" height="29" as="geometry" />
+        <mxCell id="decor17" value="" style="ellipse;fillColor=#ECF8F3;strokeColor=none;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="360" y="292.5" width="29" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="release_desc" parent="release" vertex="1" value="abc004e · 정확한 Git 객체 검증" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=14;fontColor=#425E70;fontStyle=0;fontFamily=Arial;">
-          <mxGeometry x="49" y="45" width="224" height="41" as="geometry" />
+        <mxCell id="decor18" value="" style="shape=image;imageAspect=1;aspect=fixed;image=data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2048%2048%22%3E%3Cg%20fill%3D%22none%22%20stroke%3D%22%23087D68%22%20stroke-width%3D%222.8%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2224%22%20cy%3D%2224%22%20r%3D%2217%22%2F%3E%3Cpath%20d%3D%22m17%2024%205%205%209-10M6%2024h4m28%200h4%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="363.48" y="295.98" width="22.04" height="22.04" as="geometry" />
         </mxCell>
-        <mxCell id="isolated" parent="1" vertex="1" value="" style="rounded=0;fillColor=none;strokeColor=none;whiteSpace=wrap;html=0;">
-          <mxGeometry x="520" y="453" width="295" height="89" as="geometry" />
+        <mxCell id="decor19" value="임시 Codex 프로필" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=19;fontColor=#172D44;fontStyle=1;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="395" y="281" width="170" height="24" as="geometry" />
         </mxCell>
-        <mxCell id="isolated_tile" parent="isolated" vertex="1" value="" style="rounded=1;arcSize=16;fillColor=#FFFFFF;strokeColor=#CFB879;strokeWidth=1.2;html=0;">
-          <mxGeometry x="2" y="24" width="40" height="40" as="geometry" />
+        <mxCell id="decor20" value="폐기할 수 있는 설치 대상" style="text;html=0;align=left;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#50657B;fontStyle=0;fillColor=none;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="395" y="306" width="170" height="29" as="geometry" />
         </mxCell>
-        <mxCell id="isolated_icon" parent="isolated" vertex="1" value="" style="shape=image;imageAspect=1;image=data:image/svg+xml,PHN2ZwogIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICB3aWR0aD0iMjQiCiAgaGVpZ2h0PSIyNCIKICB2aWV3Qm94PSIwIDAgMjQgMjQiCiAgZmlsbD0ibm9uZSIKICBzdHJva2U9IiM3NjUwMDgiCiAgc3Ryb2tlLXdpZHRoPSIyIgogIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICBzdHJva2UtbGluZWpvaW49InJvdW5kIgo+CiAgPHJlY3Qgd2lkdGg9IjgiIGhlaWdodD0iNCIgeD0iOCIgeT0iMiIgcng9IjEiIHJ5PSIxIiAvPgogIDxwYXRoIGQ9Ik0xNiA0aDJhMiAyIDAgMCAxIDIgMnYxNGEyIDIgMCAwIDEtMiAySDZhMiAyIDAgMCAxLTItMlY2YTIgMiAwIDAgMSAyLTJoMiIgLz4KICA8cGF0aCBkPSJNMTIgMTFoNCIgLz4KICA8cGF0aCBkPSJNMTIgMTZoNCIgLz4KICA8cGF0aCBkPSJNOCAxMWguMDEiIC8+CiAgPHBhdGggZD0iTTggMTZoLjAxIiAvPgo8L3N2Zz4K;">
-          <mxGeometry x="10" y="32" width="24" height="24" as="geometry" />
-        </mxCell>
-        <mxCell id="isolated_label" parent="isolated" vertex="1" value="폐기 가능한 설치 대상" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=21;fontColor=#765008;fontStyle=1;fontFamily=Arial;">
-          <mxGeometry x="49" y="17" width="241" height="29" as="geometry" />
-        </mxCell>
-        <mxCell id="isolated_desc" parent="isolated" vertex="1" value="스킬·지침·설치 기록 파일" style="text;html=0;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;spacing=0;fontSize=17;fontColor=#425E70;fontStyle=0;fontFamily=Arial;">
-          <mxGeometry x="49" y="45" width="241" height="41" as="geometry" />
-        </mxCell>
-        <mxCell id="edge-0" value="저장소 규칙 로드" edge="1" parent="1" source="workspace" target="host" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#FFFFFF;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+        <mxCell id="decor21" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#14679D;strokeWidth=2;endArrow=block;endFill=1;endSize=8;dashed=0;dashPattern=5 5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="0a" target="0b">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="edge-1" value="필요할 때만" edge="1" parent="1" source="host" target="native" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#FFFFFF;labelPadding=2;fontFamily=Arial;dashed=1;dashPattern=6 4;strokeColor=#75818D;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
+        <mxCell id="decor22" value="스킬 로드" style="text;html=0;align=center;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#14679D;fontStyle=1;fillColor=#FFFFFF;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="250" y="141" width="99" height="21" as="geometry" />
+        </mxCell>
+        <mxCell id="decor23" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=0;strokeColor=#14679D;strokeWidth=2;endArrow=block;endFill=1;endSize=8;dashed=0;dashPattern=5 5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;exitPerimeter=0;entryPerimeter=0;" edge="1" parent="1" source="1a" target="1b">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="edge-2" value="설치 · 파일 대조" edge="1" parent="1" source="release" target="isolated" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;endArrow=blockThin;endFill=1;strokeColor=#415C70;strokeWidth=2.2;fontColor=#24435A;fontSize=16;labelBackgroundColor=#FFFFFF;labelPadding=2;fontFamily=Arial;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="note" parent="1" vertex="1" value="공개 185fc97의 신규 실행은 확인하지 않았다. 후속 abc004e는 임시 프로필 설치·파일 검증만 확인했다." style="text;html=0;strokeColor=none;fillColor=none;whiteSpace=wrap;align=left;verticalAlign=middle;spacing=0;fontColor=#43586D;fontSize=17;fontStyle=0;fontFamily=Arial;">
-          <mxGeometry x="45" y="618" width="1150" height="38" as="geometry" />
+        <mxCell id="decor24" value="격리 설치" style="text;html=0;align=center;verticalAlign=middle;spacing=0;fontFamily=Apple SD Gothic Neo;fontSize=16;fontColor=#14679D;fontStyle=1;fillColor=#FFFFFF;strokeColor=none;whiteSpace=wrap;overflow=visible;connectable=0;" vertex="1" parent="1">
+          <mxGeometry x="250" y="280" width="99" height="21" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
